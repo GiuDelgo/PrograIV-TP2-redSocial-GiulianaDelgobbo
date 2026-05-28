@@ -1,0 +1,46 @@
+/* Asegura que el fondo ocupe todo el alto visual de la pantalla */
+.login-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #c1b788 0%, #f4bdad 100%);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Define un ancho máximo controlado y estético para la tarjeta */
+.login-card {
+    width: 100%;
+    max-width: 430px;
+    border-radius: 16px !important;
+    background: #f5f8f6;
+}
+
+h1{
+    color: #62aaac;
+    text-shadow: 2px 2px 2px rgba(98, 170, 172, 0.4);
+    font-size: 3rem;
+    font-weight: 750;
+    margin-bottom: 0rem;
+}
+
+/* Suavizado visual para interacciones con inputs y botones */
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+.transition-all {
+    transition: all 0.2s ease-in-out;
+}
+
+.btn{
+    background-color: #62aaac;
+    color: white;
+}
+
+.transition-all:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+}
+
+.registro {
+    color: #62aaac;
+    cursor: pointer;
+}
