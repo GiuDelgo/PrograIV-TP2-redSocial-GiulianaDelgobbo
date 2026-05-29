@@ -1,1 +1,162 @@
-<p>registro works!</p>
+<div class="registro-container d-flex align-items-center justify-content-center p-3">
+    <div class="card registro-card border-0">
+        <div class="card-body p-4 p-md-6">
+
+            <div class="titulo text-center mb-4">
+                <h1>Tribook</h1>
+                <p class="text-muted">Creá tu cuenta para acceder</p>
+            </div>
+
+            @if (errorMessage()) {
+                <div class="alert alert-danger alert-dismissible fade show text-center py-2 mb-3" role="alert">
+                    {{ errorMessage() }}
+                </div>
+            }
+
+            <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" novalidate>
+                <div class="inner-color">
+                    <div class="row g-5">            
+                        <div class="col-md-6">
+                            <h5 class="card-title fw-semibold text-secondary border-bottom mb-4">Datos Personales</h5>
+                            
+                            <div class="mb-4">
+                                <label for="nombre" class="form-label text-secondary small fw-semibold">Nombre</label>
+                                <input 
+                                    type="text" 
+                                    id="nombre" 
+                                    formControlName="nombre" 
+                                    class="form-control"
+                                    [ngClass]="{'is-invalid': registroForm.get('nombre')?.touched && registroForm.get('nombre')?.invalid}"
+                                    placeholder="Ej. Juan"
+                                />
+                                <div class="invalid-feedback small">El nombre es requerido (mínimo 3 caracteres).</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="apellido" class="form-label text-secondary small fw-semibold">Apellido</label>
+                                <input 
+                                    type="text" 
+                                    id="apellido" 
+                                    formControlName="apellido" 
+                                    class="form-control"
+                                    [ngClass]="{'is-invalid': registroForm.get('apellido')?.touched && registroForm.get('apellido')?.invalid}"
+                                    placeholder="Ej. Pérez"
+                                />
+                                <div class="invalid-feedback small">El apellido es requerido (mínimo 3 caracteres).</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="nacimiento" class="form-label text-secondary small fw-semibold">Fecha de Nacimiento</label>
+                                <input 
+                                    type="date" 
+                                    id="nacimiento" 
+                                    formControlName="nacimiento" 
+                                    class="form-control"
+                                    [ngClass]="{'is-invalid': registroForm.get('nacimiento')?.touched && registroForm.get('nacimiento')?.invalid}"
+                                />
+                                <div class="invalid-feedback small">La fecha de nacimiento es requerida.</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="imagen" class="form-label text-secondary small fw-semibold">Foto de Perfil</label>
+                                <input 
+                                    type="file" 
+                                    id="imagen" 
+                                    class="form-control"
+                                    accept="image/*"
+                                    (change)="onFileChange($event)"
+                                    [ngClass]="{'is-invalid': registroForm.get('imagen')?.touched && registroForm.get('imagen')?.invalid}"
+                                />
+                                <div class="invalid-feedback small">Debes subir una foto de perfil obligatoria.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5 class="card-title fw-semibold text-secondary border-bottom mb-4">Cuenta</h5>
+
+                            <div class="mb-4">
+                                <label for="correo" class="form-label text-secondary small fw-semibold">Correo Electrónico</label>
+                                <input 
+                                    type="email" 
+                                    id="correo" 
+                                    formControlName="correo" 
+                                    class="form-control"
+                                    [ngClass]="{'is-invalid': registroForm.get('correo')?.touched && registroForm.get('correo')?.invalid}"
+                                    placeholder="juan@ejemplo.com"
+                                />
+                                <div class="invalid-feedback small">Ingresa un correo electrónico institucional válido.</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="username" class="form-label text-secondary small fw-semibold">Nombre de Usuario</label>
+                                <input 
+                                    type="text" 
+                                    id="username" 
+                                    formControlName="username" 
+                                    class="form-control"
+                                    [ngClass]="{'is-invalid': registroForm.get('username')?.touched && registroForm.get('username')?.invalid}"
+                                    placeholder="juanperez123"
+                                />
+                                <div class="invalid-feedback small">El usuario es requerido (mínimo 3 caracteres).</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="password" class="form-label text-secondary small fw-semibold">Contraseña</label>
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    formControlName="password" 
+                                    class="form-control"
+                                    [ngClass]="{'is-invalid': registroForm.get('password')?.touched && registroForm.get('password')?.invalid}"
+                                    placeholder="••••••••"
+                                />
+                                <div class="invalid-feedback small">Mínimo 8 caracteres, incluyendo una mayúscula y un número.</div>
+                            </div>
+
+                            <div class="mb-4 mt-1">
+                                <label for="confirmPassword" class="form-label text-secondary small fw-semibold">Repetir Contraseña</label>
+                                <input 
+                                    type="password" 
+                                    id="confirmPassword" 
+                                    formControlName="confirmPassword" 
+                                    class="form-control"
+                                    [ngClass]="{'is-invalid': registroForm.get('confirmPassword')?.touched && registroForm.get('confirmPassword')?.invalid}"
+                                    placeholder="••••••••"
+                                />
+                                <div class="invalid-feedback small">Las contraseñas no coinciden.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-2">
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label text-secondary small fw-semibold">Descripción Breve</label>
+                                <textarea 
+                                    id="descripcion" 
+                                    formControlName="descripcion" 
+                                    class="form-control" 
+                                    rows="2"
+                                    [ngClass]="{'is-invalid': registroForm.get('descripcion')?.touched && registroForm.get('descripcion')?.invalid}"
+                                    placeholder="Contanos acerca de vos (máx. 500 caracteres)..."
+                                ></textarea>
+                                <div class="invalid-feedback small">La descripción breve es obligatoria.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 mt-5 justify-content-center">
+                    <button type="submit" class="btn btn-lg fw-bold transition-all">
+                        Completar Registro
+                    </button>
+                </div>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted mb-0">
+                        ¿Ya tenés una cuenta? 
+                        <span class="login fw-semibold" routerLink="/login">Inicia Sesión aquí</span>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

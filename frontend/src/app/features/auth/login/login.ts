@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -9,7 +9,7 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {
+export class Login implements OnInit {
   constructor(private router: Router, private fb: FormBuilder) {}
 
   errorMessage = signal<string | null>(null);

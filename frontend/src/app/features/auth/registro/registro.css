@@ -1,0 +1,89 @@
+/* Asegura que el fondo ocupe todo el alto visual de la pantalla */
+.registro-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #c1b788 0%, #f4bdad 100%);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Ancho controlado, expandido para doble columna estética */
+.registro-card {
+    width: 100%;
+    max-width: 1000px;
+    border-radius: 16px !important;
+    background: rgba(245, 248, 246, 0.8);
+}
+
+h1 {
+    color: #62aaac;
+    text-shadow: 2px 2px 2px rgba(98, 170, 172, 0.4);
+    font-size: 4rem;
+    font-weight: 750;
+    margin-bottom: 0rem;
+}
+
+.inner-color{
+    background-color: #dadfdb;
+    border-radius: 16px !important;
+    padding: 50px;
+    transition: background-color 0.3s ease;
+}
+
+.inner-color:hover{
+    background-color: #ced1ce;
+}
+
+.border-bottom{
+    border-bottom: 3px solid #62aaac !important;
+}
+
+/* Suavizado visual para interacciones con inputs y áreas de texto */
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(98, 170, 172, 0.25);
+    border-color: #62aaac;
+}
+
+.btn {
+    background-color: #62aaac;
+    color: white;
+    width: 400px;
+    border: none;
+}
+
+.btn:hover {
+    background-color: #4f8b8d;
+    color: white;
+}
+
+.transition-all:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(98, 170, 172, 0.3) !important;
+}
+
+.login {
+    color: #62aaac;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.login:hover {
+    color: #4f8b8d;
+    text-decoration: underline;
+}
+
+input[type="file"]::file-selector-button {
+    background-color: #62aaac;
+    color: white;
+    border: none;
+    padding: 0.2rem 0.75rem;
+    margin-right: 0.5rem;
+    margin-top: 0.0rem;
+    margin-bottom: 0.0rem;
+    margin-left: 0.0rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+input[type="file"]:hover::file-selector-button {
+    background-color: #4f8b8d !important;
+}

@@ -2,7 +2,7 @@
     <div class="card login-card border-0 p-4">
         <div class="card-body">
         
-            <div class="titulo text-center mb-4">
+            <div class="titulo text-center mb-3">
                 <h1>Tribook</h1>
                 <p class="text-muted">Iniciá sesión para continuar</p>
             </div>
@@ -14,55 +14,56 @@
             }
 
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-                
-                <div class="mb-3">
-                    <label for="username" class="form-label fw-semibold text-secondary">Usuario</label>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        formControlName="username"
-                        class="form-control"
-                        [class.is-invalid]="loginForm.get('username')?.touched && loginForm.get('username')?.invalid"
-                        placeholder="Ingresá tu usuario"
-                    />
-                    @if (loginForm.get('username')?.touched && loginForm.get('username')?.invalid) {
-                        <div class="invalid-feedback">
-                            @if (loginForm.get('username')?.hasError('required')) {
-                                El usuario es obligatorio.
-                            }
-                            @if (loginForm.get('username')?.hasError('minlength')) {
-                                Debe tener al menos 3 caracteres.
-                            }
-                        </div>
-                    }
+                <div class="inner-color">
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-semibold text-secondary">Usuario</label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            formControlName="username"
+                            class="form-control"
+                            [class.is-invalid]="loginForm.get('username')?.touched && loginForm.get('username')?.invalid"
+                            placeholder="Ingresá tu usuario"
+                        />
+                        @if (loginForm.get('username')?.touched && loginForm.get('username')?.invalid) {
+                            <div class="invalid-feedback">
+                                @if (loginForm.get('username')?.hasError('required')) {
+                                    El usuario es obligatorio.
+                                }
+                                @if (loginForm.get('username')?.hasError('minlength')) {
+                                    Debe tener al menos 3 caracteres.
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mb-1">
+                        <label for="password" class="form-label fw-semibold text-secondary">Contraseña</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            formControlName="password"
+                            class="form-control"
+                            [class.is-invalid]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+                            placeholder="••••••••"
+                        />
+                        @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
+                            <div class="invalid-feedback">
+                                @if (loginForm.get('password')?.hasError('required')) {
+                                    La contraseña es obligatoria.
+                                }
+                                @if (loginForm.get('password')?.hasError('minlength')) {
+                                    Debe contener al menos 8 caracteres.
+                                }
+                                @if (loginForm.get('password')?.hasError('pattern') && !loginForm.get('password')?.hasError('minlength')) {
+                                    Debe incluir al menos una mayúscula y un número.
+                                }
+                            </div>
+                        }
+                    </div>
                 </div>
 
-                <div class="mb-4">
-                    <label for="password" class="form-label fw-semibold text-secondary">Contraseña</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        formControlName="password"
-                        class="form-control"
-                        [class.is-invalid]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
-                        placeholder="••••••••"
-                    />
-                    @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
-                        <div class="invalid-feedback">
-                            @if (loginForm.get('password')?.hasError('required')) {
-                                La contraseña es obligatoria.
-                            }
-                            @if (loginForm.get('password')?.hasError('minlength')) {
-                                Debe contener al menos 8 caracteres.
-                            }
-                            @if (loginForm.get('password')?.hasError('pattern') && !loginForm.get('password')?.hasError('minlength')) {
-                                Debe incluir al menos una mayúscula y un número.
-                            }
-                        </div>
-                    }
-                </div>
-
-                <div class="d-grid gap-2">
+                <div class="d-grid gap-2 mt-3">
                     <button type="submit" class="btn btn-lg fw-bold transition-all">
                         Ingresar
                     </button>
@@ -70,8 +71,8 @@
             </form>
 
             <div class="text-center mt-5">
-                <span class="text-muted">¿No tenés cuenta?</span>
-                <a routerLink="/registro" class="registro fw-semibold text-decoration-none"> Registrate</a>
+                <span class="text-muted">¿No tenés cuenta? </span>
+                <a routerLink="/registro" class="registro fw-semibold">Registrate</a>
             </div>
         </div>
     </div>
