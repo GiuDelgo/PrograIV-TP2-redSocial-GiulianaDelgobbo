@@ -1,16 +1,19 @@
-/* Asegura que el fondo ocupe todo el alto visual de la pantalla */
 .registro-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, #c1b788 0%, #f4bdad 100%);
-    font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Ancho controlado, expandido para doble columna estética */
 .registro-card {
     width: 100%;
     max-width: 1000px;
     border-radius: 16px !important;
-    background: rgba(245, 248, 246, 0.8);
+    background: rgba(245, 248, 246, 0.5);
+}
+
+.logo{
+    opacity: 0;
+
+    animation: slideTop 1s ease forwards;
+    animation-delay: .6s;
 }
 
 h1 {
@@ -19,6 +22,33 @@ h1 {
     font-size: 4rem;
     font-weight: 750;
     margin-bottom: 0rem;
+
+    opacity: 0;
+
+    animation: slideLeft 1s ease forwards;
+    animation-delay: .7s;
+}
+
+@keyframes slideLeft {
+    0%{
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    100%{
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes slideTop {
+    0%{
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    100%{
+        transform: translateY(0px);
+        opacity: 1;
+    }
 }
 
 .inner-color{
@@ -47,6 +77,22 @@ h1 {
     color: white;
     width: 400px;
     border: none;
+
+    opacity: 0;
+
+    animation: slideRight 1s ease forwards;
+    animation-delay: 1s;
+}
+
+@keyframes slideRight {
+    0%{
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+    100%{
+        transform: translateX(0px);
+        opacity: 1;
+    }
 }
 
 .btn:hover {
