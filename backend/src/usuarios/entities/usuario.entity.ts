@@ -1,6 +1,6 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 
-@Schema()
+@Schema({ timestamps: true })//guardo timestamp createdAt y updatedAt para menajer los posts
 export class Usuario {
     @Prop({required:true})
     nombre!: string;
@@ -8,22 +8,22 @@ export class Usuario {
     @Prop({required:true})
     apellido!: string;
 
-    @Prop({required:true})
+    @Prop({ required: true, unique: true, index: true })//no necesariamente tiene que ser unique si ingresa con user
     correo!: string;
 
-    @Prop({required:true})
+    @Prop({ required: true, unique: true, index: true })
     usuario!: string;
 
     @Prop({required:true})
     contraseña!: string;
 
     @Prop({required:true})
-    fechaNacimiento!: Date;
+    fechaNacimiento!: string;
 
     @Prop({required:true})
     descripcion!: string;
 
-    @Prop({required:true})
+    @Prop({ required: false, default:''})
     foto!: string;
 
     @Prop({required:true, default:'usuario'})
