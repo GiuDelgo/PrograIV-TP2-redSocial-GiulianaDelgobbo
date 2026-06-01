@@ -16,6 +16,13 @@ import { join } from 'path'; //Herramienta nativa de Node
     //MongooseModule.forRoot(process.env.MONGO_URI!),//conexión local
     
     // Configuración del puente para servir las imágenes
+    ...(process.env.NODE_ENV !== 'production' ? [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
+  ] : []),
+    
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'), // Apunta a la carpeta raíz /uploads
       serveRoot: '/uploads', // Prefijo de la URL pública
