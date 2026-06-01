@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './login.css',
 })
 export class Login implements OnInit {
-  constructor(private router: Router, private fb: FormBuilder) {}
+  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {}
 
   errorMessage = signal<string | null>(null);
   loginForm!: FormGroup;
@@ -33,10 +34,17 @@ export class Login implements OnInit {
 
     const { username, password } = this.loginForm.value;
   
-    if (username === 'FALTA IMPLEMENTAR LOGICA' && password === 'FALTA IMPLEMENTAR LOGICA') {
+    this.authService.login(username, password).subscribe({
+    next: (response) => {
+      console.log('Login exitoso', response);
+
+      // Sprint #3 aca guarda el JWT devuelto en el localStorage.
       this.router.navigate(['/publicaciones']);
-    } else {
-      this.errorMessage.set('Credenciales inválidas');
+    },
+    error: (err) => {
+      const mensajeError = err.error?.message || 'Credenciales inválidas';
+      this.errorMessage.set(mensajeError);
     }
+    });
   }
 }

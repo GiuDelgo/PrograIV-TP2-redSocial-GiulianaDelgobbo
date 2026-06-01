@@ -13,7 +13,7 @@ import { join } from 'path'; //Herramienta nativa de Node
   imports: [
     ConfigModule.forRoot(), //config va antes que la conexión a atlas
     MongooseModule.forRoot(process.env.MONGO_URI_PROD!),//conexión a atlas 
-    //MongooseModule.forRoot(process.env.MONGO_URI!),//conexión a local
+    //MongooseModule.forRoot(process.env.MONGO_URI!),//conexión local
     
     // Configuración del puente para servir las imágenes
     ServeStaticModule.forRoot({
