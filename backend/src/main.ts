@@ -7,9 +7,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe())//uso validation pipe de forma global
 
   app.enableCors({
-    origin: ['http://localhost:4200', 'https://tribook-frontend.vercel.app/login'], 
+    origin: ['http://localhost:4200', 'https://tribook-frontend.vercel.app'], 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowHeaders: ['Content-type'],
+    allowHeaders: ['Content-Type', 'Accept', 'Authorization'],
     credentials: true,
   })
 
