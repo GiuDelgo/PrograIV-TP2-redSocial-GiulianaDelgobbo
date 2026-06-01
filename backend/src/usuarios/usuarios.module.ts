@@ -9,5 +9,6 @@ import {Usuario, UsuarioSchema} from './entities/usuario.entity'
   imports:[MongooseModule.forFeature([{name: Usuario.name, schema: UsuarioSchema}])],//disponibilizo el schema de usuario dentro del módulo usuarios
   controllers: [UsuariosController],
   providers: [UsuariosService],
+  exports: [UsuariosService]
 })
 export class UsuariosModule {}

@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, ValidationErrors, AbstractControl } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-registro',
@@ -11,11 +12,11 @@ import { Router, RouterLink } from '@angular/router';
 })
 
 export class Registro implements OnInit {
-  constructor(private router: Router, private fb: FormBuilder) {}
-
   errorMessage = signal<string | null>(null);
   registroForm!: FormGroup;
   imagenPerfil: File | null = null; // Para almacenar la imagen seleccionada
+
+  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit() {
     this.registroForm = this.fb.group({
@@ -54,20 +55,24 @@ export class Registro implements OnInit {
   }
 
   onSubmit() {
-    if (this.registroForm.invalid) {
+    if (this.registroForm.invalid || !this.imagenPerfil) {
       this.registroForm.markAllAsTouched();
+      if (!this.imagenPerfil) this.errorMessage.set('La foto de perfil es obligatoria');
       return;
     }
 
     this.errorMessage.set(null);
 
-    const { nombre, apellido, correo, username, password, confirmPassword, nacimiento, descripcion } = this.registroForm.value;
-
-    if (username === 'FALTA IMPLEMENTAR LOGICA' && password === 'FALTA IMPLEMENTAR LOGICA') {
-      this.router.navigate(['/publicaciones']);
-    } else {
-      this.errorMessage.set('Credenciales inválidas');
-    }
+    this.authService.registro(this.registroForm.value, this.imagenPerfil).subscribe({
+      next: (response) =>{
+        console.log('Registro exitoso', response);
+        this.router.navigate(['/publicaciones']);
+      }, 
+      error: (err) => {
+        const mensajeError = err.error?.message || 'Error al registrar el usuario';
+        this.errorMessage.set(Array.isArray(mensajeError) ? mensajeError[0] : mensajeError)
+      }
+    })
   }
 }
 

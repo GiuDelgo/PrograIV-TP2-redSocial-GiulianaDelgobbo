@@ -1,26 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
+import { UsuariosService } from 'src/usuarios/usuarios.service';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  // inyecto el modelo de usuarios dentro del contexto de auth
+  constructor(private readonly usuariosService: UsuariosService) {}
+
+  async registrarUsuario(createUsuarioDto: CreateUsuarioDto, pathFoto: string) {
+    return this.usuariosService.create({ ...createUsuarioDto, foto: pathFoto});
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  async loginUsuario(user: string, contrasena: string) {
+    return this.usuariosService.login(user, contrasena);
   }
 }

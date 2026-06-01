@@ -15,7 +15,7 @@ export class Usuario {
     usuario!: string;
 
     @Prop({required:true})
-    contraseña!: string;
+    contrasena!: string;
 
     @Prop({required:true})
     fechaNacimiento!: string;

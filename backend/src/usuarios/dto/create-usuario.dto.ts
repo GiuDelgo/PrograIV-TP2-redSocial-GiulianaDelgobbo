@@ -21,7 +21,7 @@ export class CreateUsuarioDto {
     @Matches(/^(?=.*[A-Z])(?=.*\d).+$/, {
         message: 'La contraseña debe poseer al menos una mayúscula y un número'
     })
-    contraseña!: string; 
+    contrasena!: string; 
     
     @IsDateString({}, { message: 'Debe ser una fecha válida' })
     fechaNacimiento!: string; 
