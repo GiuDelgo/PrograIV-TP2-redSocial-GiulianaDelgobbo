@@ -14,7 +14,7 @@ export class AuthController {
   @UseInterceptors(
     FileInterceptor('foto', { // interceptor para interceptar la petición antes de que llegue al método. FileInterceptor es el que se usa para multipart/form-data (subida de archivos). 'foto' es el nombre del campo del formulario de donde viene el archivo
       storage: diskStorage({//diskStorage guarda el archivo en el disco duro del servidor
-        destination: './uploads/perfiles', // carpeta donde se guardan las fotos
+        destination: process.env.NODE_ENV === 'production' ? '/tmp' : './uploads/perfiles', // carpeta donde se guardan las fotos producción vs local
         filename: (req, file, callback) => {//función que renombra archivos
           // nombre único para evitar colisiones de archivos
           const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);
