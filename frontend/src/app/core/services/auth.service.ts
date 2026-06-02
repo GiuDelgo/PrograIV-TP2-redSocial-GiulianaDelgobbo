@@ -32,7 +32,7 @@ export class AuthService {
         
         // inyecta el archivo binario crudo que captura el onFileChange
         if (archivoFoto) {
-            formData.append('imagen', archivoFoto, archivoFoto.name); // 'imagen' es el nombre que espera Multer
+            formData.append('foto', archivoFoto, archivoFoto.name); // 'foto' es el nombre que espera Multer
         }
 
         return this.http.post(`${this.baseUrl}/registro`, formData);

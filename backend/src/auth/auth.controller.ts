@@ -12,7 +12,7 @@ export class AuthController {
 
   @Post('registro')
   @UseInterceptors(
-    FileInterceptor('imagen', { // interceptor para interceptar la petición antes de que llegue al método. FileInterceptor es el que se usa para multipart/form-data (subida de archivos). 'foto' es el nombre del campo del formulario de donde viene el archivo
+    FileInterceptor('foto', { // interceptor para interceptar la petición antes de que llegue al método. FileInterceptor es el que se usa para multipart/form-data (subida de archivos). 'foto' es el nombre del campo del formulario de donde viene el archivo
       storage: memoryStorage(),//guarda el archivo temporalemente en memoria para luego procesarlo y guardarlo en el destino final
       fileFilter: (req, file, callback) => {//valido si el archivo cumple con las condiciones antes de guardarlo
         // validación  de tipo de archivo

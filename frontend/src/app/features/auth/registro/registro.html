@@ -61,11 +61,11 @@
                                 <label for="imagen" class="form-label text-secondary small fw-semibold">Foto de Perfil</label>
                                 <input 
                                     type="file" 
-                                    id="imagen" 
+                                    id="foto" 
                                     class="form-control"
                                     accept="image/*"
                                     (change)="onFileChange($event)"
-                                    [ngClass]="{'is-invalid': registroForm.get('imagen')?.touched && registroForm.get('imagen')?.invalid}"
+                                    [ngClass]="{'is-invalid': registroForm.get('foto')?.touched && registroForm.get('foto')?.invalid}"
                                 />
                                 <div class="invalid-feedback small">Debes subir una foto de perfil obligatoria.</div>
                             </div>

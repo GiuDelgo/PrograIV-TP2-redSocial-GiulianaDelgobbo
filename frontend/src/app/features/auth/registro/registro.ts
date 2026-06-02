@@ -28,7 +28,7 @@ export class Registro implements OnInit {
       confirmPassword: ['', [Validators.required]],
       nacimiento: ['', [Validators.required]],
       descripcion: ['', [Validators.maxLength(500)]],
-      imagen: [null, [Validators.required]]
+      foto: [null, [Validators.required]]
     },{ 
       validators: this.passwordMatchValidator //REMINDER: A validators le paso una función de tipo ValidatorFn que recibe un AbstractControl y devuelve ValidationError o null. 
     });
@@ -49,8 +49,8 @@ export class Registro implements OnInit {
     const file = event.target.files[0];//accedo al elemento que disparó el evento (event.target) y luego a su propiedad files, que es una lista de los archivos seleccionados. En este caso, tomo el primer archivo.
     if (file) {
       this.imagenPerfil = file;
-      this.registroForm.patchValue({ imagen: file });//actualizo el valor del control 'imagen' en el formulario con el archivo seleccionado. Esto es necesario para que el formulario reconozca que se ha seleccionado un archivo y pueda validarlo correctamente.
-      this.registroForm.get('imagen')?.updateValueAndValidity();//después de actualizar el valor del control, llamo a updateValueAndValidity() para que Angular vuelva a evaluar la validez del control. Esto es importante porque el control 'imagen' tiene una validación de required, y al seleccionar un archivo, el control debería pasar de inválido a válido. Sin esta llamada, Angular no se daría cuenta del cambio y el formulario seguiría marcando el control como inválido.
+      this.registroForm.patchValue({ foto: file });//actualizo el valor del control 'foto' en el formulario con el archivo seleccionado. Esto es necesario para que el formulario reconozca que se ha seleccionado un archivo y pueda validarlo correctamente.
+      this.registroForm.get('foto')?.updateValueAndValidity();//después de actualizar el valor del control, llamo a updateValueAndValidity() para que Angular vuelva a evaluar la validez del control. Esto es importante porque el control 'foto' tiene una validación de required, y al seleccionar un archivo, el control debería pasar de inválido a válido. Sin esta llamada, Angular no se daría cuenta del cambio y el formulario seguiría marcando el control como inválido.
     }
   }
 

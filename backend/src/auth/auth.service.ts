@@ -27,6 +27,10 @@ export class AuthService {
   }
 
   async registrarUsuario(createUsuarioDto: CreateUsuarioDto, file: Express.Multer.File) {
+    if (!file || !file.originalname) {
+      throw new BadRequestException('No se recibió ningún archivo binario válido en la propiedad "imagen".');
+    }
+
     // aseguro de que Supabase esté completamente cargado antes de usarlo
     await this.initSupabase();
 
