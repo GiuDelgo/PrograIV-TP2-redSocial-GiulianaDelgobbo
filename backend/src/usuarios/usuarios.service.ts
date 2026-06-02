@@ -59,7 +59,7 @@ export class UsuariosService {
     return {
       mensaje: 'Login exitoso',
       usuario: respuestaUsuario,      
-      // Nota: en el Sprint #3 aca  es donde firmo el Token JWT con vigencia de 15 min
+      // ***REMINDER*** en el Sprint #3 aca  es donde firmo el Token JWT con vigencia de 15 min
     }
   }
 

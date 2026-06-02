@@ -38,7 +38,7 @@ export class Login implements OnInit {
     next: (response) => {
       console.log('Login exitoso', response);
 
-      // Sprint #3 aca guarda el JWT devuelto en el localStorage.
+      // **REMINDER** Sprint 3 aca guarda el JWT devuelto en el localStorage.
       this.router.navigate(['/publicaciones']);
     },
     error: (err) => {

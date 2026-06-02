@@ -46,7 +46,7 @@ export class Registro implements OnInit {
   }
 
   onFileChange(event: any) {//eventro que se dispara al seleccionar un archivo en el input de tipo file.
-    const file = event.target.files[0];//accedo al elemento que disparó el evento (event.target) y luego a su propiedad files, que es una lista de los archivos seleccionados. En este caso, tomo el primer archivo con [0].
+    const file = event.target.files[0];//accedo al elemento que disparó el evento (event.target) y luego a su propiedad files, que es una lista de los archivos seleccionados. En este caso, tomo el primer archivo.
     if (file) {
       this.imagenPerfil = file;
       this.registroForm.patchValue({ imagen: file });//actualizo el valor del control 'imagen' en el formulario con el archivo seleccionado. Esto es necesario para que el formulario reconozca que se ha seleccionado un archivo y pueda validarlo correctamente.
@@ -70,7 +70,7 @@ export class Registro implements OnInit {
       }, 
       error: (err) => {
         const mensajeError = err.error?.message || 'Error al registrar el usuario';
-        this.errorMessage.set(Array.isArray(mensajeError) ? mensajeError[0] : mensajeError)
+        this.errorMessage.set(mensajeError);
       }
     })
   }

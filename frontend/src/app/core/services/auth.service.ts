@@ -19,18 +19,18 @@ export class AuthService {
     }
 
     registro(datosFormulario: any, archivoFoto: File): Observable<any> {
-        const formData = new FormData();
+        const formData = new FormData(); //uso formData para construir una petición HTTP multipart/form-data -> es el formato que utilizan los formularios HTML cuando envían archivos (binario de foto)
         
-        // inyecto los campos de texto comunes
+        // inyecto los campos de texto plano
         formData.append('nombre', datosFormulario.nombre);
         formData.append('apellido', datosFormulario.apellido);
         formData.append('correo', datosFormulario.correo);
-        formData.append('usuario', datosFormulario.username); // 'usuario' en el back, 'username' en tu front
+        formData.append('usuario', datosFormulario.username);
         formData.append('contrasena', datosFormulario.password); 
         formData.append('fechaNacimiento', datosFormulario.nacimiento);
         formData.append('descripcion', datosFormulario.descripcion);
         
-        // Inyectamos el archivo binario crudo que capturamos en el onFileChange
+        // inyecta el archivo binario crudo que captura el onFileChange
         if (archivoFoto) {
             formData.append('foto', archivoFoto, archivoFoto.name); // 'foto' es el nombre que espera Multer
         }
