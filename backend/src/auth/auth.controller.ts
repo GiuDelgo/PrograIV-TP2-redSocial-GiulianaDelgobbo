@@ -31,12 +31,9 @@ export class AuthController {
     if (!file) {
       throw new BadRequestException('La foto de perfil es obligatoria para el registro');
     }
-
-    // paso el DTO y el path del archivo guardado al servicio
-    const urlFoto = `/uploads/perfiles/${file.filename}`;
-    return this.authService.registrarUsuario(createUsuarioDto, urlFoto);
+    return this.authService.registrarUsuario(createUsuarioDto, file);
   }
-
+  
   @Post('login')
   async login(@Body() loginDto: LoginDto) { 
     return this.authService.loginUsuario(loginDto.usuario, loginDto.contrasena);
