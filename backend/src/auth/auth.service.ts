@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable} from '@nestjs/common';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
 import { UsuariosService } from '../usuarios/usuarios.service';
-import { extname } from 'path/win32';
+import { extname } from 'path'; // Funciona en Windows local y Vercel Linux)
 
 @Injectable()
 export class AuthService {
@@ -28,7 +28,7 @@ export class AuthService {
 
   async registrarUsuario(createUsuarioDto: CreateUsuarioDto, file: Express.Multer.File) {
     if (!file || !file.originalname) {
-      throw new BadRequestException('No se recibió ningún archivo binario válido en la propiedad "imagen".');
+      throw new BadRequestException('No se recibió ningún archivo binario válido en la propiedad "foto".');
     }
 
     // aseguro de que Supabase esté completamente cargado antes de usarlo

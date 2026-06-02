@@ -2,8 +2,7 @@ import { Controller, Post, Body, UseInterceptors, UploadedFile, BadRequestExcept
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService } from './auth.service';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
-import { diskStorage, memoryStorage } from 'multer';
-import { extname } from 'path';
+import { memoryStorage } from 'multer';
 import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
@@ -33,7 +32,7 @@ export class AuthController {
     }
     return this.authService.registrarUsuario(createUsuarioDto, file);
   }
-  
+
   @Post('login')
   async login(@Body() loginDto: LoginDto) { 
     return this.authService.loginUsuario(loginDto.usuario, loginDto.contrasena);
