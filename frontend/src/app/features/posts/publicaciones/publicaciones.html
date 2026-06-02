@@ -1,0 +1,49 @@
+<div class="publicaciones-container container-fluid py-5">
+    <div class="container">
+        
+        <div class="row mb-5 align-items-center justify-content-between header-box p-4 rounded shadow-sm">
+        <div class="col-12 col-md-6">
+            <h1 class="fw-bold title-branding">Publicaciones</h1>
+            <p class="text-muted mb-md-0">Explorá lo que la comunidad está compartiendo</p>
+        </div>
+        <div class="col-12 col-md-6 d-flex justify-content-md-end gap-2 mt-3 mt-md-0">
+            <span class="align-self-center text-secondary me-2 fw-medium">Ordenar por:</span>
+            <button (click)="cambiarOrden('fecha')" class="btn filter-btn transition-all" [ngClass]="{'active': ordenActual === 'fecha'}">
+            🕒 Más recientes
+            </button>
+            <button (click)="cambiarOrden('likes')" class="btn filter-btn transition-all" [ngClass]="{'active': ordenActual === 'likes'}">
+            🔥 Más populares
+            </button>
+        </div>
+        </div>
+
+        <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            
+            <app-publicacion-card 
+            *ngFor="let pub of publicaciones" 
+            [publicacion]="pub"
+            [idUsuarioLogueado]="idUsuarioLogueado"
+            (onLike)="handleLike($event)"
+            (onDelete)="handleDelete($event)">
+            </app-publicacion-card>
+
+            <div *ngIf="publicaciones.length === 0" class="text-center p-5 rounded bg-white shadow-sm">
+            <p class="text-muted fs-5 mb-0">No se encontraron publicaciones en esta sección.</p>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-5 pagination-box p-3 rounded">
+            <button (click)="paginaAnterior()" [disabled]="offset === 0" class="btn btn-pagination transition-all">
+                ⬅️ Anterior
+            </button>
+            <span class="fw-bold info-page">Mostrando del {{ offset + 1 }} al {{ offset + publicaciones.length }}</span>
+            <button (click)="paginaSiguiente()" [disabled]="offset + limite >= totalPublicaciones" class="btn btn-pagination transition-all">
+                Siguiente ➡️
+            </button>
+            </div>
+
+        </div>
+        </div>
+
+    </div>
+</div>

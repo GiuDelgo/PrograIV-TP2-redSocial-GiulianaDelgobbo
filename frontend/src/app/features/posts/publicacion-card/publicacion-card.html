@@ -1,0 +1,33 @@
+<div class="card publicacion-card mb-4 shadow-sm transition-all">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+                <div class="avatar-placeholder me-2 d-flex align-items-center justify-content-center text-white fw-bold">
+                    {{ publicacion.usuarioNombre.substring(0, 2) | uppercase }}
+                </div>
+                <div>
+                    <h6 class="mb-0 usuario-text">&#64;{{ publicacion.usuarioNombre }}</h6>
+                    <small class="text-muted">{{ publicacion.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</small>
+                </div>
+            </div>
+        
+            <button *ngIf="isMine" (click)="eliminarPost()" class="btn btn-outline-danger btn-sm border-0 rounded-circle" title="Eliminar publicación">
+                <i class="bi bi-trash3-fill">🗑️</i>
+            </button>
+        </div>
+
+        <h5 class="card-title fw-bold post-titulo">{{ publicacion.titulo }}</h5>
+        <p class="card-text text-secondary">{{ publicacion.descripcion }}</p>
+
+        <div *ngIf="publicacion.urlImagen" class="image-container mb-3 rounded overflow-hidden bg-light text-center">
+            <img [src]="publicacion.urlImagen" alt="Imagen de la publicación" class="img-fluid post-img" />
+        </div>
+
+        <div class="border-top pt-2 d-flex align-items-center">
+            <button (click)="toggleLike()" class="btn btn-like btn-sm d-flex align-items-center gap-2 transition-all" [ngClass]="{'liked': isLiked}">
+                <span class="heart-icon">{{ isLiked ? '❤️' : '🤍' }}</span>
+                <span class="fw-bold">{{ publicacion.likes.length }} Me gusta</span>
+            </button>
+        </div>
+    </div>
+</div>

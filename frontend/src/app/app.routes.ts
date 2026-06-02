@@ -16,7 +16,7 @@ export const routes: Routes = [
     },
     {   
         path: 'publicaciones', 
-        loadComponent: () => import('./features/publicaciones/publicaciones').then(m => m.Publicaciones)
+        loadComponent: () => import('./features/posts/publicaciones/publicaciones').then(m => m.Publicaciones)
     },
     {
         path: 'miperfil',

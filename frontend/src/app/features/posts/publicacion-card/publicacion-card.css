@@ -1,0 +1,51 @@
+.publicacion-card {
+    border: none;
+    border-radius: 16px !important;
+    background: #f5f8f6; /* Fondo idéntico al login-card */
+}
+
+.avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #62aaac; /* Color institucional principal */
+    font-size: 0.9rem;
+}
+
+.usuario-text {
+    color: #4a5553;
+}
+
+.post-titulo {
+    color: #3b6364;
+}
+
+.post-img {
+    max-height: 400px;
+    object-fit: contain;
+    width: 100%;
+}
+
+.btn-like {
+    background: transparent;
+    color: #62aaac;
+    border: 1px solid rgba(98, 170, 172, 0.3);
+    border-radius: 20px;
+    padding: 6px 16px;
+}
+
+.btn-like:hover {
+    background: rgba(98, 170, 172, 0.1);
+    transform: translateY(-1px);
+}
+
+.btn-like.liked {
+    background-color: #62aaac;
+    color: white;
+    border-color: #62aaac;
+    box-shadow: 0 4px 12px rgba(98, 170, 172, 0.2);
+}
+
+.transition-all {
+    transition: all 0.2s ease-in-out;
+}

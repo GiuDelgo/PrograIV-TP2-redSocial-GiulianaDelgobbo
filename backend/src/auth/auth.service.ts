@@ -2,61 +2,48 @@ import { BadRequestException, Injectable} from '@nestjs/common';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { extname } from 'path'; // Funciona en Windows local y Vercel Linux)
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+
 
 @Injectable()
 export class AuthService {
-  private supabase: any; // uso any porque el tipo se cargará dinámicamente
+  private supabase: SupabaseClient;// uso el tipo específico de la instancia de Supabase
 
-  // inyecto el modelo de usuarios dentro del contexto de auth
   constructor(private readonly usuariosService: UsuariosService) {
-    // llamo a la inicialización dinámica al instanciar el servicio
-    this.initSupabase();
+    // inicializa el cliente con las variables de entorno
+    this.supabase = createClient(
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_KEY!
+    );
   }
 
-  // método asíncrono para solucionar el conflicto de ESM vs CommonJS en Vercel
-  async initSupabase() {
-    if (!this.supabase) {
-      // dynamic import sugerido por el error de Vercel
-      const { createClient } = await import('@supabase/supabase-js');
-      
-      this.supabase = createClient(
-        process.env.SUPABASE_URL!,
-        process.env.SUPABASE_KEY!
-      );
-    }
-  }
-
-  async registrarUsuario(createUsuarioDto: CreateUsuarioDto, file: Express.Multer.File) {
-    if (!file || !file.originalname) {
-      throw new BadRequestException('No se recibió ningún archivo binario válido en la propiedad "foto".');
-    }
-
-    // aseguro de que Supabase esté completamente cargado antes de usarlo
-    await this.initSupabase();
-
+  // subo la foto a Supabase Storage
+  async registrarUsuario(createUsuarioDto: any, file: Express.Multer.File) {
     const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);
     const ext = extname(file.originalname);
     const nombreArchivo = `${sufijoUnico}${ext}`;
 
-    // subo la foto a Supabase Storage
+    // 1. Subir el buffer del archivo a Supabase Storage
     const { data, error } = await this.supabase.storage
-      .from('perfiles')
+      .from('perfiles') // Nombre de tu bucket
       .upload(`fotos/${nombreArchivo}`, file.buffer, {
         contentType: file.mimetype,
-        upsert: true,
+        upsert: true
       });
 
     if (error) {
       throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
     }
 
+    // 2. Obtener la URL pública de la imagen alojada
     const { data: { publicUrl } } = this.supabase.storage
       .from('perfiles')
       .getPublicUrl(`fotos/${nombreArchivo}`);
 
+    // 3. Persistir en MongoDB pasando la URL pública final
     return this.usuariosService.create({
       ...createUsuarioDto,
-      foto: publicUrl // guardo la URL pública de la foto en el perfil del usuario
+      foto: publicUrl 
     });
 
     //SPRINT 3 TOKEN JWT VA ACA
