@@ -1,22 +1,35 @@
 import { BadRequestException, Injectable} from '@nestjs/common';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
 import { UsuariosService } from '../usuarios/usuarios.service';
-import { SupabaseClient, createClient } from '@supabase/supabase-js/dist/index.mjs';
 import { extname } from 'path/win32';
 
 @Injectable()
 export class AuthService {
-  private supabase: SupabaseClient;
+  private supabase: any; // uso any porque el tipo se cargará dinámicamente
 
   // inyecto el modelo de usuarios dentro del contexto de auth
   constructor(private readonly usuariosService: UsuariosService) {
-    this.supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!
-    );
+    // llamo a la inicialización dinámica al instanciar el servicio
+    this.initSupabase();
+  }
+
+  // método asíncrono para solucionar el conflicto de ESM vs CommonJS en Vercel
+  async initSupabase() {
+    if (!this.supabase) {
+      // dynamic import sugerido por el error de Vercel
+      const { createClient } = await import('@supabase/supabase-js');
+      
+      this.supabase = createClient(
+        process.env.SUPABASE_URL!,
+        process.env.SUPABASE_KEY!
+      );
+    }
   }
 
   async registrarUsuario(createUsuarioDto: CreateUsuarioDto, file: Express.Multer.File) {
+    // aseguro de que Supabase esté completamente cargado antes de usarlo
+    await this.initSupabase();
+
     const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);
     const ext = extname(file.originalname);
     const nombreArchivo = `${sufijoUnico}${ext}`;
