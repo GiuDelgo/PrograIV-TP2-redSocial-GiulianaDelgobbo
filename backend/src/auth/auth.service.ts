@@ -11,10 +11,7 @@ export class AuthService {
 
   constructor(private readonly usuariosService: UsuariosService) {
     // inicializa el cliente con las variables de entorno
-    this.supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!
-    );
+    this.supabase = createClient(process.env.SUPABASE_URL!,process.env.SUPABASE_KEY!);
   }
 
   // subo la foto a Supabase Storage y el usuario a MongoDB con la URL pública de la foto

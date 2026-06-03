@@ -1,15 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, BadRequestException, UploadedFile } from '@nestjs/common';
 import { PublicacionesService } from './publicaciones.service';
-import { CreatePublicacioneDto } from './dto/create-publicacione.dto';
-import { UpdatePublicacioneDto } from './dto/update-publicacione.dto';
+import { CreatePublicacionDto } from './dto/create-publicacion.dto';
+import { UpdatePublicacionDto } from './dto/update-publicacion.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 
 @Controller('publicaciones')
 export class PublicacionesController {
   constructor(private readonly publicacionesService: PublicacionesService) {}
 
   @Post()
-  create(@Body() createPublicacioneDto: CreatePublicacioneDto) {
-    return this.publicacionesService.create(createPublicacioneDto);
+  @UseInterceptors( 
+    FileInterceptor('foto', { 
+      storage: memoryStorage(),
+      fileFilter: (req, file, callback) => {
+        if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
+          return callback(new BadRequestException('Solo se permiten imágenes (jpg, jpeg, png)'), false);
+        }
+        callback(null, true);
+      },
+    }),
+  )
+  
+  async create(@Body() createPublicacion: CreatePublicacionDto, @UploadedFile() file?: Express.Multer.File) {
+    return this.publicacionesService.create(createPublicacion, file);
   }
 
   @Get()
@@ -23,8 +37,8 @@ export class PublicacionesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePublicacioneDto: UpdatePublicacioneDto) {
-    return this.publicacionesService.update(+id, updatePublicacioneDto);
+  update(@Param('id') id: string, @Body() updatePublicacionDto: UpdatePublicacionDto) {
+    return this.publicacionesService.update(+id, updatePublicacionDto);
   }
 
   @Delete(':id')
