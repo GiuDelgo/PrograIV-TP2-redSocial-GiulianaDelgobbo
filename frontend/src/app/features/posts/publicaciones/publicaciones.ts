@@ -13,35 +13,11 @@ import { PublicacionesService } from '../../../core/services/publicaciones.servi
 })
 
 export class Publicaciones implements OnInit {
-  // publicaciones: Publicacion[] = [];
+  publicaciones: Publicacion[] = [];
 
-  publicaciones: Publicacion[] = [
-    {
-      _id: 'pub_mock_001',
-      titulo: 'Probando la comunicación de componentes',
-      descripcion: 'Este es un post de prueba para verificar que la tarjeta hija renderice de forma correcta las propiedades de descripcion, usuarioNombre y fechaCreacion.',
-      urlImagen: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97',
-      usuarioId: 'ID_DEL_TOKEN', // SPRINT 3: Reemplazar con lógica real de autenticación
-      usuarioNombre: 'juanperez',
-      fechaCreacion: '2026-06-03T14:30:00.000Z',
-      likes: ['ID_DEL_TOKEN', 'user_id_externo_1'],
-      comentarios: [
-        {
-          _id: 'com_mock_01',
-          mensaje: 'hola hola',
-          fecha: new Date(),
-          usuario: {
-            usuario: 'otro_user',
-            foto: 'https://randomuser.me/api/portraits/men/32.jpg'
-          }
-        }
-      ]
-    }
-  ];
-  
   ordenActual: 'fecha' | 'likes' = 'fecha';
-  limite: number = 5; // Cantidad limitada por página
-  offset: number = 0; // Control de paginación
+  limite: number = 5; 
+  offset: number = 0; 
   totalPublicaciones: number = 0; // para deshabilitar botones de paginado
 
   idUsuarioLogueado: string = 'ID_DEL_TOKEN'; // SPRINT 3: Reemplazar con lógica real de autenticación
@@ -49,14 +25,14 @@ export class Publicaciones implements OnInit {
   constructor(private publicacionesService: PublicacionesService) {}
 
   ngOnInit() {
-    // this.cargarPublicaciones();
+    this.cargarPublicaciones();
   }
 
   cargarPublicaciones() {
-    this.publicacionesService.obtenerPublicaciones(this.ordenActual === 'fecha' ? 'fecha' : 'likes', this.limite, this.offset).subscribe({
+    this.publicacionesService.obtenerPublicaciones(this.ordenActual, this.limite, this.offset).subscribe({
       next: (res) => {
-        this.publicaciones = res.data;
-        this.totalPublicaciones = res.total;
+        this.publicaciones = res.data || res;
+        this.totalPublicaciones = res.total || this.publicaciones.length; // si el backend no envía total
       },
       error: (err) => console.error('Error al cargar publicaciones:', err)
     });
@@ -70,7 +46,7 @@ export class Publicaciones implements OnInit {
     }
   }
 
-  // paginación sin scroll infinito, solo botones "Siguiente" y "Anterior"
+  // paginación sin scroll infinito, solo botones Siguiente y Anterior
   paginaSiguiente() {
     if (this.offset + this.limite < this.totalPublicaciones) {
       this.offset += this.limite;

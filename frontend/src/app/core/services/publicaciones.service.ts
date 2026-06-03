@@ -13,8 +13,19 @@ export class PublicacionesService {
 
     constructor(private http: HttpClient) {}
 
-    obtenerPublicaciones(ordenActual:string, limite:number, offset:number): Observable<{ data: Publicacion[], total: number }> {
+    subirPublicacion(titulo: string, descripcion: string, usuarioId: string, usuarioNombre: string, foto?: File): Observable<any> {
+        const formData = new FormData();
+        formData.append('titulo', titulo);
+        formData.append('descripcion', descripcion);
+        formData.append('usuarioId', usuarioId);
+        formData.append('usuarioNombre', usuarioNombre);
+        if (foto) {
+            formData.append('foto', foto);
+        }
+        return this.http.post(this.baseUrl, formData);
+    }
 
+    obtenerPublicaciones(ordenActual:string, limite:number, offset:number): Observable<{ data: Publicacion[], total: number }> {
         const url = `${this.baseUrl}?orden=${ordenActual}&limit=${limite}&offset=${offset}`;
         return this.http.get<{ data: Publicacion[]; total: number }>(url);
     }
@@ -31,7 +42,7 @@ export class PublicacionesService {
 
     deletePublicacion (idPublicacion: string): Observable<any> {
         const url = `${this.baseUrl}/${idPublicacion}`;
-        return this.http.patch(url, { eliminada: true });//baja logica, no borrado físico
+        return this.http.delete(url, { body: { eliminada: true } });//baja logica, no borrado físico
     }
 
 }
