@@ -63,6 +63,17 @@ export class UsuariosService {
     }
   }
 
+  async findUsername(username: string) {
+    const usuario = await this.usuarioModel.findOne({ usuario: username });
+
+    if (!usuario) {
+      return null;
+    }
+
+    const { contrasena, ...userResponse } = usuario.toObject();
+    return userResponse;
+  }
+
   findOne(id: string){
     return `This action returns all usuarios`;
   }

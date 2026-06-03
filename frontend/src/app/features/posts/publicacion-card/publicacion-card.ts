@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Publicacion } from '../interfaces/publicacion.interface';
+import { Publicacion } from '../../../shared/interfaces/publicacion.interface';
 
 @Component({
   selector: 'app-publicacion-card',

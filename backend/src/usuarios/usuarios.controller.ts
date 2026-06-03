@@ -17,6 +17,15 @@ export class UsuariosController {
     return this.usuariosService.findAll();
   }
 
+  @Get('/perfil/:username')
+  findUser(@Param('username') username: string) {
+    const usuario = this.usuariosService.findUsername(username);
+    if (!usuario) {
+      return { message: 'Usuário não encontrado' };
+    }
+    return usuario;
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usuariosService.findOne(id);

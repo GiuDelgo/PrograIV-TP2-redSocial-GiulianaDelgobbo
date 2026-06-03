@@ -20,6 +20,6 @@ export const routes: Routes = [
     },
     {
         path: 'miperfil',
-        loadComponent: () => import('./features/miperfil/miperfil').then(m => m.Miperfil)
+        loadComponent: () => import('./features/miperfil/miperfil').then(m => m.MiPerfil)
     }
 ];

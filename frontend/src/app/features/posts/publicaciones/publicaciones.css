@@ -3,10 +3,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.header-box {
+/* .header-box {
   background: #f5f8f6;
   border-left: 6px solid #62aaac;
-}
+} */
 
 .title-branding {
   color: #62aaac;
@@ -30,7 +30,6 @@
   font-size: 1.70rem;
 }
 
-/* Botones de ordenamiento e interacciones con estilo uniforme */
 .filter-btn {
   background-color: white;
   color: #62aaac;

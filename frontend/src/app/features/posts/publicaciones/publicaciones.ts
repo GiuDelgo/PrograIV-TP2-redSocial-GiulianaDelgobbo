@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Publicacion } from '../interfaces/publicacion.interface';
+import { Publicacion } from '../../../shared/interfaces/publicacion.interface';
 import { PublicacionCard } from '../publicacion-card/publicacion-card';
 import { PublicacionesService } from '../../../core/services/publicaciones.service';
 

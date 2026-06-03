@@ -19,9 +19,11 @@
         <h5 class="card-title fw-bold post-titulo">{{ publicacion.titulo }}</h5>
         <p class="card-text text-secondary">{{ publicacion.descripcion }}</p>
 
-        <div *ngIf="publicacion.urlImagen" class="image-container mb-3 rounded overflow-hidden bg-light text-center">
-            <img [src]="publicacion.urlImagen" alt="Imagen de la publicación" class="img-fluid post-img" />
-        </div>
+        @if (publicacion.urlImagen) {
+            <div class="image-container mb-3 rounded overflow-hidden bg-light text-center">
+                <img [src]="publicacion.urlImagen" alt="Imagen de la publicación" class="img-fluid post-img" />
+            </div>
+        }
 
         <div class="border-top pt-2 d-flex align-items-center">
             <button (click)="toggleLike()" class="btn btn-like btn-sm d-flex align-items-center gap-2 transition-all" [ngClass]="{'liked': isLiked}">

@@ -1,3 +1,5 @@
+import { Comentario } from "./comentario.interface";
+
 export interface Publicacion {
     _id: string;
     titulo: string;
@@ -7,4 +9,5 @@ export interface Publicacion {
     usuarioNombre: string;
     fechaCreacion: string;
     likes: string[]; // array de IDs de usuarios que dieron me gusta
+    comentarios: Comentario[];
 }
