@@ -6,6 +6,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Publicacion } from './entities/publicacion.entity';
+import { exec } from 'child_process';
 
 
 @Injectable()
@@ -57,7 +58,17 @@ export class PublicacionesService {
     return `This action updates a #${id} publicacion`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} publicacion`;
-  }
+  async remove(id: string) {
+    const publicacionEliminada = await this.PublicacionModel.findByIdAndUpdate(
+      id, 
+      { eliminado: true }, 
+      { new: true } //devuelve el documento modificado
+    ).exec();
+
+    if (!publicacionEliminada) {
+      throw new BadRequestException(`No se encontró la publicación`);
+    }
+
+  return { message: 'Publicación dada de baja correctamente', data: publicacionEliminada };  }
+
 }

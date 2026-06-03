@@ -42,7 +42,7 @@ export class PublicacionesService {
 
     deletePublicacion (idPublicacion: string): Observable<any> {
         const url = `${this.baseUrl}/${idPublicacion}`;
-        return this.http.delete(url, { body: { eliminada: true } });//baja logica, no borrado físico
+        return this.http.delete(url);//baja logica, no borrado físico
     }
 
 }

@@ -23,6 +23,9 @@ export class Publicacion {
     
     @Prop({ required: false, default: [] })
     comentarios!: Comentario[];
+
+    @Prop({ required: true, default: false })
+    eliminado!: boolean;
 }
 
 export const PublicacionSchema = SchemaFactory.createForClass(Publicacion);

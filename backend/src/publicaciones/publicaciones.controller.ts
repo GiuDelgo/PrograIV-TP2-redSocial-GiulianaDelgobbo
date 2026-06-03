@@ -43,6 +43,6 @@ export class PublicacionesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.publicacionesService.remove(+id);
+    return this.publicacionesService.remove(id);
   }
 }
