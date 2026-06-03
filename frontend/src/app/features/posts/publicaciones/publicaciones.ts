@@ -13,7 +13,31 @@ import { PublicacionesService } from '../../../core/services/publicaciones.servi
 })
 
 export class Publicaciones implements OnInit {
-  publicaciones: Publicacion[] = [];
+  // publicaciones: Publicacion[] = [];
+
+  publicaciones: Publicacion[] = [
+    {
+      _id: 'pub_mock_001',
+      titulo: 'Probando la comunicación de componentes',
+      descripcion: 'Este es un post de prueba para verificar que la tarjeta hija renderice de forma correcta las propiedades de descripcion, usuarioNombre y fechaCreacion.',
+      urlImagen: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97',
+      usuarioId: 'ID_DEL_TOKEN', // SPRINT 3: Reemplazar con lógica real de autenticación
+      usuarioNombre: 'juanperez',
+      fechaCreacion: '2026-06-03T14:30:00.000Z',
+      likes: ['ID_DEL_TOKEN', 'user_id_externo_1'],
+      comentarios: [
+        {
+          _id: 'com_mock_01',
+          mensaje: 'hola hola',
+          fecha: new Date(),
+          usuario: {
+            usuario: 'otro_user',
+            foto: 'https://randomuser.me/api/portraits/men/32.jpg'
+          }
+        }
+      ]
+    }
+  ];
   
   ordenActual: 'fecha' | 'likes' = 'fecha';
   limite: number = 5; // Cantidad limitada por página
@@ -25,7 +49,7 @@ export class Publicaciones implements OnInit {
   constructor(private publicacionesService: PublicacionesService) {}
 
   ngOnInit() {
-    this.cargarPublicaciones();
+    // this.cargarPublicaciones();
   }
 
   cargarPublicaciones() {

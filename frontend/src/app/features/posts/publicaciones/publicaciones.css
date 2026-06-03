@@ -1,6 +1,12 @@
 .publicaciones-container {
   min-height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.container{
+    border-radius: 16px !important;
+    background: rgba(245, 248, 246, 0.5);
+    padding-top: 1px;
 }
 
 /* .header-box {
@@ -31,26 +37,27 @@
 }
 
 .filter-btn {
-  background-color: white;
-  color: #62aaac;
+  background: #62aaac;
+  color: #fff;
   border: 1px solid #62aaac;
   border-radius: 12px;
   font-weight: 600;
 }
 
 .filter-btn:hover {
-  background-color: rgba(98, 170, 172, 0.1);
+  background-color: #4f8b8d;
 }
 
 .filter-btn.active {
-  background-color: #62aaac;
-  color: white;
-  box-shadow: 0 4px 12px rgba(98, 170, 172, 0.3);
+  background-color: #e3e8e4 !important; 
+  color: #62aaac !important; 
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 /* Paginación */
 .pagination-box {
-  background: #f5f8f6;
+  background: #dadfdb;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
@@ -63,12 +70,13 @@
 }
 
 .btn-pagination:hover:not(:disabled) {
+  background-color: #4f8b8d;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(98, 170, 172, 0.3);
 }
 
 .btn-pagination:disabled {
-  background-color: #cbd5e1;
+  background-color: #ffff;
   color: #94a3b8;
   cursor: not-allowed;
 }

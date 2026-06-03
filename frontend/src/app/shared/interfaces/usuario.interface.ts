@@ -6,4 +6,5 @@ export interface Usuario {
     descripcion: string;
     foto: string;
     perfil: string;
+    fechaNacimiento: Date;
 }

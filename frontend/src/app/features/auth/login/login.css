@@ -11,7 +11,7 @@
 
 .logo{
     opacity: 0;
-
+    
     animation: slideTop 1s ease forwards;
     animation-delay: .6s;
 }

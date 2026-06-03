@@ -1,0 +1,79 @@
+/* Contenedor general con el fondo de degradado uniforme de la app */
+.profile-container {
+    min-height: 100vh;
+}
+
+.container{
+    border-radius: 16px !important;
+    background: rgba(245, 248, 246, 0.5);
+    padding-top: 1px;
+}
+
+.alert.alert-danger{
+    margin-top: 20px;
+    max-width: 83%;
+    margin-left: auto;
+    margin-right: auto; 
+}
+
+
+.profile-card, .post-card {
+    background-color: #dadfdb;;
+    border-radius: 16px !important;
+}
+
+.profile-card:hover, .post-card:hover{
+    background-color: #ced1ce;;
+}
+
+.profile-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 4px solid white;
+}
+
+/* Textos e identidades visuales */
+.user-fullname {
+    color: #62aaac;
+    font-size: 3rem;
+    font-weight: 750;
+}
+
+.text-custom {
+    color: #62aaac;
+}
+
+.text{
+    font-size: 1.2rem;
+}
+
+.section-title {
+    color: #62aaac;
+    font-weight: 700;
+}
+
+.post-media {
+    max-height: 400px;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Estructuras de comentarios */
+.comment-item {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    transition: transform 0.2s ease-in-out;
+}
+
+.comment-avatar {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border: 1px solid #62aaac;
+}
+
+.comment-item:hover {
+    transform: translateX(3px);
+    border-color: #62aaac;
+}
