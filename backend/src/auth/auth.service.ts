@@ -7,7 +7,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 @Injectable()
 export class AuthService {
-  private supabase: SupabaseClient;// uso el tipo específico de la instancia de Supabase
+  private supabase: SupabaseClient;
 
   constructor(private readonly usuariosService: UsuariosService) {
     // inicializa el cliente con las variables de entorno
@@ -17,30 +17,30 @@ export class AuthService {
     );
   }
 
-  // subo la foto a Supabase Storage
-  async registrarUsuario(createUsuarioDto: any, file: Express.Multer.File) {
-    const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = extname(file.originalname);
+  // subo la foto a Supabase Storage y el usuario a MongoDB con la URL pública de la foto
+  async registrarUsuario(createUsuarioDto: CreateUsuarioDto, file: Express.Multer.File) {
+    const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);//0 a 1.000.000.000 
+    const ext = extname(file.originalname);//me quedo con la extensión del archivo original para que se guarde con el formato correcto (jpg, png, etc)
     const nombreArchivo = `${sufijoUnico}${ext}`;
 
-    // 1. Subir el buffer del archivo a Supabase Storage
+    // subo el buffer del archivo a Supabase Storage
     const { data, error } = await this.supabase.storage
-      .from('perfiles') // Nombre de tu bucket
-      .upload(`fotos/${nombreArchivo}`, file.buffer, {
-        contentType: file.mimetype,
-        upsert: true
+      .from('perfiles') // bucket donde voy a guardar las fotos
+      .upload(`fotos/${nombreArchivo}`, file.buffer, { //subo el archivo de la foto
+        contentType: file.mimetype, //image/jpeg, image/png, etc, para que el navegador sepa cómo mostrar la imagen
+        upsert: true //si el archivo no existe lo crea, si ya existe lo reemplaza (en este caso no debería existir porque el nombre es único)
       });
 
     if (error) {
       throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
     }
 
-    // 2. Obtener la URL pública de la imagen alojada
+    // obtengo la URL pública de la imagen alojada
     const { data: { publicUrl } } = this.supabase.storage
       .from('perfiles')
       .getPublicUrl(`fotos/${nombreArchivo}`);
 
-    // 3. Persistir en MongoDB pasando la URL pública final
+    // parsiste en MongoDB pasando la URL pública final
     return this.usuariosService.create({
       ...createUsuarioDto,
       foto: publicUrl 

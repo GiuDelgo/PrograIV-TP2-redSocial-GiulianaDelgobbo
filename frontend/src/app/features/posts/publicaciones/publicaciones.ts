@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Publicacion } from '../interfaces/publicacion.interface';
 import { PublicacionCard } from '../publicacion-card/publicacion-card';
+import { PublicacionesService } from '../../../core/services/publicaciones.service';
 
 @Component({
   selector: 'app-publicaciones',
@@ -11,33 +11,30 @@ import { PublicacionCard } from '../publicacion-card/publicacion-card';
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css'
 })
+
 export class Publicaciones implements OnInit {
   publicaciones: Publicacion[] = [];
   
-  // Parámetros obligatorios de Cátedra
   ordenActual: 'fecha' | 'likes' = 'fecha';
   limite: number = 5; // Cantidad limitada por página
   offset: number = 0; // Control de paginación
-  totalPublicaciones: number = 0; // Útil para deshabilitar botones de paginado
+  totalPublicaciones: number = 0; // para deshabilitar botones de paginado
 
-  idUsuarioLogueado: string = 'ID_DEL_TOKEN'; // Obtener de tu AuthService real
+  idUsuarioLogueado: string = 'ID_DEL_TOKEN'; // SPRINT 3: Reemplazar con lógica real de autenticación
 
-  constructor(private http: HttpClient) {}
+  constructor(private publicacionesService: PublicacionesService) {}
 
   ngOnInit() {
     this.cargarPublicaciones();
   }
 
   cargarPublicaciones() {
-    // Pegada al backend dinámico en NestJS mapeando los query params acordados
-    const url = `https://tu-api.com/publicaciones?orden=${this.ordenActual}&limit=${this.limite}&offset=${this.offset}`;
-    
-    this.http.get<{ data: Publicacion[], total: number }>(url).subscribe({
+    this.publicacionesService.obtenerPublicaciones(this.ordenActual === 'fecha' ? 'fecha' : 'likes', this.limite, this.offset).subscribe({
       next: (res) => {
         this.publicaciones = res.data;
         this.totalPublicaciones = res.total;
       },
-      error: (err) => console.error('Error al traer posteos:', err)
+      error: (err) => console.error('Error al cargar publicaciones:', err)
     });
   }
 
@@ -49,7 +46,7 @@ export class Publicaciones implements OnInit {
     }
   }
 
-  // Lógica de Paginación Tradicional del Sprint #2
+  // paginación sin scroll infinito, solo botones "Siguiente" y "Anterior"
   paginaSiguiente() {
     if (this.offset + this.limite < this.totalPublicaciones) {
       this.offset += this.limite;
@@ -68,18 +65,18 @@ export class Publicaciones implements OnInit {
     const post = this.publicaciones.find(p => p._id === idPublicacion);
     if (!post) return;
 
-    const yaTieneLike = post.likes.includes(this.idUsuarioLogueado);
+    const isLiked = post.likes.includes(this.idUsuarioLogueado);
     
-    if (yaTieneLike) {
+    if (isLiked) {
       // DELETE al backend para remover like
-      this.http.delete(`https://tu-api.com/publicaciones/${idPublicacion}/like`).subscribe({
+      this.publicacionesService.deleteLike(idPublicacion).subscribe({
         next: () => {
           post.likes = post.likes.filter(id => id !== this.idUsuarioLogueado);
         }
       });
     } else {
       // POST al backend para agregar like
-      this.http.post(`https://tu-api.com/publicaciones/${idPublicacion}/like`, {}).subscribe({
+      this.publicacionesService.addLike(idPublicacion).subscribe({
         next: () => {
           post.likes.push(this.idUsuarioLogueado);
         }
@@ -88,10 +85,10 @@ export class Publicaciones implements OnInit {
   }
 
   handleDelete(idPublicacion: string) {
-    // DELETE para baja lógica en NestJS
-    this.http.delete(`https://tu-api.com/publicaciones/${idPublicacion}`).subscribe({
+    // PATCH para baja lógica en NestJS
+    this.publicacionesService.deletePublicacion(idPublicacion).subscribe({
       next: () => {
-        // Quitamos del arreglo visual local
+        // quito del arreglo visual local
         this.publicaciones = this.publicaciones.filter(p => p._id !== idPublicacion);
         this.totalPublicaciones--;
       },
