@@ -63,7 +63,7 @@ export class PublicacionesService {
       id, 
       { eliminado: true }, 
       { new: true } //devuelve el documento modificado
-    ).exec();
+    ); 
 
     if (!publicacionEliminada) {
       throw new BadRequestException(`No se encontró la publicación`);

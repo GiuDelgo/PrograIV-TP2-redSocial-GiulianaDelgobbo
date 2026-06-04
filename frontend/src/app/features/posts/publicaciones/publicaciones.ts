@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Publicacion } from '../../../shared/interfaces/publicacion.interface';
 import { PublicacionCard } from '../publicacion-card/publicacion-card';
 import { PublicacionesService } from '../../../core/services/publicaciones.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-publicaciones',
@@ -12,20 +13,32 @@ import { PublicacionesService } from '../../../core/services/publicaciones.servi
   styleUrl: './publicaciones.css'
 })
 
-export class Publicaciones implements OnInit {
+export class Publicaciones implements OnInit, OnDestroy {
   publicaciones: Publicacion[] = [];
 
   ordenActual: 'fecha' | 'likes' = 'fecha';
   limite: number = 5; 
   offset: number = 0; 
   totalPublicaciones: number = 0; // para deshabilitar botones de paginado
-
   idUsuarioLogueado: string = 'ID_DEL_TOKEN'; // SPRINT 3: Reemplazar con lógica real de autenticación
+  private postSub!: Subscription;
 
   constructor(private publicacionesService: PublicacionesService) {}
 
   ngOnInit() {
     this.cargarPublicaciones();
+
+    // Cada vez que se cree un post en cualquier lugar de la app esto se ejecuta
+    this.postSub = this.publicacionesService.postCreado$.subscribe(() => {
+      this.offset = 0;
+      this.cargarPublicaciones(); 
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.postSub) {
+      this.postSub.unsubscribe();
+    }
   }
 
   cargarPublicaciones() {
@@ -85,7 +98,6 @@ export class Publicaciones implements OnInit {
   }
 
   handleDelete(idPublicacion: string) {
-    // PATCH para baja lógica en NestJS
     this.publicacionesService.deletePublicacion(idPublicacion).subscribe({
       next: () => {
         // quito del arreglo visual local

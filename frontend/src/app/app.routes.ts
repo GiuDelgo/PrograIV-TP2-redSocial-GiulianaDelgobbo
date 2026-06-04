@@ -18,6 +18,10 @@ export const routes: Routes = [
         path: 'publicaciones', 
         loadComponent: () => import('./features/posts/publicaciones/publicaciones').then(m => m.Publicaciones)
     },
+    {   
+        path: 'post', 
+        loadComponent: () => import('./features/posts/post/post').then(m => m.Post)
+    },
     {
         path: 'miperfil',
         loadComponent: () => import('./features/miperfil/miperfil').then(m => m.MiPerfil)

@@ -1,12 +1,10 @@
 .publicaciones-container {
   min-height: 100vh;
-
 }
-
 .container{
-    border-radius: 16px !important;
-    background: rgba(245, 248, 246, 0.5);
-    padding-top: 1px;
+  border-radius: 16px !important;
+  background: rgba(245, 248, 246, 0.5);
+  padding-top: 1px;
 }
 
 /* .header-box {

@@ -1,0 +1,86 @@
+.text-primary-color {
+    color: #62aaac;
+}
+
+.crear-post-card {
+    background: rgba(245, 248, 246, 0.5);
+    border-radius: 12px;
+    max-width: 800px;
+    min-height: 500px;
+    margin: 100px auto;
+    padding: 50px;
+}
+
+.card-body{
+    border-radius: 16px !important;
+    background-color: #dadfdb;
+    transition: background-color 0.3s ease;
+}
+
+.card-body:hover{
+    background-color: #ced1ce;;
+}
+
+.card-title {
+    color: #62aaac;
+    text-shadow: 1px 1px 2px rgba(98, 170, 172, 0.2);
+    font-size: 3.8rem;
+    font-weight: 760;
+}
+
+.form-control:focus {
+    border-color: #62aaac;
+    box-shadow: 0 0 0 0.25rem rgba(98, 170, 172, 0.25);
+}
+
+.container-textarea{
+    height: 400px;
+}
+
+.row-textarea {
+    resize: none;
+    height: 100%;
+}
+
+.container-btn{
+    margin-top: 25px;
+}
+
+.btn-submit-post {
+    background: #62aaac;
+    color: #fff;
+    border: 1px solid #62aaac;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-submit-post:hover:not(:disabled) {
+    background-color: #4f8b8d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(98, 170, 172, 0.3);
+}
+
+.btn-submit-post:disabled {
+    background-color: #ffff;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.container-img{
+    margin-top: 50px;
+}
+
+.btn-remove-photo {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #f4bdad;
+    border: none;
+    color: #333;
+}
+
+.btn-remove-photo:hover {
+    background-color: #e2a897;
+    color: #000;
+}

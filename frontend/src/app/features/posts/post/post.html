@@ -1,0 +1,64 @@
+<div class="card crear-post-card container-fluid py-5 border-0">
+    <div class="card-body">
+        <h5 class="card-title mb-3 text-primary-color">Publica</h5>
+    
+        <form [formGroup]="postForm" (ngSubmit)="enviarPost()" novalidate>
+            <div class="mb-3">
+                <input 
+                type="text" 
+                formControlName="titulo" 
+                class="form-control" 
+                placeholder="Título (mín. 5 caracteres - máx. 40 caracteres)"
+                [ngClass]="{'is-invalid': postForm.get('titulo')?.touched && postForm.get('titulo')?.invalid}"
+                />
+                <div class="invalid-feedback">El título debe tener entre 5 y 40 caracteres.</div>
+            </div>
+
+            <div class="container-textarea mb-3">
+                <textarea 
+                formControlName="descripcion" 
+                class="form-control row-textarea" 
+                rows="3" 
+                placeholder="¿En qué estás pensando? (mín. 10 caracteres - máx. 700 caracteres)"
+                [ngClass]="{'is-invalid': postForm.get('descripcion')?.touched && postForm.get('descripcion')?.invalid}"
+                ></textarea>
+                <div class="invalid-feedback">La publicación debe tener entre 10 y 700 caracteres.</div>
+            </div>
+
+            @if (fotoSeleccionada) {
+                <div class="container-img mb-3 d-flex align-items-center justify-content-between alert alert-success py-2 px-3 rounded">
+                    <span class="small font-weight-bold m-0 text-success">
+                        <i class="bi bi-check-circle-fill me-2"></i> Imagen cargada - <strong>{{ fotoSeleccionada.name }}</strong>
+                    </span>
+                    <button type="button" class="btn btn-danger btn-sm py-1 px-2" (click)="quitarFoto()">
+                        <i class="bi bi-x-circle me-1"></i> Quitar foto
+                    </button>
+                </div>
+            }
+
+            <div class="container-btn d-flex justify-content-between align-items-center pt-2">
+                <div>
+                    <input 
+                        type="file" 
+                        #fileInput 
+                        class="d-none" 
+                        accept="image/png, image/jpeg, image/jpg" 
+                        (change)="onFileSelected($event)"   
+                    />
+                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="fileInput.click()">
+                        <i class="bi bi-image text-success"></i> 
+                        {{ fotoSeleccionada ? 'Cambiar Imagen' : 'Agregar Imagen (Opcional)' }}
+                    </button>
+                </div>
+
+                <button type="submit" class="btn btn-submit-post px-4" [disabled]="postForm.invalid || cargando">
+                @if (cargando) {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Publicando...
+                } @else {
+                    Publicar
+                }
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
