@@ -21,7 +21,7 @@ export class UsuariosController {
   findUser(@Param('username') username: string) {
     const usuario = this.usuariosService.findUsername(username);
     if (!usuario) {
-      return { message: 'Usuário não encontrado' };
+      return { message: 'Usuario no encontrado' };
     }
     return usuario;
   }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Usuario } from '../../shared/interfaces/usuario.interface';
 import { Publicacion } from '../../shared/interfaces/publicacion.interface';
 import { MiPerfilService } from '../../core/services/miperfil.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -18,11 +19,10 @@ export class MiPerfil implements OnInit {
   isLoading = signal<boolean>(true);
   errorMessage = signal<string | null>(null);
 
-    constructor(private miperfilService: MiPerfilService) {}
+  constructor(private miperfilService: MiPerfilService, private authService: AuthService) {}
 
   ngOnInit(): void {    
-    const usuarioMock = 'juanperez'; // Reemplaza con el nombre de usuario real
-    this.cargarDatosPerfil(usuarioMock);
+    this.usuario = this.authService.usuarioActual();
   }
 
   cargarDatosPerfil(username: string): void {

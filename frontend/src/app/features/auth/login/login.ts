@@ -35,8 +35,8 @@ export class Login implements OnInit {
     const { username, password } = this.loginForm.value;
   
     this.authService.login(username, password).subscribe({
-    next: (response) => {
-      console.log('Login exitoso', response);
+    next: (res) => {
+      console.log('Login exitoso', res);
 
       // **REMINDER** Sprint 3 aca guarda el JWT devuelto en el localStorage.
       this.router.navigate(['/publicaciones']);
