@@ -22,7 +22,14 @@ export class MiPerfil implements OnInit {
   constructor(private miperfilService: MiPerfilService, private authService: AuthService) {}
 
   ngOnInit(): void {    
-    this.usuario = this.authService.usuarioActual();
+    const usuarioSesion = this.authService.usuarioActual();
+    
+    if (usuarioSesion){
+      this.cargarDatosPerfil(usuarioSesion.usuario);
+    }else{
+      this.errorMessage.set('No se encontró una sesión activa. Por favor inice sesión')
+      this.isLoading.set(false);
+    }
   }
 
   cargarDatosPerfil(username: string): void {
