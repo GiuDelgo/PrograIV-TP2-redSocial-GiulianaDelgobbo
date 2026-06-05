@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PublicacionesService } from '../../../core/services/publicaciones.service';
@@ -12,6 +12,8 @@ import { PublicacionesService } from '../../../core/services/publicaciones.servi
 
 export class Post implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>; //referencia local al input para poder limpiar su value binario
+
+  errorMessage = signal<string | null>(null);
 
   postForm!: FormGroup;
   fotoSeleccionada: File | null = null;
@@ -69,8 +71,9 @@ export class Post implements OnInit {
           this.cargando = false;
         },
         error: (err) => {
-          console.error('Error al crear la publicación:', err);
-          alert('Hubo un error al subir la publicación. Intentalo de nuevo.');
+          const mensajeError = 'Hubo un error al subir la publicación. Intentalo de nuevo.';
+          console.log(err.error?.message);
+          this.errorMessage.set(mensajeError);
           this.cargando = false;
         }
       });

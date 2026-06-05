@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Publicacion } from '../../../shared/interfaces/publicacion.interface';
 import { PublicacionCard } from '../publicacion-card/publicacion-card';
@@ -15,6 +15,8 @@ import { Subscription } from 'rxjs';
 
 export class Publicaciones implements OnInit, OnDestroy {
   publicaciones: Publicacion[] = [];
+  
+  errorMessage = signal<string | null>(null);
 
   ordenActual: 'fechaCreacion' | 'likes' = 'fechaCreacion';
   limite: number = 5; 
@@ -47,7 +49,10 @@ export class Publicaciones implements OnInit, OnDestroy {
         this.publicaciones = res;
         this.totalPublicaciones = this.publicaciones.length;
       },
-      error: (err) => console.error('Error al cargar publicaciones:', err)
+      error: (err) => {
+        const mensajeError = err.error?.message || 'Error al cargar publicaciones';
+        this.errorMessage.set(mensajeError)
+      }
     });
   }
 
@@ -104,7 +109,10 @@ export class Publicaciones implements OnInit, OnDestroy {
         this.publicaciones = this.publicaciones.filter(p => p._id !== idPublicacion);
         this.totalPublicaciones--;
       },
-      error: (err) => alert('No se pudo eliminar la publicación')
+      error: (err) => {
+        const mensajeError = err.error?.message || 'No se pudo eliminar la publicación';
+        this.errorMessage.set(mensajeError)
+      }
     });
   }
 }

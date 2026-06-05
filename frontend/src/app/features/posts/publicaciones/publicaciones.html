@@ -1,5 +1,11 @@
 <div class="publicaciones-container container-fluid py-5">
     <div class="container">
+
+        @if (errorMessage()) {
+            <div class="alert alert-danger alert-dismissible fade show text-center py-2 mb-3" role="alert">
+                <small class="fw-medium">{{ errorMessage() }}</small>
+            </div>
+        }
         
         <div class="row mb-5 align-items-end justify-content-between header-box p-4 rounded ">
             <div class="col-12 col-md-5">

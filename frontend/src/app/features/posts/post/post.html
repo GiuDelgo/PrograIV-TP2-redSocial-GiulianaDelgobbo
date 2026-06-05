@@ -1,5 +1,12 @@
 <div class="card crear-post-card container-fluid py-5 border-0">
     <div class="card-body">
+
+        @if (errorMessage()) {
+            <div class="alert alert-danger alert-dismissible fade show text-center py-2 mb-3" role="alert">
+                <small class="fw-medium">{{ errorMessage() }}</small>
+            </div>
+        }
+        
         <h5 class="card-title mb-3 text-primary-color">Publica</h5>
     
         <form [formGroup]="postForm" (ngSubmit)="enviarPost()" novalidate>
