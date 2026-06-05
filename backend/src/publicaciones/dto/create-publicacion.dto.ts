@@ -1,10 +1,7 @@
 import { Comentario } from "../comentarios/entities/comentario.entity";
-import { IsDateString, IsString, IsNotEmpty } from "class-validator";
+import { IsDateString, IsString, IsNotEmpty, IsOptional } from "class-validator";
 
 export class CreatePublicacionDto {  
-    @IsString()    
-    _id!: string;
-
     @IsString()
     @IsNotEmpty()
     titulo!: string;
@@ -14,6 +11,7 @@ export class CreatePublicacionDto {
     descripcion!: string; 
 
     @IsString()
+    @IsOptional()
     urlImagen!: string;
 
     @IsString()
@@ -24,13 +22,12 @@ export class CreatePublicacionDto {
     @IsNotEmpty()
     usuarioNombre!: string;
 
-    @IsDateString()
-    fechaCreacion!: string;
-
     @IsString()
+    @IsOptional()
     likes!: string[]; // array de IDs de usuarios que dieron me gusta
     
     @IsString()
+    @IsOptional()
     comentarios!: Comentario[];
 }
 

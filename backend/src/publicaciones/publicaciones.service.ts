@@ -18,6 +18,7 @@ export class PublicacionesService {
   }
 
   async create(createPublicacionDto: CreatePublicacionDto, file?: Express.Multer.File) {
+    let urlImagenFinal = '';
     
     if (file) {
       const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);
@@ -40,9 +41,11 @@ export class PublicacionesService {
       const { data: { publicUrl } } = this.supabase.storage
         .from('publicaciones')
         .getPublicUrl(`postFoto/${nombreArchivo}`);
+
+        urlImagenFinal = publicUrl;
     
         // parsiste en MongoDB pasando la URL pública final
-        return await this.PublicacionModel.create({...createPublicacionDto, urlImagen: publicUrl });
+        return await this.PublicacionModel.create({...createPublicacionDto, urlImagen: urlImagenFinal });
     }
   }
 
