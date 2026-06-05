@@ -18,46 +18,47 @@ export class PublicacionesService {
   }
 
   async create(createPublicacionDto: CreatePublicacionDto, file?: Express.Multer.File) {
-    try{
-      let urlImagenFinal = '';
+    let publicUrl = '';
     
-      if (file) {
-        const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        const ext = extname(file.originalname);
-        const nombreArchivo = `${sufijoUnico}${ext}`;
-      
-        // subo el buffer del archivo a Supabase Storage
-        const { data, error } = await this.supabase.storage
-          .from('publicaciones') // bucket donde voy a guardar las fotos
-          .upload(`postFoto/${nombreArchivo}`, file.buffer, { 
-            contentType: file.mimetype, 
-            upsert: true //si el archivo no existe lo crea
-          });
-
-        if (error) {
-          throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
-        }
-      
-        // obtengo la URL pública de la imagen alojada
-        const { data: { publicUrl } } = this.supabase.storage
-          .from('publicaciones')
-          .getPublicUrl(`postFoto/${nombreArchivo}`);
-
-        urlImagenFinal = publicUrl;
-      
-          // parsiste en MongoDB pasando la URL pública final
-        const nuevaPublicacion = await this.PublicacionModel.create({
-        ...createPublicacionDto,
-        urlImagen: urlImagenFinal 
+    if (file && file.buffer) {
+      const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);
+      const ext = extname(file.originalname);
+      const nombreArchivo = `${sufijoUnico}${ext}`;
+    
+      // subo el buffer del archivo a Supabase Storage
+      const { data, error } = await this.supabase.storage
+        .from('publicaciones') // bucket donde voy a guardar las fotos
+        .upload(`postFoto/${nombreArchivo}`, file.buffer, { 
+          contentType: file.mimetype, 
+          upsert: true //si el archivo no existe lo crea
         });
-        
-        return nuevaPublicacion;
+
+      if (error) {
+        throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
+      }
+    
+      // obtengo la URL pública de la imagen alojada
+      const res = this.supabase.storage
+        .from('publicaciones')
+        .getPublicUrl(`postFoto/${nombreArchivo}`);
+
+      publicUrl = res.data.publicUrl;
     }
 
-    } catch (mongoError: any){
-      console.log(mongoError.message);
-      throw new BadRequestException(`Error de persistencia en MongoDB: ${mongoError.message}`);
-    }
+    // crea la instancia con Mongoose forzando que use los default declarados en el Schema
+    const nuevaPublicacion = new this.PublicacionModel({
+      titulo: createPublicacionDto.titulo,
+      descripcion: createPublicacionDto.descripcion,
+      usuarioId: createPublicacionDto.usuarioId,
+      usuarioNombre: createPublicacionDto.usuarioNombre,
+      urlImagen: publicUrl,
+      likes: [],          // Se inicializa vacío de forma segura
+      comentarios: [],    // Se inicializa vacío de forma segura
+      eliminado: false    // Cumpliendo la pauta del TP
+    });
+
+    // El return con await es fundamental en Vercel para que complete la persistencia física en Atlas
+    return await nuevaPublicacion.save();
   }
 
   async findAll(usuarioNombre?: string, limiteNum?: number, orden?: string,) {
