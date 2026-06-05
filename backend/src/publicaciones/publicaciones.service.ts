@@ -46,7 +46,12 @@ export class PublicacionesService {
         urlImagenFinal = publicUrl;
       
           // parsiste en MongoDB pasando la URL pública final
-        return await this.PublicacionModel.create({...createPublicacionDto, urlImagen: urlImagenFinal });
+        const nuevaPublicacion = await this.PublicacionModel.create({
+        ...createPublicacionDto,
+        urlImagen: urlImagenFinal 
+        });
+        
+        return nuevaPublicacion;
     }
 
     } catch (mongoError: any){
