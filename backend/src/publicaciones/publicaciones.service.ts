@@ -50,6 +50,7 @@ export class PublicacionesService {
     }
 
     } catch (mongoError: any){
+      console.log(mongoError.message);
       throw new BadRequestException(`Error de persistencia en MongoDB: ${mongoError.message}`);
     }
   }
