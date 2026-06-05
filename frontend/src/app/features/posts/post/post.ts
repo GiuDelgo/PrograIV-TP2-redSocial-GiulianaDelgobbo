@@ -19,7 +19,7 @@ export class Post implements OnInit {
   postForm!: FormGroup;
   fotoSeleccionada: File | null = null;
   vistaPrevia: string | null = null;
-  cargando = signal<boolean>(true);
+  cargando = signal<boolean>(false);
   usuarioId = '';
   usuarioNombre = '';
 
