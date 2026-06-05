@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs';
 export class Publicaciones implements OnInit, OnDestroy {
   publicaciones: Publicacion[] = [];
 
-  ordenActual: 'fecha' | 'likes' = 'fecha';
+  ordenActual: 'fechaCreacion' | 'likes' = 'fechaCreacion';
   limite: number = 5; 
   offset: number = 0; 
   totalPublicaciones: number = 0; // para deshabilitar botones de paginado
@@ -42,16 +42,16 @@ export class Publicaciones implements OnInit, OnDestroy {
   }
 
   cargarPublicaciones() {
-    this.publicacionesService.obtenerPublicaciones(this.ordenActual, this.limite, this.offset).subscribe({
+    this.publicacionesService.obtenerPublicaciones(this.ordenActual, this.limite).subscribe({
       next: (res) => {
-        this.publicaciones = res.data || res;
-        this.totalPublicaciones = res.total || this.publicaciones.length; // si el backend no envía total
+        this.publicaciones = res;
+        this.totalPublicaciones = this.publicaciones.length;
       },
       error: (err) => console.error('Error al cargar publicaciones:', err)
     });
   }
 
-  cambiarOrden(nuevoOrden: 'fecha' | 'likes') {
+  cambiarOrden(nuevoOrden: 'fechaCreacion' | 'likes') {
     if (this.ordenActual !== nuevoOrden) {
       this.ordenActual = nuevoOrden;
       this.offset = 0; // Reinicio paginación al reordenar

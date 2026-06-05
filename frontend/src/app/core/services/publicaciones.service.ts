@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../../environment.production';
 import { Publicacion } from '../../shared/interfaces/publicacion.interface';
@@ -32,9 +32,14 @@ export class PublicacionesService {
         );
     }
 
-    obtenerPublicaciones(ordenActual:string, limite:number, offset:number): Observable<{ data: Publicacion[], total: number }> {
-        const url = `${this.baseUrl}?orden=${ordenActual}&limit=${limite}&offset=${offset}`;
-        return this.http.get<{ data: Publicacion[]; total: number }>(url);
+    obtenerPublicaciones(orden?:string, limite?:number, usuarioNombre?:string): Observable<Publicacion[]> {
+        let params = new HttpParams();
+
+        if (usuarioNombre) params = params.set('usuarioNombre', usuarioNombre);
+        if (limite) params = params.set('limite', limite.toString());
+        if (orden) params = params.set('orden', orden);
+
+        return this.http.get<Publicacion[]>(this.baseUrl, { params });
     }
 
     deleteLike (idPublicacion: string): Observable<any> {

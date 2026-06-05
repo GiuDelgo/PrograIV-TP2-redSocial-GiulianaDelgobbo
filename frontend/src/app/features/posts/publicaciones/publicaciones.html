@@ -7,7 +7,7 @@
             </div>
             <div class="col-12 col-md-5 d-flex justify-content-md-end gap-2 align-items-center">
                 <span class="orden me-2 text-secondary fw-semibold">Ordenar por:</span>
-                <button (click)="cambiarOrden('fecha')" class="btn filter-btn transition-all" [ngClass]="{'active': ordenActual === 'fecha'}">
+                <button (click)="cambiarOrden('fechaCreacion')" class="btn filter-btn transition-all" [ngClass]="{'active': ordenActual === 'fechaCreacion'}">
                     Recientes
                 </button>
                 <button (click)="cambiarOrden('likes')" class="btn filter-btn transition-all" [ngClass]="{'active': ordenActual === 'likes'}">

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, BadRequestException, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Query, Delete, UseInterceptors, BadRequestException, UploadedFile } from '@nestjs/common';
 import { PublicacionesService } from './publicaciones.service';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto';
 import { UpdatePublicacionDto } from './dto/update-publicacion.dto';
@@ -27,8 +27,15 @@ export class PublicacionesController {
   }
 
   @Get()
-  findAll() {
-    return this.publicacionesService.findAll();
+  findAll(
+    @Query('usuarioNombre') usuarioNombre?: string,
+    @Query ('limite') limite?: string, 
+    @Query ('orden') orden?: string, 
+  ) {
+
+    const limiteNum = limite ? parseInt(limite, 10) : undefined;
+
+    return this.publicacionesService.findAll(usuarioNombre, limiteNum, orden);
   }
 
   @Get(':id')

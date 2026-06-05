@@ -44,11 +44,30 @@ export class PublicacionesService {
         // parsiste en MongoDB pasando la URL pública final
         return await this.PublicacionModel.create({...createPublicacionDto, urlImagen: publicUrl });
     }
-}
-
-  findAll() {
-    return `This action returns all publicaciones`;
   }
+
+  async findAll(usuarioNombre?: string, limiteNum?: number, orden?: string,) {
+    const filtro: any = {}; //creo objeto filtro para ir armandolo segun los parámetros que lleguen
+
+    if (usuarioNombre){
+      filtro.usuarioNombre = usuarioNombre;
+    }
+
+    let consulta = this.PublicacionModel.find(filtro);
+
+    if (orden === 'likes'){
+      consulta = consulta.sort({meGusta: -1});
+    }else{
+      consulta = consulta.sort({fechaCreacion: -1});
+    }
+
+    if (limiteNum) {
+      consulta = consulta.limit(limiteNum);
+    }
+
+    return await consulta.exec();
+  }
+
 
   findOne(id: number) {
     return `This action returns a #${id} publicacion`;
@@ -69,6 +88,6 @@ export class PublicacionesService {
       throw new BadRequestException(`No se encontró la publicación`);
     }
 
-  return { message: 'Publicación dada de baja correctamente', data: publicacionEliminada };  }
-
+    return { message: 'Publicación dada de baja correctamente', data: publicacionEliminada };  
+  }
 }
