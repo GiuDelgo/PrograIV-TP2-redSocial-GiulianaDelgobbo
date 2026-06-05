@@ -18,34 +18,39 @@ export class PublicacionesService {
   }
 
   async create(createPublicacionDto: CreatePublicacionDto, file?: Express.Multer.File) {
-    let urlImagenFinal = '';
+    try{
+      let urlImagenFinal = '';
     
-    if (file) {
-      const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      const ext = extname(file.originalname);
-      const nombreArchivo = `${sufijoUnico}${ext}`;
-    
-      // subo el buffer del archivo a Supabase Storage
-      const { data, error } = await this.supabase.storage
-        .from('publicaciones') // bucket donde voy a guardar las fotos
-        .upload(`postFoto/${nombreArchivo}`, file.buffer, { 
-          contentType: file.mimetype, 
-          upsert: true //si el archivo no existe lo crea
-        });
+      if (file) {
+        const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const ext = extname(file.originalname);
+        const nombreArchivo = `${sufijoUnico}${ext}`;
+      
+        // subo el buffer del archivo a Supabase Storage
+        const { data, error } = await this.supabase.storage
+          .from('publicaciones') // bucket donde voy a guardar las fotos
+          .upload(`postFoto/${nombreArchivo}`, file.buffer, { 
+            contentType: file.mimetype, 
+            upsert: true //si el archivo no existe lo crea
+          });
 
-      if (error) {
-        throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
-      }
-    
-      // obtengo la URL pública de la imagen alojada
-      const { data: { publicUrl } } = this.supabase.storage
-        .from('publicaciones')
-        .getPublicUrl(`postFoto/${nombreArchivo}`);
+        if (error) {
+          throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
+        }
+      
+        // obtengo la URL pública de la imagen alojada
+        const { data: { publicUrl } } = this.supabase.storage
+          .from('publicaciones')
+          .getPublicUrl(`postFoto/${nombreArchivo}`);
 
         urlImagenFinal = publicUrl;
-    
-        // parsiste en MongoDB pasando la URL pública final
+      
+          // parsiste en MongoDB pasando la URL pública final
         return await this.PublicacionModel.create({...createPublicacionDto, urlImagen: urlImagenFinal });
+    }
+
+    } catch (mongoError: any){
+      throw new BadRequestException(`Error de persistencia en MongoDB: ${mongoError.message}`);
     }
   }
 
