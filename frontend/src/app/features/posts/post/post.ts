@@ -35,7 +35,7 @@ export class Post implements OnInit {
 
     if (usuarioSesion){
       this.usuarioId = usuarioSesion._id;
-      this.usuarioNombre = usuarioSesion.user;
+      this.usuarioNombre = usuarioSesion.usuario;
     }else{
       this.errorMessage.set('No se encontró una sesión activa. Por favor inice sesión')
       this.cargando.set(false);
