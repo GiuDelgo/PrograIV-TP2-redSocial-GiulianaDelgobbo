@@ -4,6 +4,7 @@ import { Publicacion } from '../../../shared/interfaces/publicacion.interface';
 import { PublicacionCard } from '../publicacion-card/publicacion-card';
 import { PublicacionesService } from '../../../core/services/publicaciones.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-publicaciones',
@@ -22,13 +23,21 @@ export class Publicaciones implements OnInit, OnDestroy {
   limite: number = 5; 
   offset: number = 0; 
   totalPublicaciones: number = 0; // para deshabilitar botones de paginado
-  idUsuarioLogueado: string = 'ID_DEL_TOKEN'; // SPRINT 3: Reemplazar con lógica real de autenticación
+  usuarioId = ''; // SPRINT 3: Reemplazar con lógica real de autenticación
   private postSub!: Subscription;
 
-  constructor(private publicacionesService: PublicacionesService) {}
+  constructor(private publicacionesService: PublicacionesService, private authService: AuthService) {}
 
   ngOnInit() {
     this.cargarPublicaciones();
+
+    const usuarioSesion = this.authService.usuarioActual();
+
+    if (usuarioSesion){
+      this.usuarioId = usuarioSesion._id;
+    }else{
+      this.errorMessage.set('No se encontró una sesión activa. Por favor inice sesión')
+    }
 
     // Cada vez que se cree un post en cualquier lugar de la app esto se ejecuta
     this.postSub = this.publicacionesService.postCreado$.subscribe(() => {
@@ -83,20 +92,20 @@ export class Publicaciones implements OnInit, OnDestroy {
     const post = this.publicaciones.find(p => p._id === idPublicacion);
     if (!post) return;
 
-    const isLiked = post.likes.includes(this.idUsuarioLogueado);
+    const isLiked = post.likes.includes(this.usuarioId);
     
     if (isLiked) {
       // DELETE al backend para remover like
       this.publicacionesService.deleteLike(idPublicacion).subscribe({
         next: () => {
-          post.likes = post.likes.filter(id => id !== this.idUsuarioLogueado);
+          post.likes = post.likes.filter(id => id !== this.usuarioId);
         }
       });
     } else {
       // POST al backend para agregar like
       this.publicacionesService.addLike(idPublicacion).subscribe({
         next: () => {
-          post.likes.push(this.idUsuarioLogueado);
+          post.likes.push(this.usuarioId);
         }
       });
     }

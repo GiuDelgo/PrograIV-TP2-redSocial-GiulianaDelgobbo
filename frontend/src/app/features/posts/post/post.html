@@ -58,8 +58,8 @@
                     </button>
                 </div>
 
-                <button type="submit" class="btn btn-submit-post px-4" [disabled]="postForm.invalid || cargando">
-                @if (cargando) {
+                <button type="submit" class="btn btn-submit-post px-4" [disabled]="postForm.invalid || cargando()">
+                @if (cargando()) {
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Publicando...
                 } @else {
                     Publicar

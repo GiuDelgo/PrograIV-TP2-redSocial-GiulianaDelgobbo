@@ -45,16 +45,16 @@ export class PublicacionesService {
       publicUrl = res.data.publicUrl;
     }
 
-    // crea la instancia con Mongoose forzando que use los default declarados en el Schema
+    // creo la instancia con Mongoose para forzar a que use los default declarados en el Schema
     const nuevaPublicacion = new this.PublicacionModel({
       titulo: createPublicacionDto.titulo,
       descripcion: createPublicacionDto.descripcion,
       usuarioId: createPublicacionDto.usuarioId,
       usuarioNombre: createPublicacionDto.usuarioNombre,
       urlImagen: publicUrl,
-      likes: [],          // Se inicializa vacío de forma segura
-      comentarios: [],    // Se inicializa vacío de forma segura
-      eliminado: false    // Cumpliendo la pauta del TP
+      likes: [],          
+      comentarios: [],   
+      eliminado: false    
     });
 
     // El return con await es fundamental en Vercel para que complete la persistencia física en Atlas

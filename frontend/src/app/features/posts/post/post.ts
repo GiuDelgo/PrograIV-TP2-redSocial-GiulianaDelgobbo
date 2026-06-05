@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core'
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PublicacionesService } from '../../../core/services/publicaciones.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-post',
@@ -18,17 +19,27 @@ export class Post implements OnInit {
   postForm!: FormGroup;
   fotoSeleccionada: File | null = null;
   vistaPrevia: string | null = null;
-  cargando = false;
-  usuarioId: string = 'ID_DEL_TOKEN'; // SPRINT 3: Reemplazar con lógica real de autenticación
-  usuarioNombre: string = 'NOMBRE_DEL_TOKEN'; // SPRINT 3: Reemplazar con lógica real de autenticación
+  cargando = signal<boolean>(true);
+  usuarioId = '';
+  usuarioNombre = '';
 
-  constructor( private fb: FormBuilder, private publicacionesService: PublicacionesService) {}
+  constructor( private fb: FormBuilder, private publicacionesService: PublicacionesService, private authService : AuthService) {}
 
   ngOnInit() {
     this.postForm = this.fb.group({
       titulo: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(40)]],
       descripcion: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(700)]],
     });
+
+    const usuarioSesion = this.authService.usuarioActual();
+
+    if (usuarioSesion){
+      this.usuarioId = usuarioSesion._id;
+      this.usuarioNombre = usuarioSesion.user;
+    }else{
+      this.errorMessage.set('No se encontró una sesión activa. Por favor inice sesión')
+      this.cargando.set(false);
+    }
   }  
 
   onFileSelected(event: Event) {
@@ -59,7 +70,8 @@ export class Post implements OnInit {
       return;
     }
 
-    this.cargando = true;
+
+    this.cargando.set(true)
     const { titulo, descripcion } = this.postForm.value;
 
     // Enviamos los datos al servicio que armará el FormData
@@ -68,13 +80,13 @@ export class Post implements OnInit {
         next: () => {
           this.postForm.reset(); //reseto el formgroup para limpiar los campos de texto
           this.quitarFoto();//borro foto seleccionada para limpiar el input file
-          this.cargando = false;
+          this.cargando.set(false);
         },
         error: (err) => {
           const mensajeError = 'Hubo un error al subir la publicación. Intentalo de nuevo.';
           console.log(err.error?.message);
           this.errorMessage.set(mensajeError);
-          this.cargando = false;
+          this.cargando.set(false);
         }
       });
   }

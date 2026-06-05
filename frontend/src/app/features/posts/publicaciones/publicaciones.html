@@ -29,7 +29,7 @@
                     
                     <app-publicacion-card 
                         [publicacion]="pub"
-                        [idUsuarioLogueado]="idUsuarioLogueado"
+                        [idUsuarioLogueado]="usuarioId"
                         (onLike)="handleLike($event)"
                         (onDelete)="handleDelete($event)">
                     </app-publicacion-card>
