@@ -60,6 +60,11 @@ export class AuthService {
                     localStorage.setItem('usuario_sesion', JSON.stringify(res));
                     this.usuarioActual.set(res);
                     console.log(res);
+                    console.log(
+                        'guardado',
+                        localStorage.getItem('usuario_sesion')
+                    );
+                    
                 }
             })
         );
