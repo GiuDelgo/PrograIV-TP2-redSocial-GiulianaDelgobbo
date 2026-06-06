@@ -54,7 +54,15 @@ export class AuthService {
             formData.append('foto', archivoFoto, archivoFoto.name); // 'foto' es el nombre que espera Multer
         }
 
-        return this.http.post(`${this.baseUrl}/registro`, formData);
+        return this.http.post(`${this.baseUrl}/registro`, formData).pipe(
+            tap (res => {
+                if (res){
+                    localStorage.setItem('usuario_sesion', JSON.stringify(res));
+                    this.usuarioActual.set(res);
+                }
+            })
+        );
+        
     }
 }
 
