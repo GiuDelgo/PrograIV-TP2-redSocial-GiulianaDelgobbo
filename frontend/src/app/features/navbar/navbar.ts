@@ -11,6 +11,10 @@ import { RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 export class Navbar {
   sesion = signal<boolean> (false);
 
+  ngOninit(){
+    this.sesionActiva ();
+  }
+
   sesionActiva (){
     const sessionStorage = localStorage.getItem('usuario_sesion');
 
