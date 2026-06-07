@@ -10,13 +10,15 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">                 
-                <li class="nav-item me-2">
+            <ul class="navbar-nav ms-auto">    
+                @if (!sesion()){
+                    <li class="nav-item me-2">
                     <a class="btn" style="--i:2" routerLink="/login" routerLinkActive="active">Ingresar</a>
-                </li>
-                <li class="nav-item me-2">
-                    <a class="btn" style="--i:3" routerLink="/registro" routerLinkActive="active">Crear Cuenta</a>
-                </li>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn" style="--i:3" routerLink="/registro" routerLinkActive="active">Crear Cuenta</a>
+                    </li>
+                } @else {
                     <li class="nav-item me-2">
                         <a class="btn" style="--i:4" routerLink="/publicaciones" routerLinkActive="active">Publicaciones</a>
                     </li>
@@ -29,6 +31,7 @@
                     <li class="nav-item me-2">
                         <a class="btn" style="--i:6" routerLink="/logout" routerLinkActive="active">Logout</a>
                     </li>
+                }        
             </ul>
         </div>
     </div>

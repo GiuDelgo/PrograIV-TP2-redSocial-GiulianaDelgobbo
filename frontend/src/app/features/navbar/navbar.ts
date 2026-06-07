@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 @Component({
@@ -7,4 +7,13 @@ import { RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar {}
+
+export class Navbar {
+  sesion = signal<boolean> (false);
+
+  sesionActiva (){
+    const sessionStorage = localStorage.getItem('usuario_sesion');
+
+    return sessionStorage ? this.sesion.set(true) : this.sesion.set(false);
+  }
+}
