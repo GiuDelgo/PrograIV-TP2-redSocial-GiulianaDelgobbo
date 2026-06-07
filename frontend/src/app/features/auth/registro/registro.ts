@@ -26,11 +26,11 @@ export class Registro implements OnInit {
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern('^(?=.*[A-Z])(?=.*\\d).+$')]],//obliga a tener al menos una mayúscula y un número
       confirmPassword: ['', [Validators.required]],
-      nacimiento: ['', [Validators.required]],
+      nacimiento: ['', [Validators.required, this.dateValidator]],
       descripcion: ['', [Validators.maxLength(500)]],
       foto: [null, [Validators.required]]
     },{ 
-      validators: this.passwordMatchValidator //REMINDER: A validators le paso una función de tipo ValidatorFn que recibe un AbstractControl y devuelve ValidationError o null. 
+      validators: [this.passwordMatchValidator] //REMINDER: A validators le paso una función de tipo ValidatorFn que recibe un AbstractControl y devuelve ValidationError o null. 
     });
   }
 
@@ -43,6 +43,23 @@ export class Registro implements OnInit {
       return { passwordMismatch: true };
     }
     return null;//REMINDER: Si no hay error, la función debe devolver null. Esto es importante para que Angular sepa que el control es válido. Si devuelve un objeto, Angular lo interpreta como un error y marca el control como inválido.
+  }
+
+  dateValidator (control: AbstractControl) : ValidationErrors | null {
+    if (!control.value) {
+      return null;
+    }
+
+    const parsedDate = new Date (control.value);
+
+    const minDate = new Date ('01/01/1920');
+    const maxDate = new Date();
+
+    if (parsedDate < maxDate && parsedDate > minDate){
+      return null
+    } else {
+      return {dateInvalid : true}
+    }      
   }
 
   onFileChange(event: any) {//eventro que se dispara al seleccionar un archivo en el input de tipo file.
