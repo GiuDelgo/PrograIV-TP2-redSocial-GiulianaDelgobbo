@@ -18,11 +18,11 @@ export class PublicacionCard {
   @Output() onDelete = new EventEmitter<string>();
 
   get isLiked(): boolean {
-    return this.publicacion.likes.includes(this.idUsuarioLogueado);
+    return this.publicacion?.likes?.includes(this.idUsuarioLogueado);
   }
 
   get isMine(): boolean {
-    return this.publicacion.usuarioId === this.idUsuarioLogueado;
+    return this.publicacion?.usuarioId === this.idUsuarioLogueado;
   }
 
   toggleLike() {

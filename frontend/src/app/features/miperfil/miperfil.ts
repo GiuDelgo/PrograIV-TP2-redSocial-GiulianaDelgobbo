@@ -43,7 +43,7 @@ export class MiPerfil implements OnInit {
   cargarUltimasPublicaciones(usuario: string): void {
     // uso los parámetros de ordenamiento (por fecha), filtro de usuario y límite 3
         
-    this.publicacionesService.obtenerPublicaciones('fechaCreacion', this.limite, usuario).subscribe({
+    this.publicacionesService.obtenerPublicaciones('createdAt', this.limite, undefined ,usuario).subscribe({
       next: (posts) => {
         this.ultimasPublicaciones.set(posts);
         this.isLoading.set(false);

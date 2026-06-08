@@ -30,12 +30,14 @@ export class PublicacionesController {
   findAll(
     @Query('usuarioNombre') usuarioNombre?: string,
     @Query ('limite') limite?: string, 
+    @Query('offset') offset?: string,
     @Query ('orden') orden?: string, 
   ) {
 
     const limiteNum = limite ? parseInt(limite, 10) : undefined;
+    const offsetNum = offset ? parseInt(offset, 10) : undefined;
 
-    return this.publicacionesService.findAll(usuarioNombre, limiteNum, orden);
+    return this.publicacionesService.findAll(usuarioNombre, limiteNum, offsetNum, orden);
   }
 
   @Get(':id')

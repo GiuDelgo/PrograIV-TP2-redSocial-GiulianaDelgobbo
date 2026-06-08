@@ -18,9 +18,9 @@ export class AuthService {
     login(usuario: string, contrasena: string): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}/login`, { usuario, contrasena }).pipe(//encadenio operadores que procesan datos de un Observable
             tap (res => {//tap ejecuta una acción cuando el Observable emite un valor sin modificar dicho valor
-                if (res && res.usuario){
-                    localStorage.setItem('usuario_sesion', JSON.stringify(res.usuario));
-                    this.usuarioActual.set(res.usuario);
+                if (res){
+                    localStorage.setItem('usuario_sesion', JSON.stringify(res));
+                    this.usuarioActual.set(res);
                 }
             })
         );
@@ -58,13 +58,7 @@ export class AuthService {
             tap (res => {
                 if (res){
                     localStorage.setItem('usuario_sesion', JSON.stringify(res));
-                    this.usuarioActual.set(res);
-                    console.log(res);
-                    console.log(
-                        'guardado',
-                        localStorage.getItem('usuario_sesion')
-                    );
-                    
+                    this.usuarioActual.set(res);        
                 }
             })
         );

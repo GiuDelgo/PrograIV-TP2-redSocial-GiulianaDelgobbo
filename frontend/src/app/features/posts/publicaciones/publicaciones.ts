@@ -15,18 +15,19 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 
 export class Publicaciones implements OnInit, OnDestroy {
-  publicaciones: Publicacion[] = [];
+  publicaciones = signal<Publicacion[]>([]);
   
   errorMessage = signal<string | null>(null);
 
-  ordenActual: 'fechaCreacion' | 'likes' = 'fechaCreacion';
+  ordenActual: 'createdAt' | 'likes' = 'createdAt';
   limite: number = 5; 
   offset: number = 0; 
   totalPublicaciones: number = 0; // para deshabilitar botones de paginado
   usuarioId = ''; // SPRINT 3: Reemplazar con lógica real de autenticación
   private postSub!: Subscription;
 
-  constructor(private publicacionesService: PublicacionesService, private authService: AuthService) {}
+  constructor(private publicacionesService: PublicacionesService, private authService: AuthService) {
+  }
 
   ngOnInit() {
     this.cargarPublicaciones();
@@ -53,10 +54,18 @@ export class Publicaciones implements OnInit, OnDestroy {
   }
 
   cargarPublicaciones() {
-    this.publicacionesService.obtenerPublicaciones(this.ordenActual, this.limite).subscribe({
+    this.publicacionesService.obtenerPublicaciones(this.ordenActual, this.limite, this.offset).subscribe({
       next: (res) => {
-        this.publicaciones = res;
-        this.totalPublicaciones = this.publicaciones.length;
+
+        this.publicaciones.set(res);
+
+        if (res.length === this.limite){
+          this.totalPublicaciones = this.offset + res.length + 1;
+        } else{
+          this.totalPublicaciones = this.offset + res.length;
+        }
+
+        this.errorMessage.set(null);
       },
       error: (err) => {
         const mensajeError = err.error?.message || 'Error al cargar publicaciones';
@@ -65,7 +74,7 @@ export class Publicaciones implements OnInit, OnDestroy {
     });
   }
 
-  cambiarOrden(nuevoOrden: 'fechaCreacion' | 'likes') {
+  cambiarOrden(nuevoOrden: 'createdAt' | 'likes') {
     if (this.ordenActual !== nuevoOrden) {
       this.ordenActual = nuevoOrden;
       this.offset = 0; // Reinicio paginación al reordenar
@@ -75,10 +84,8 @@ export class Publicaciones implements OnInit, OnDestroy {
 
   // paginación sin scroll infinito, solo botones Siguiente y Anterior
   paginaSiguiente() {
-    if (this.offset + this.limite < this.totalPublicaciones) {
-      this.offset += this.limite;
-      this.cargarPublicaciones();
-    }
+    this.offset += this.limite;
+    this.cargarPublicaciones();
   }
 
   paginaAnterior() {
@@ -89,7 +96,7 @@ export class Publicaciones implements OnInit, OnDestroy {
   }
 
   handleLike(idPublicacion: string) {
-    const post = this.publicaciones.find(p => p._id === idPublicacion);
+    const post = this.publicaciones().find(p => p._id === idPublicacion);
     if (!post) return;
 
     const isLiked = post.likes.includes(this.usuarioId);
@@ -99,6 +106,7 @@ export class Publicaciones implements OnInit, OnDestroy {
       this.publicacionesService.deleteLike(idPublicacion).subscribe({
         next: () => {
           post.likes = post.likes.filter(id => id !== this.usuarioId);
+          this.publicaciones.set([...this.publicaciones()]);
         }
       });
     } else {
@@ -106,6 +114,7 @@ export class Publicaciones implements OnInit, OnDestroy {
       this.publicacionesService.addLike(idPublicacion).subscribe({
         next: () => {
           post.likes.push(this.usuarioId);
+          this.publicaciones.set([...this.publicaciones()]);
         }
       });
     }
@@ -115,7 +124,7 @@ export class Publicaciones implements OnInit, OnDestroy {
     this.publicacionesService.deletePublicacion(idPublicacion).subscribe({
       next: () => {
         // quito del arreglo visual local
-        this.publicaciones = this.publicaciones.filter(p => p._id !== idPublicacion);
+        this.publicaciones.set(this.publicaciones().filter(p => p._id !== idPublicacion));
         this.totalPublicaciones--;
       },
       error: (err) => {

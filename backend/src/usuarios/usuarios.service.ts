@@ -33,7 +33,7 @@ export class UsuariosService {
     const guardado = await nuevoUsuario.save();
     
     // oculto la contraseña en la respuesta por seguridad
-    const { contrasena:_c, ...userObject } = guardado.toObject();
+    const { contrasena:_ctrs, ...userObject } = guardado.toObject(); //spread operator vs rest operator //paso el obj de mongoose a objeto plano js
     return userObject;
   }
 
@@ -56,11 +56,9 @@ export class UsuariosService {
     // devuelve los datos del usuario en el login público
     const { contrasena, ...respuestaUsuario } = usuarioEncontrado.toObject();
 
-    return {
-      mensaje: 'Login exitoso',
-      usuario: respuestaUsuario,      
+    return respuestaUsuario    
       // ***REMINDER*** en el Sprint #3 aca  es donde firmo el Token JWT con vigencia de 15 min
-    }
+    
   }
 
   async findUsername(username: string) {

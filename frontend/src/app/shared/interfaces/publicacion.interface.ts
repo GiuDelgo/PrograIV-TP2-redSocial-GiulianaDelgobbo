@@ -7,7 +7,7 @@ export interface Publicacion {
     urlImagen?: string;
     usuarioId: string;
     usuarioNombre: string;
-    fechaCreacion: string;
+    createdAt: string;
     likes: string[]; // array de IDs de usuarios que dieron me gusta
     comentarios: Comentario[];
 }

@@ -61,8 +61,8 @@ export class PublicacionesService {
     return await nuevaPublicacion.save();
   }
 
-  async findAll(usuarioNombre?: string, limiteNum?: number, orden?: string,) {
-    const filtro: any = {}; //creo objeto filtro para ir armandolo segun los parámetros que lleguen
+  async findAll(usuarioNombre?: string, limiteNum?: number, offsetNum?: number, orden?: string,) {
+    const filtro: any = {eliminado: false}; //creo objeto filtro para ir armandolo segun los parámetros que lleguen
 
     if (usuarioNombre){
       filtro.usuarioNombre = usuarioNombre;
@@ -71,12 +71,16 @@ export class PublicacionesService {
     let consulta = this.PublicacionModel.find(filtro);
 
     if (orden === 'likes'){
-      consulta = consulta.sort({meGusta: -1});
+      consulta = consulta.sort({likes: -1});
     }else{
-      consulta = consulta.sort({fechaCreacion: -1});
+      consulta = consulta.sort({createdAt: -1});
     }
 
-    if (limiteNum) {
+    if (offsetNum !== undefined && !isNaN(offsetNum)){
+      consulta = consulta.skip(offsetNum);
+    }
+
+    if (limiteNum && !isNaN(limiteNum)) {
       consulta = consulta.limit(limiteNum);
     }
 

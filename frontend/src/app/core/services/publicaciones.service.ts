@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../../environment.production';
 import { Publicacion } from '../../shared/interfaces/publicacion.interface';
+import { offset } from '@popperjs/core';
 
 @Injectable({
     providedIn: 'root'
@@ -32,16 +33,17 @@ export class PublicacionesService {
         );
     }
 
-    obtenerPublicaciones(orden?:string, limite?:number, usuarioNombre?:string): Observable<Publicacion[]> {
+    obtenerPublicaciones(orden?:string, limite?:number, offset?:number, usuarioNombre?:string): Observable<Publicacion[]> {
         let params = new HttpParams();
 
         if (usuarioNombre) params = params.set('usuarioNombre', usuarioNombre);
         if (limite) params = params.set('limite', limite.toString());
         if (orden) params = params.set('orden', orden);
+        if (offset !== undefined) params = params.set('offset', offset.toString());
 
         return this.http.get<Publicacion[]>(this.baseUrl, { params });
     }
-
+    
     deleteLike (idPublicacion: string): Observable<any> {
         const url = `${this.baseUrl}/${idPublicacion}/like`;
         return this.http.delete(url);

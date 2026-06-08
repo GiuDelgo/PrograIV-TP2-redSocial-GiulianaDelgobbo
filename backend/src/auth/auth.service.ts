@@ -17,7 +17,7 @@ export class AuthService {
   // subo la foto a Supabase Storage y el usuario a MongoDB con la URL pública de la foto
   async registrarUsuario(createUsuarioDto: CreateUsuarioDto, file: Express.Multer.File) {
     const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);//0 a 1.000.000.000 
-    const ext = extname(file.originalname);//me quedo con la extensión del archivo original para que se guarde con el formato correcto (jpg, png, etc)
+    const ext = extname(file.originalname);//me quedo con la extensión del archivo original para que se guarde con el formato correcto (jpg, png, etc) 
     const nombreArchivo = `${sufijoUnico}${ext}`;
 
     // subo el buffer del archivo a Supabase Storage
@@ -25,7 +25,7 @@ export class AuthService {
       .from('perfiles') // bucket donde voy a guardar las fotos
       .upload(`fotos/${nombreArchivo}`, file.buffer, { //subo el archivo de la foto
         contentType: file.mimetype, //image/jpeg, image/png, etc, para que el navegador sepa cómo mostrar la imagen
-        upsert: true //si el archivo no existe lo crea, si ya existe lo reemplaza (en este caso no debería existir porque el nombre es único)
+        upsert: true //si el archivo no existe lo crea, si ya existe lo reemplaza 
       });
 
     if (error) {
@@ -37,7 +37,7 @@ export class AuthService {
       .from('perfiles')
       .getPublicUrl(`fotos/${nombreArchivo}`);
 
-    // parsiste en MongoDB pasando la URL pública final
+    // persiste en MongoDB pasando la URL pública final
     return this.usuariosService.create({
       ...createUsuarioDto,
       foto: publicUrl 

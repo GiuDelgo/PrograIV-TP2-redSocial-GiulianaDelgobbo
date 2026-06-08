@@ -13,4 +13,8 @@ export class Navbar{
   constructor (private authService: AuthService){}
 
   sesion = computed(() => !!this.authService.usuarioActual());
+
+  logoutUsuario (){
+    this.authService.logout();
+  }
 }

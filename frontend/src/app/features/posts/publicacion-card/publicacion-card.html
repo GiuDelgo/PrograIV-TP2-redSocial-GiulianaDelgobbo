@@ -7,13 +7,15 @@
                 </div>
                 <div>
                     <h6 class="mb-0 usuario-text">&#64;{{ publicacion.usuarioNombre }}</h6>
-                    <small class="text-muted">{{ publicacion.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</small>
+                    <small class="text-muted">{{ publicacion.createdAt | date:'dd/MM/yyyy HH:mm' }}</small>
                 </div>
             </div>
         
-            <button *ngIf="isMine" (click)="eliminarPost()" class="btn btn-outline-danger btn-sm border-0 rounded-circle" title="Eliminar publicación">
-                <i class="bi bi-trash3-fill">🗑️</i>
-            </button>
+            @if (isMine) {
+                <button (click)="eliminarPost()" class="btn btn-outline-danger btn-sm border-0 rounded-circle" title="Eliminar publicación">
+                    <i class="bi bi-trash3-fill">🗑️</i>
+                </button>
+            }
         </div>
 
         <h5 class="card-title fw-bold post-titulo">{{ publicacion.titulo }}</h5>
