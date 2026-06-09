@@ -46,8 +46,10 @@ export class PublicacionesController {
   }
 
   @Post()
-  addLike (@Param('id/like') id: string) {
-    return this.publicacionesService.add(id);
+  addLike (
+    @Param('id/like') id: string,
+    @Body() UpdatePublicacionDto: UpdatePublicacionDto) {
+    return this.publicacionesService.addLike(UpdatePublicacionDto, id);
   }
 
   @Delete()
@@ -55,7 +57,7 @@ export class PublicacionesController {
     @Param('id/like') id: string,
     @Body() UpdatePublicacionDto: UpdatePublicacionDto
   ) {
-    return this.publicacionesService.addLike(UpdatePublicacionDto, id);
+    return this.publicacionesService.removeLike(UpdatePublicacionDto, id);
   }
 
   @Get(':id')

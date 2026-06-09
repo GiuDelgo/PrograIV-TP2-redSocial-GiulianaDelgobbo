@@ -115,6 +115,10 @@ export class PublicacionesService {
     return { message: 'Publicación dada de baja correctamente', data: publicacionLikeada };  
   }
 
+  async removeLike (UpdatePublicacionDto: UpdatePublicacionDto, id: string){
+
+  }
+
 
   findOne(id: number) {
     return `This action returns a #${id} publicacion`;
