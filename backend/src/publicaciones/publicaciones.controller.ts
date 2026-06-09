@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Query, Delete, UseInterceptors, BadRequestException, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Query, Delete, UseInterceptors, BadRequestException, UploadedFile, UnsupportedMediaTypeException } from '@nestjs/common';
 import { PublicacionesService } from './publicaciones.service';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto';
 import { UpdatePublicacionDto } from './dto/update-publicacion.dto';
@@ -40,6 +40,24 @@ export class PublicacionesController {
     return this.publicacionesService.findAll(usuarioNombre, limiteNum, offsetNum, orden);
   }
 
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.publicacionesService.remove(id);
+  }
+
+  @Post()
+  addLike (@Param('id/like') id: string) {
+    return this.publicacionesService.add(id);
+  }
+
+  @Delete()
+  removeLike (
+    @Param('id/like') id: string,
+    @Body() UpdatePublicacionDto: UpdatePublicacionDto
+  ) {
+    return this.publicacionesService.addLike(UpdatePublicacionDto, id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.publicacionesService.findOne(+id);
@@ -50,8 +68,4 @@ export class PublicacionesController {
     return this.publicacionesService.update(+id, updatePublicacionDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.publicacionesService.remove(id);
-  }
 }

@@ -87,15 +87,6 @@ export class PublicacionesService {
     return await consulta.exec();
   }
 
-
-  findOne(id: number) {
-    return `This action returns a #${id} publicacion`;
-  }
-
-  update(id: number, updatePublicacionDto: UpdatePublicacionDto) {
-    return `This action updates a #${id} publicacion`;
-  }
-
   async remove(id: string) {
     const publicacionEliminada = await this.PublicacionModel.findByIdAndUpdate(
       id, 
@@ -109,4 +100,29 @@ export class PublicacionesService {
 
     return { message: 'Publicación dada de baja correctamente', data: publicacionEliminada };  
   }
+    
+  async addLike(UpdatePublicacionDto: UpdatePublicacionDto, id: string) {
+    const publicacionLikeada = await this.PublicacionModel.findByIdAndUpdate(
+      id, 
+      { $addToSet: { likes: UpdatePublicacionDto.usuarioId } }, //addToSet evita que se repitan valores, si el id ya está en el array no lo agrega
+      { new: true } //devuelve el documento modificado
+    ); 
+
+    if (!publicacionLikeada) {
+      throw new BadRequestException(`No se encontró la publicación`);
+    }
+
+    return { message: 'Publicación dada de baja correctamente', data: publicacionLikeada };  
+  }
+
+
+  findOne(id: number) {
+    return `This action returns a #${id} publicacion`;
+  }
+
+  update(id: number, updatePublicacionDto: UpdatePublicacionDto) {
+    return `This action updates a #${id} publicacion`;
+  }
+
+  
 }
