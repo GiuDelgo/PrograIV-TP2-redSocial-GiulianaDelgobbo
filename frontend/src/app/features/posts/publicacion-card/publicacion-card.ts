@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Publicacion } from '../../../shared/interfaces/publicacion.interface';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-publicacion-card',
@@ -12,13 +13,18 @@ import { Publicacion } from '../../../shared/interfaces/publicacion.interface';
 
 export class PublicacionCard {
   @Input() publicacion!: Publicacion;
-  @Input() idUsuarioLogueado: string = 'ID_DEL_TOKEN_LOCAL'; // Se extrae del JWT local
+  @Input() idUsuarioLogueado: string = ''; // **SPRINT 3: se extrae del JWT local
 
   @Output() onLike = new EventEmitter<string>();
   @Output() onDelete = new EventEmitter<string>();
 
+  message = signal<string | null>(null);
+  isConfirmed = signal <boolean>(false);
+
+  constructor (private authService : AuthService){}
+
   get isLiked(): boolean {
-    return this.publicacion?.likes?.includes(this.idUsuarioLogueado);
+    return this.publicacion?.likes?.includes(this.idUsuarioLogueado);//busco el id del user loguado en el array de likes
   }
 
   get isMine(): boolean {
@@ -29,9 +35,29 @@ export class PublicacionCard {
     this.onLike.emit(this.publicacion._id);
   }
 
+  confirmDelete(){
+    this.isConfirmed.set(true);
+    this.eliminarPost();
+  }
+
+  cancelDelete(){
+    this.isConfirmed.set(false);
+    this.message.set(null);
+  }
+
+  deleteMessage (){
+    this.message.set('Seguro que desea eliminar la publicación?');
+  }
+
   eliminarPost() {
-    if (confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
+    if (this.isConfirmed()) {
       this.onDelete.emit(this.publicacion._id);
+
+      setTimeout( ()=>{
+        this.isConfirmed.set(false);
+        this.message.set(null);
+      },
+      1000);
     }
   }
 }

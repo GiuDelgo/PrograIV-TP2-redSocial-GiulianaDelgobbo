@@ -1,5 +1,18 @@
 <div class="card publicacion-card mb-4 shadow-sm transition-all">
     <div class="card-body">
+        @if (message()){
+            <div class="alert alert-danger alert-dismissible fade show text-center py-2 mb-3" role="alert">
+                <small class="fw-medium">{{ message() }}</small>
+
+                <button class="btn btn-outline-danger btn-sm border-0">
+                    <i (click)="confirmDelete()" class="bi bi-trash3-fill">Si</i>
+                </button>
+                <button class="btn btn-outline-danger btn-sm border-0">
+                    <i (click)="cancelDelete()" class="bi bi-trash3-fill">No</i>
+                </button>
+            </div>
+            
+        }
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex align-items-center">
                 <div class="avatar-placeholder me-2 d-flex align-items-center justify-content-center text-white fw-bold">
@@ -12,8 +25,8 @@
             </div>
         
             @if (isMine) {
-                <button (click)="eliminarPost()" class="btn btn-outline-danger btn-sm border-0 rounded-circle" title="Eliminar publicación">
-                    <i class="bi bi-trash3-fill">🗑️</i>
+                <button (click)="deleteMessage()" class="btn btn-outline-danger btn-sm border-0" title="Eliminar publicación">
+                    <i class="bi bi-trash3-fill">Eliminar</i>
                 </button>
             }
         </div>

@@ -20,8 +20,8 @@ export class Registro implements OnInit {
 
   ngOnInit() {
     this.registroForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      apellido: ['', [Validators.required, Validators.minLength(3)]],
+      nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      apellido: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       correo: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern('^(?=.*[A-Z])(?=.*\\d).+$')]],//obliga a tener al menos una mayúscula y un número

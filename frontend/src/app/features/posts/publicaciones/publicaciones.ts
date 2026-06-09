@@ -123,9 +123,8 @@ export class Publicaciones implements OnInit, OnDestroy {
   handleDelete(idPublicacion: string) {
     this.publicacionesService.deletePublicacion(idPublicacion).subscribe({
       next: () => {
-        // quito del arreglo visual local
-        this.publicaciones.set(this.publicaciones().filter(p => p._id !== idPublicacion));
-        this.totalPublicaciones--;
+        this.publicaciones.set(this.publicaciones().filter(p => p._id !== idPublicacion));//una vez que el metodo hizo el borrado lógico, saco del signal de array a la publicacion eliminada
+        this.totalPublicaciones--;//resto uno al contador
       },
       error: (err) => {
         const mensajeError = err.error?.message || 'No se pudo eliminar la publicación';
