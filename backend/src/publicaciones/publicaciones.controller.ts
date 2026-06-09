@@ -52,12 +52,12 @@ export class PublicacionesController {
     return this.publicacionesService.addLike(UpdatePublicacionDto, id);
   }
 
-  @Delete(':id/like')
+  @Delete(':id/like/:usuarioId')
   removeLike (
     @Param('id') id: string,
-    @Body() UpdatePublicacionDto: UpdatePublicacionDto
+    @Param('usuarioId') usuarioId: string,
   ) {
-    return this.publicacionesService.removeLike(UpdatePublicacionDto, id);
+    return this.publicacionesService.removeLike(id, usuarioId);
   }
 
   @Get(':id')

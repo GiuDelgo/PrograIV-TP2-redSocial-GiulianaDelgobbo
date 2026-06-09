@@ -112,13 +112,13 @@ export class PublicacionesService {
       throw new BadRequestException(`No se encontró la publicación`);
     }
 
-    return { message: 'Publicación dada de baja correctamente', data: publicacionLikeada };  
+    return { message: 'Publicación likeada', data: publicacionLikeada };  
   }
 
-  async removeLike (UpdatePublicacionDto: UpdatePublicacionDto, id: string){
+  async removeLike (id: string, usuarioId: string){
     const publicacionDesLikeada = await this.PublicacionModel.findByIdAndUpdate(
       id, 
-      { $pull: { likes: UpdatePublicacionDto.usuarioId } }, //addToSet evita que se repitan valores, si el id ya está en el array no lo agrega
+      { $pull: { likes: usuarioId } }, 
       { new: true } //devuelve el documento modificado
     ); 
 
@@ -126,7 +126,7 @@ export class PublicacionesService {
       throw new BadRequestException(`No se encontró la publicación`);
     }
 
-    return { message: 'Publicación dada de baja correctamente', data: publicacionDesLikeada };  
+    return { message: 'Publicación deslikeada', data: publicacionDesLikeada };  
   }
 
   findOne(id: number) {
