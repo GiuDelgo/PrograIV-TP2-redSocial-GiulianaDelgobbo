@@ -43,16 +43,16 @@ export class PublicacionesService {
 
         return this.http.get<Publicacion[]>(this.baseUrl, { params });
     }
-    
-    deleteLike (idPublicacion: string): Observable<any> {
-        const url = `${this.baseUrl}/${idPublicacion}/like`;
-        return this.http.delete(url);
-    }
 
-    addLike (idPublicacion: string): Observable<any> {
+    addLike (idPublicacion: string, usuarioId:string): Observable<any> {
         const url = `${this.baseUrl}/${idPublicacion}/like`;
-        return this.http.post(url, {});
+        return this.http.post(url, {usuarioId});
     }
+    
+    deleteLike (idPublicacion: string, usuarioId:string): Observable<any> {
+        const url = `${this.baseUrl}/${idPublicacion}/like/${usuarioId}`;
+        return this.http.delete(url);
+    }    
 
     deletePublicacion (idPublicacion: string): Observable<any> {
         const url = `${this.baseUrl}/${idPublicacion}`;

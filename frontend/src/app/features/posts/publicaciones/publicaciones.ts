@@ -103,7 +103,7 @@ export class Publicaciones implements OnInit, OnDestroy {
     
     if (isLiked) {
       // DELETE al backend para remover like
-      this.publicacionesService.deleteLike(idPublicacion).subscribe({
+      this.publicacionesService.deleteLike(idPublicacion, this.usuarioId).subscribe({
         next: () => {
           post.likes = post.likes.filter(id => id !== this.usuarioId);
           this.publicaciones.set([...this.publicaciones()]);
@@ -111,7 +111,7 @@ export class Publicaciones implements OnInit, OnDestroy {
       });
     } else {
       // POST al backend para agregar like
-      this.publicacionesService.addLike(idPublicacion).subscribe({
+      this.publicacionesService.addLike(idPublicacion, this.usuarioId).subscribe({
         next: () => {
           post.likes.push(this.usuarioId);
           this.publicaciones.set([...this.publicaciones()]);

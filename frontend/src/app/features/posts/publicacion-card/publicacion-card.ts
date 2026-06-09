@@ -24,11 +24,11 @@ export class PublicacionCard {
   constructor (private authService : AuthService){}
 
   get isLiked(): boolean {
-    return this.publicacion?.likes?.includes(this.idUsuarioLogueado);//busco el id del user loguado en el array de likes
+    return this.publicacion.likes.includes(this.idUsuarioLogueado);//busco el id del user loguado en el array de likes
   }
 
   get isMine(): boolean {
-    return this.publicacion?.usuarioId === this.idUsuarioLogueado;
+    return this.publicacion.usuarioId === this.idUsuarioLogueado;
   }
 
   toggleLike() {
@@ -57,7 +57,7 @@ export class PublicacionCard {
         this.isConfirmed.set(false);
         this.message.set(null);
       },
-      1000);
+      2000);
     }
   }
 }
