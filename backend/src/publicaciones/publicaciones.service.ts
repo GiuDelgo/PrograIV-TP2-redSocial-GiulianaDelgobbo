@@ -116,9 +116,18 @@ export class PublicacionesService {
   }
 
   async removeLike (UpdatePublicacionDto: UpdatePublicacionDto, id: string){
+    const publicacionDesLikeada = await this.PublicacionModel.findByIdAndUpdate(
+      id, 
+      { $pull: { likes: UpdatePublicacionDto.usuarioId } }, //addToSet evita que se repitan valores, si el id ya está en el array no lo agrega
+      { new: true } //devuelve el documento modificado
+    ); 
 
+    if (!publicacionDesLikeada) {
+      throw new BadRequestException(`No se encontró la publicación`);
+    }
+
+    return { message: 'Publicación dada de baja correctamente', data: publicacionDesLikeada };  
   }
-
 
   findOne(id: number) {
     return `This action returns a #${id} publicacion`;
