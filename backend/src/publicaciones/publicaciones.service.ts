@@ -68,13 +68,25 @@ export class PublicacionesService {
       filtro.usuarioNombre = usuarioNombre;
     }
 
-    let consulta = this.PublicacionModel.find(filtro);
+    if (orden === 'likes') {
+      const pipeline: any[] = [
+        { $match: filtro },
+        { $addFields: { likesCount: { $size: { $ifNull: ['$likes', []] } } } },//cuenta la cantidad de likes de la publicación
+        { $sort: { likesCount: -1, createdAt: -1 } },//ordena por likes y luego por fecha de creación si hay que desempatar
+      ];
 
-    if (orden === 'likes'){
-      consulta = consulta.sort({likes: -1});
-    }else{
-      consulta = consulta.sort({createdAt: -1});
+      if (offsetNum !== undefined && !isNaN(offsetNum)) {
+        pipeline.push({ $skip: offsetNum });
+      }
+
+      if (limiteNum && !isNaN(limiteNum)) {
+        pipeline.push({ $limit: limiteNum });
+      }
+
+      return await this.PublicacionModel.aggregate(pipeline).exec();
     }
+
+    let consulta = this.PublicacionModel.find(filtro).sort({ createdAt: -1 });
 
     if (offsetNum !== undefined && !isNaN(offsetNum)){
       consulta = consulta.skip(offsetNum);

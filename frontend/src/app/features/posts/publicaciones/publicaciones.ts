@@ -26,8 +26,7 @@ export class Publicaciones implements OnInit, OnDestroy {
   totalPublicaciones: number = 0; // para deshabilitar botones de paginado
   usuarioId = ''; // SPRINT 3: Reemplazar con lógica real de autenticación
 
-  usuarioFilter = <string|null> (null);
-  publicacionesUsuario = <Publicacion[]>([]);
+  usuarioFilter = '';
   filtroActivo = false;
 
   private postSub!: Subscription;
@@ -60,7 +59,9 @@ export class Publicaciones implements OnInit, OnDestroy {
   }
 
   cargarPublicaciones() {
-    this.publicacionesService.obtenerPublicaciones(this.ordenActual, this.limite, this.offset).subscribe({
+    const usuarioNombre = this.filtroActivo && this.usuarioFilter.trim() ? this.usuarioFilter.trim(): undefined;//para la petición al backend con filtro de usuario
+
+    this.publicacionesService.obtenerPublicaciones(this.ordenActual, this.limite, this.offset, usuarioNombre).subscribe({
       next: (res) => {
 
         this.publicaciones.set(res);
@@ -88,18 +89,27 @@ export class Publicaciones implements OnInit, OnDestroy {
     }
   }
 
-  filtrarUsuario (){    
-    this.publicacionesUsuario = this.publicaciones().filter(p => p.usuarioNombre === this.usuarioFilter);
+  filtrarUsuario() {
+    const notEmptyUsername = this.usuarioFilter.trim();
+    if (!notEmptyUsername) {
+      this.borrarBusqueda();
+      return;
+    }
+
+    this.usuarioFilter = notEmptyUsername;
     this.filtroActivo = true;
+    this.offset = 0;
+    this.cargarPublicaciones();
   }
 
-  borrarBusqueda (){
-    this.publicacionesUsuario = [];
-    this.usuarioFilter = null;
+  borrarBusqueda() {
+    this.usuarioFilter = '';
     this.filtroActivo = false;
+    this.offset = 0;
+    this.cargarPublicaciones();
   }
 
-  // paginación sin scroll infinito, solo botones Siguiente y Anterior
+  // paginación 
   paginaSiguiente() {
     this.offset += this.limite;
     this.cargarPublicaciones();
