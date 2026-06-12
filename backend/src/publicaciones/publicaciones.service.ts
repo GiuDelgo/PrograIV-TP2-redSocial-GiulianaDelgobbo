@@ -68,10 +68,10 @@ export class PublicacionesService {
       filtro.usuarioNombre = usuarioNombre;
     }
 
-    if (orden === 'likes') {
-      const pipeline: any[] = [
-        { $match: filtro },
-        { $addFields: { likesCount: { $size: { $ifNull: ['$likes', []] } } } },//cuenta la cantidad de likes de la publicación
+    if (orden === 'likes') {//chequeo si el orden es por likes
+      const pipeline: any[] = [//array con la secuencia de operaciones que quiero que Mongo haga
+        { $match: filtro }, //filtro para que solo se incluyan las publicaciones que no están eliminadas (match mongo = where SQL)
+        { $addFields: { likesCount: { $size: '$likes' } } },//cuenta la cantidad de likes de la publicación. likesCount es un parametro temporal que guardará la cantidad
         { $sort: { likesCount: -1, createdAt: -1 } },//ordena por likes y luego por fecha de creación si hay que desempatar
       ];
 
