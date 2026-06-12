@@ -49,3 +49,22 @@
 .transition-all {
     transition: all 0.2s ease-in-out;
 }
+
+/* Estructuras de comentarios */
+.comment-item {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    transition: transform 0.2s ease-in-out;
+}
+
+.comment-avatar {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border: 1px solid #62aaac;
+}
+
+.comment-item:hover {
+    transform: translateX(3px);
+    border-color: #62aaac;
+}

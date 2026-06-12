@@ -58,5 +58,4 @@ export class PublicacionesService {
         const url = `${this.baseUrl}/${idPublicacion}`;
         return this.http.delete(url);//baja logica, no borrado físico
     }
-
 }

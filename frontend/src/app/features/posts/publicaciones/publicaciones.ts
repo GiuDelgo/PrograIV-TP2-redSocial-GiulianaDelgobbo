@@ -5,11 +5,12 @@ import { PublicacionCard } from '../publicacion-card/publicacion-card';
 import { PublicacionesService } from '../../../core/services/publicaciones.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
+import { FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
-  imports: [CommonModule, PublicacionCard],
+  imports: [CommonModule, PublicacionCard, FormsModule],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css'
 })
@@ -24,6 +25,11 @@ export class Publicaciones implements OnInit, OnDestroy {
   offset: number = 0; 
   totalPublicaciones: number = 0; // para deshabilitar botones de paginado
   usuarioId = ''; // SPRINT 3: Reemplazar con lógica real de autenticación
+
+  usuarioFilter = <string|null> (null);
+  publicacionesUsuario = <Publicacion[]>([]);
+  filtroActivo = false;
+
   private postSub!: Subscription;
 
   constructor(private publicacionesService: PublicacionesService, private authService: AuthService) {
@@ -80,6 +86,17 @@ export class Publicaciones implements OnInit, OnDestroy {
       this.offset = 0; // Reinicio paginación al reordenar
       this.cargarPublicaciones();
     }
+  }
+
+  filtrarUsuario (){    
+    this.publicacionesUsuario = this.publicaciones().filter(p => p.usuarioNombre === this.usuarioFilter);
+    this.filtroActivo = true;
+  }
+
+  borrarBusqueda (){
+    this.publicacionesUsuario = [];
+    this.usuarioFilter = null;
+    this.filtroActivo = false;
   }
 
   // paginación sin scroll infinito, solo botones Siguiente y Anterior
