@@ -1,9 +1,11 @@
-import { Controller, Post, Body, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, UploadedFile, BadRequestException, Res, UseGuards, Req } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService } from './auth.service';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
 import { memoryStorage } from 'multer';
 import { LoginDto } from './dto/login.dto';
+import type { Response, Request } from 'express';
+import { AuthGuard } from '../guards/auth/auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -25,24 +27,73 @@ export class AuthController {
   async registro(
     @Body() createUsuarioDto: CreateUsuarioDto, //capturo body y lo paso al dto ->JSON
     @UploadedFile() file: Express.Multer.File, //capturo archivo y accedo a sus metadatos ->multipart/form-data
-  ) {
+    @Res({passthrough: true}) res: Response //se usa para modificar la respuesta que nest está preparando y que le agregue la cookie con el token y el mensaje exitoso
+  )  {
+
     if (!file) {
       throw new BadRequestException('La foto de perfil es obligatoria para el registro');
     }
-    return this.authService.registrarUsuario(createUsuarioDto, file);
+
+    const resultado = await this.authService.registrarUsuario(createUsuarioDto, file);
+
+    this.setTokenCookie(res, resultado.access_token);
+
+    return { message: 'usuario registrado exitosamente' };
   }
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto) { 
-    return this.authService.loginUsuario(loginDto.usuario, loginDto.contrasena);
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res({passthrough: true}) res: Response
+  ) { 
+    const resultado = await this.authService.loginUsuario(loginDto.usuario, loginDto.contrasena);
+
+    this.setTokenCookie(res, resultado.access_token);
+
+    return { message: 'usuario registrado exitosamente' };
+  }
+
+
+  @Post('autorizar')
+  @UseGuards(AuthGuard)
+  async validateJwt(@Req() req: Request){
+    // si el guard permite el paso, significa que el token es 100% válido.
+    // retorna directamente los datos del usuario que el Guard extrajo del payload.
+    return req['user'];
+  }
+
+  @Post('refrescar')
+  @UseGuards(AuthGuard)
+  async refreshJwt(
+    @Req() req: Request, 
+    @Res({ passthrough: true }) res: Response
+  ){
+    // extraigo el payload que el Guard decodificó e inyectó en la request
+    const usuarioValidado = req['user'];
+
+    const usuarioFormateado = {
+      _id: usuarioValidado.sub, // 'sub' de vuelta a '_id'
+      usuario: usuarioValidado.usuario,
+      correo: usuarioValidado.correo,
+      perfil: usuarioValidado.perfil
+    };
+
+    // le pido al servicio que genere un nuevo access_token con el mismo payload
+    const resultado = await this.authService.generateJWT(usuarioFormateado);
+
+    // pisa la cookie vieja con el nuevo token renovado por 15 minutos más
+    this.setTokenCookie(res, resultado.access_token);
+
+    return { message: 'Token renovado exitosamente' };
+  }
+
+  //método para configuración de cookie
+  private setTokenCookie(res: Response, token: string) {
+    res.cookie('access_token', token, {
+      httpOnly: true, 
+      sameSite: 'strict',
+      secure: true, 
+      maxAge: 1000 * 60 * 15, // Sincronizacion de 15m con la exp del JWT token
+    });
   }
 }
-
-//file:{
-//  fieldname: 'foto',
-//  originalname: 'foto.jpg',
-//  encoding: '7-bit',
-//  mimetype: 'image/jpeg',
-//  buffer: <Buffer ...>,
-//  size: 12345
-//}

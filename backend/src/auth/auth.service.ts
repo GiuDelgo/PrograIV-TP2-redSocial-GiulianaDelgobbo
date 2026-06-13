@@ -3,13 +3,18 @@ import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { extname } from 'path'; // Funciona en Windows local y Vercel Linux)
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { access } from 'fs';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Injectable()
 export class AuthService {
   private supabase: SupabaseClient;
 
-  constructor(private readonly usuariosService: UsuariosService) {
+  constructor(
+    private readonly usuariosService: UsuariosService,
+    private readonly jwtService: JwtService
+  ) {
     // inicializa el cliente con las variables de entorno
     this.supabase = createClient(process.env.SUPABASE_URL!,process.env.SUPABASE_KEY!);
   }
@@ -38,15 +43,38 @@ export class AuthService {
       .getPublicUrl(`fotos/${nombreArchivo}`);
 
     // persiste en MongoDB pasando la URL pública final
-    return this.usuariosService.create({
+    const nuevoUsuario = await this.usuariosService.create({
       ...createUsuarioDto,
       foto: publicUrl 
     });
 
-    //SPRINT 3 TOKEN JWT VA ACA
+    if (!nuevoUsuario) {
+      throw new Error('Error al crear el usuario');
+    }
+
+    return this.generateJWT(nuevoUsuario);
   }
 
   async loginUsuario(user: string, contrasena: string) {
-    return this.usuariosService.login(user, contrasena);
+    const loginUsuario = await this.usuariosService.login(user, contrasena);
+
+    if (!loginUsuario) {
+      throw new Error('Error al crear el usuario');
+    }
+
+    return this.generateJWT(loginUsuario);
   }
+
+  async generateJWT(usuario:any){
+    const payload = {
+      sub: usuario._id,      
+      usuario: usuario.usuario,
+      correo: usuario.correo,
+      perfil: usuario.perfil
+    };
+
+    return {access_token: await this.jwtService.signAsync(payload)};
+  }
+
+
 }

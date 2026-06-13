@@ -1,10 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe())//uso validation pipe de forma global
+  app.use(cookieParser());//importo el cookie-parser
 
   app.enableCors({
     origin: ['http://localhost:4200', 'https://tribook-frontend.vercel.app'], 
