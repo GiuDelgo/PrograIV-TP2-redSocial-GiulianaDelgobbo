@@ -91,7 +91,7 @@ export class AuthController {
   private setTokenCookie(res: Response, token: string) {
     res.cookie('access_token', token, {
       httpOnly: true, 
-      sameSite: 'strict',
+      sameSite: 'none',
       secure: true, 
       maxAge: 1000 * 60 * 15, // Sincronizacion de 15m con la exp del JWT token
     });
