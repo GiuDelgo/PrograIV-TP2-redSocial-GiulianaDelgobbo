@@ -34,11 +34,11 @@ export class AuthController {
       throw new BadRequestException('La foto de perfil es obligatoria para el registro');
     }
 
-    const resultado = await this.authService.registrarUsuario(createUsuarioDto, file);
+    const { token, usuario } = await this.authService.registrarUsuario(createUsuarioDto, file);
 
-    this.setTokenCookie(res, resultado.access_token);
+    this.setTokenCookie(res, token.access_token);
 
-    return { message: 'usuario registrado exitosamente' };
+    return usuario ;
   }
 
   @Post('login')
@@ -46,11 +46,11 @@ export class AuthController {
     @Body() loginDto: LoginDto,
     @Res({passthrough: true}) res: Response
   ) { 
-    const resultado = await this.authService.loginUsuario(loginDto.usuario, loginDto.contrasena);
+    const { token, usuario } = await this.authService.loginUsuario(loginDto.usuario, loginDto.contrasena);
 
-    this.setTokenCookie(res, resultado.access_token);
+    this.setTokenCookie(res, token.access_token);
 
-    return { message: 'usuario registrado exitosamente' };
+    return usuario;
   }
 
 

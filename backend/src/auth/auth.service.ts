@@ -52,7 +52,9 @@ export class AuthService {
       throw new Error('Error al crear el usuario');
     }
 
-    return this.generateJWT(nuevoUsuario);
+    const token = await this.generateJWT(nuevoUsuario);
+
+    return {token, usuario: nuevoUsuario};
   }
 
   async loginUsuario(user: string, contrasena: string) {
@@ -62,7 +64,9 @@ export class AuthService {
       throw new Error('Error al crear el usuario');
     }
 
-    return this.generateJWT(loginUsuario);
+    const token = await this.generateJWT(loginUsuario);
+
+    return { token, usuario: loginUsuario};
   }
 
   async generateJWT(usuario:any){
