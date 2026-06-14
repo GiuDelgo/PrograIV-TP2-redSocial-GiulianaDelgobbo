@@ -93,7 +93,7 @@ export class AuthController {
       httpOnly: true, 
       sameSite: 'none',//tengo dominios diferentes para front y back, si pongo strict no funciona
       secure: true, 
-      maxAge: 1000 * 60, // Sincronizacion de 15m con la exp del JWT token
+      maxAge: 1000 * 60 , // Sincronizacion de 15m con la exp del JWT token
     });
   }
 }
