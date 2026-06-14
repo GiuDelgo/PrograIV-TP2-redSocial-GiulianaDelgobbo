@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -16,14 +17,20 @@ export const routes: Routes = [
     },
     {   
         path: 'publicaciones', 
-        loadComponent: () => import('./features/posts/publicaciones/publicaciones').then(m => m.Publicaciones)
+        loadComponent: () => import('./features/posts/publicaciones/publicaciones').then(m => m.Publicaciones),
+        canActivate: [authGuard]
     },
     {   
         path: 'post', 
-        loadComponent: () => import('./features/posts/post/post').then(m => m.Post)
+        loadComponent: () => import('./features/posts/post/post').then(m => m.Post),
+        canActivate: [authGuard]
     },
     {
         path: 'miperfil',
-        loadComponent: () => import('./features/miperfil/miperfil').then(m => m.MiPerfil)
-    }
+        loadComponent: () => import('./features/miperfil/miperfil').then(m => m.MiPerfil),
+        canActivate: [authGuard]
+    },
+
+    { path: '', redirectTo: 'publicaciones', pathMatch: 'full' },
+    { path: '**', redirectTo: 'publicaciones' }
 ];
