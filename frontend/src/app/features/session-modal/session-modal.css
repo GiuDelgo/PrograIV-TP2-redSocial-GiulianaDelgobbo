@@ -6,3 +6,34 @@
 .modal {
     z-index: 1050;
 }
+
+.modal-header {
+    background-color: #62aaac;
+}
+
+.btn-salir{
+    background-color: rgb(204, 195, 195) !important;
+    border: none;
+}
+
+.btn{    
+    background-color: #62aaac;
+    color: white;
+    border: none;
+}
+
+.btn:hover {
+    background-color: #4f8b8d;
+    color: white;
+}
+
+.btn-salir:hover{
+    background-color: #a0a1a1 !important;
+    color: white !important;
+}
+
+
+.transition-all:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+}

@@ -69,7 +69,7 @@ export class AuthService {
 
         this.timer = setTimeout(()=>{
             this.mostrarModal.set(true);//muestro modal a los 10'
-        }, 60 * 1000);
+        }, 60 * 1000 * 2);
     }
 
     extenderSesion(): Observable<any>{
