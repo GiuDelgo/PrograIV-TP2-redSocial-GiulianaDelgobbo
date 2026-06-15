@@ -13,6 +13,10 @@
                 </div>
             }
 
+            @if(cargando()){
+                <app-cargando></app-cargando>
+            }
+
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
                 <div class="inner-color">
                     <div class="mb-3">

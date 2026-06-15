@@ -56,9 +56,7 @@ export class AuthService {
             })
         );
         
-    }
-
-    
+    }    
     
     validarToken(): Observable <any> {
         return this.http.post(`${this.baseUrl}/autorizar`, {});

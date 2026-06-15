@@ -3,11 +3,12 @@ import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { Cargando } from '../cargando/cargando';
 
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, Cargando],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -16,6 +17,7 @@ export class Login implements OnInit {
 
   errorMessage = signal<string | null>(null);
   loginForm!: FormGroup;
+  cargando = signal<boolean>(false);
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -34,15 +36,17 @@ export class Login implements OnInit {
     this.errorMessage.set(null);
 
     const { username, password } = this.loginForm.value;
+
+    this.cargando.set(true);
   
     this.authService.login(username, password).subscribe({
     next: (res) => {
       console.log('Login exitoso', res);
-
-      // **REMINDER** Sprint 3 aca guarda el JWT devuelto en el localStorage.
+      this.cargando.set(false);
       this.router.navigate(['/publicaciones']);
     },
     error: (err) => {
+      this.cargando.set(false);
       const mensajeError = err.error?.message || 'Credenciales inválidas';
       this.errorMessage.set(mensajeError);
     }
