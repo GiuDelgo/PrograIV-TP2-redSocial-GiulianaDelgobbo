@@ -6,11 +6,12 @@ import { PublicacionesService } from '../../../core/services/publicaciones.servi
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { FormsModule} from '@angular/forms';
+import { PublicacionComentariosCard } from '../publicacion-comentarios-card/publicacion-comentarios-card';
 
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
-  imports: [CommonModule, PublicacionCard, FormsModule],
+  imports: [CommonModule, PublicacionCard, FormsModule, PublicacionComentariosCard],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css'
 })
@@ -28,6 +29,8 @@ export class Publicaciones implements OnInit, OnDestroy {
 
   usuarioFilter = '';
   filtroActivo = false;
+
+  publicacionComentarios = signal<Publicacion | null>(null);
 
   private postSub!: Subscription;
 
@@ -159,4 +162,12 @@ export class Publicaciones implements OnInit, OnDestroy {
       }
     });
   }
+
+  handleCommentSection(showPostComments: Publicacion){
+    this.publicacionComentarios.set(showPostComments);
+  }
+
+  cerrarComentarios() {
+  this.publicacionComentarios.set(null);
+}
 }

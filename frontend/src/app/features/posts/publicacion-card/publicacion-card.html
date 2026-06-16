@@ -45,9 +45,13 @@
                 <span class="heart-icon">{{ isLiked ? '❤️' : '🤍' }}</span>
                 <span class="fw-bold">{{ publicacion.likes.length }} Me gusta</span>
             </button>
+            <button (click)="showPostComments()" class="btn btn-comment btn-sm d-flex align-items-center gap-2 transition-all" [ngClass]="{'liked': isLiked}">
+                <span class="comment-icon">💬</span>
+                <span class="fw-bold">{{ publicacion.comentarios.length }} Comentarios</span>
+            </button>
         </div>
 
-        <div class="comments-section border-top mt-4">
+        <!-- <div class="comments-section border-top mt-4">
             <h6 class="fw-bold mb-3 text-secondary mt-3">Comentarios:</h6>            
             @for (comment of publicacion.comentarios; track comment._id) {
                 <div class="comment-item d-flex p-3 rounded mb-2 align-items-start">
@@ -70,6 +74,6 @@
                     Nadie ha comentado esta publicación aún.
                 </div>
             }
-        </div> 
+        </div>  -->
     </div>
 </div>

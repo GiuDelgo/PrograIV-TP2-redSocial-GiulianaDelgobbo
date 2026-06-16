@@ -13,10 +13,11 @@ import { AuthService } from '../../../core/services/auth.service';
 
 export class PublicacionCard {
   @Input() publicacion!: Publicacion;
-  @Input() idUsuarioLogueado: string = ''; // **SPRINT 3: se extrae del JWT local
+  @Input() idUsuarioLogueado: string = '';
 
   @Output() onLike = new EventEmitter<string>();
   @Output() onDelete = new EventEmitter<string>();
+  @Output() onComment = new EventEmitter<Publicacion>();
 
   message = signal<string | null>(null);
   isConfirmed = signal <boolean>(false);
@@ -59,5 +60,10 @@ export class PublicacionCard {
       },
       2000);
     }
+  }
+
+  showPostComments(){
+    //cambia un outPut booleano a true o false para que en publicaciones se muestre la publicacion grande
+    this.onComment.emit(this.publicacion);
   }
 }

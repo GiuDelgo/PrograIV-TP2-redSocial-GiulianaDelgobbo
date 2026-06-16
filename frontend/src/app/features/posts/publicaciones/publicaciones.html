@@ -1,3 +1,17 @@
+@if (publicacionComentarios()) {
+    <div class="modal-overlay d-flex justify-content-center align-items-center" (click)="cerrarComentarios()">
+        
+        <div class="modal-card-content col-11 col-md-8 col-lg-6" (click)="$event.stopPropagation()">
+            
+            <app-publicacion-comentarios-card 
+                [publicacion]="publicacionComentarios()!"
+                [idUsuarioLogueado]="usuarioId"
+                (onClose)="cerrarComentarios()">
+            </app-publicacion-comentarios-card>
+        </div>
+    </div>
+}
+
 <div class="publicaciones-container container-fluid py-5">
     <div class="container">
 
@@ -43,7 +57,8 @@
                         [publicacion]="pub"
                         [idUsuarioLogueado]="usuarioId"
                         (onLike)="handleLike($event)"
-                        (onDelete)="handleDelete($event)">
+                        (onDelete)="handleDelete($event)"
+                        (onComment)="handleCommentSection($event)">
                     </app-publicacion-card>
                 } @empty {
                     <div class="text-center p-5 rounded bg-white shadow-sm mb-4">

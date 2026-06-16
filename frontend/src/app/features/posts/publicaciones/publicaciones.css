@@ -110,3 +110,25 @@
 .transition-all {
   transition: all 0.2s ease-in-out;
 }
+
+/* Cubre toda la pantalla por completo detrás del contenido */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro transparente */
+    backdrop-filter: blur(4px); /* Suaviza y difumina el fondo del muro (Opcional Pro) */
+    z-index: 1050; /* Por encima de cualquier card del feed */
+    overflow-y: auto; /* Permite scroll si los comentarios son muy largos */
+    padding: 2rem 0;
+}
+
+/* Contenedor de tu tarjeta para que no se pegue a los bordes */
+.modal-card-content {
+    max-height: 90vh;
+    overflow-y: auto; /* Scroll interno para la caja de comentarios */
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}

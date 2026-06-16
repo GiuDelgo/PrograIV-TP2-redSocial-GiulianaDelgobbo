@@ -26,11 +26,12 @@
     width: 100%;
 }
 
-.btn-like {
+.btn-like, .btn-comment {
     background: transparent;
     color: #62aaac;
     border: 1px solid rgba(98, 170, 172, 0.3);
     border-radius: 20px;
+    margin-right: 10px;
     padding: 6px 16px;
 }
 
