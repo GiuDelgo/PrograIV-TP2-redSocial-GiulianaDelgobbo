@@ -1,26 +1,66 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateComentarioDto } from './dto/create-comentario.dto';
 import { UpdateComentarioDto } from './dto/update-comentario.dto';
+import { Model } from 'mongoose';
+import { Comentario } from './entities/comentario.entity';
+import { InjectModel } from '@nestjs/mongoose';
+import { PublicacionesService } from '../publicaciones.service';
 
 @Injectable()
 export class ComentariosService {
-  create(createComentarioDto: CreateComentarioDto) {
-    return 'This action adds a new comentario';
+  constructor(
+    @InjectModel(Comentario.name) 
+    private ComentarioModel: Model<Comentario>, 
+    @Inject(forwardRef(() => PublicacionesService))
+    private readonly publicacionesService: PublicacionesService
+  ) {}
+
+  async create(createComentarioDto: CreateComentarioDto) {
+    //1. guardar el comentario con su id en el schema de comentarios de mongoose
+    //2. quiero ir a buscar el id de la publicacion a la base //AGREGAR EL MÉTODO EN EL SERVICIO DE PUBLICACIONES
+    //3. agregarle al array de comentarios el id del comentario
+
+    const comentario = new this.ComentarioModel({
+      publicacionId: createComentarioDto.publicacionId,
+      usuarioId: createComentarioDto.usuarioId,
+      usuarioNombre: createComentarioDto.usuarioNombre,
+      descripcion: createComentarioDto.descripcion
+    });
+
+    const comentarioGuardado = await comentario.save();
+    await this.publicacionesService.guardarComentario(comentarioGuardado.publicacionId, comentarioGuardado._id.toString());//guardo el comentario en la publicación correspondiente
+
+    return comentarioGuardado;
   }
 
-  findAll() {
-    return `This action returns all comentarios`;
+  async update(id: string, updateComentarioDto: UpdateComentarioDto) {
+    const comentarioEditado = await this.ComentarioModel.findByIdAndUpdate(
+      id, 
+      { 
+        descripcion: updateComentarioDto.descripcion,
+        editado: true 
+      }, 
+      { new: true } //devuelve el documento modificado
+    ); 
+
+    if (!comentarioEditado) {
+      throw new NotFoundException(`No se encontró el comentario`);
+    }
+
+    return comentarioEditado;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} comentario`;
-  }
+  async getComentarios(publicacionId: string, limit: number, offset: number){
+    const comentarios = await this.ComentarioModel.find({ publicacionId})
+    .sort({ createdAt: -1})
+    .skip(offset)
+    .limit(limit)
+    .exec();
 
-  update(id: number, updateComentarioDto: UpdateComentarioDto) {
-    return `This action updates a #${id} comentario`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} comentario`;
+    return {
+      comentarios,
+      limit,
+      offset
+    };
   }
 }

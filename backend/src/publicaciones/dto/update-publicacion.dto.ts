@@ -1,22 +1,12 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreatePublicacionDto } from './create-publicacion.dto';
-import { IsArray, IsString, IsNotEmpty, IsOptional} from "class-validator";
+import { IsString, IsNotEmpty, MinLength, MaxLength} from "class-validator";
 
 
 export class UpdatePublicacionDto extends PartialType(CreatePublicacionDto) {
     @IsString()
+    @MinLength(3)
+    @MaxLength(300)
     @IsNotEmpty()
-    titulo!: string;
-
-    @IsString()
-    @IsNotEmpty()
-    descripcion!: string; 
-
-    @IsString()
-    @IsNotEmpty()
-    usuarioId!: string;
-
-    @IsString()
-    @IsNotEmpty()
-    usuarioNombre!: string;
+    descripcion!: string;
 }

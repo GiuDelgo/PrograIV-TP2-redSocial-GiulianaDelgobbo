@@ -141,6 +141,22 @@ export class PublicacionesService {
     return { message: 'Publicación deslikeada', data: publicacionDesLikeada };  
   }
 
+  async guardarComentario(publicacionId: string, comentarioId: string){
+    const publicacionComentada = await this.PublicacionModel.findByIdAndUpdate(
+      publicacionId,
+      {
+        $push: { comentarios: comentarioId }
+      },
+      { new: true }//devuelve el objeto con los cambios
+    )
+
+    if (!publicacionComentada) {
+      throw new BadRequestException(`No se encontró la publicación`);
+    }
+
+    return publicacionComentada;
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} publicacion`;
   }
