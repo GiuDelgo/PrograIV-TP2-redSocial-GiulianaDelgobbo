@@ -23,7 +23,7 @@ export class ComentariosService {
     const comentario = new this.ComentarioModel({
       publicacionId: createComentarioDto.publicacionId,
       usuarioId: createComentarioDto.usuarioId,
-      usuarioNombre: createComentarioDto.usuarioNombre,
+      usuario: createComentarioDto.usuario,
       descripcion: createComentarioDto.descripcion
     });
 

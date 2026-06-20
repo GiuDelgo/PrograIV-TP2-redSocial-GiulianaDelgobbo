@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { Publicacion } from '../../../shared/interfaces/publicacion.interface';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ComentariosService } from '../../../core/services/comentarios.service';
 import { Comentario } from '../../../shared/interfaces/comentario.interface'
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-publicacion-comentarios-card',
@@ -11,7 +12,7 @@ import { Comentario } from '../../../shared/interfaces/comentario.interface'
   templateUrl: './publicacion-comentarios-card.html',
   styleUrl: './publicacion-comentarios-card.css',
 })
-export class PublicacionComentariosCard {
+export class PublicacionComentariosCard implements OnInit, OnDestroy{
   @Input({ required: true }) publicacion!: Publicacion;
   @Input({ required: true }) idUsuarioLogueado!: string;
   @Output() onClose = new EventEmitter<void>();
@@ -20,19 +21,24 @@ export class PublicacionComentariosCard {
 
   usuarioString = localStorage.getItem('usuario_sesion');
   usuarioId = '';
-  usuarioNombre = '';
+  usuario = '';
 
   comentarios = signal<Comentario[]>([]);
   limite: number = 5; 
   offset: number = 0;
   totalComentarios: number = 0;
 
+  cargandoMas = false; 
+  finDeContenido = false;
+
+  private comentSub!: Subscription;
+
   errorMessage = signal<string | null>(null);
 
   constructor(private fb: FormBuilder, private comentariosService: ComentariosService){}
 
   ngOnInit() {
-    this.cargarComent();
+    this.cargarComentarios();
 
     this.comentForm = this.fb.group({
       comentario: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(300)]],
@@ -41,15 +47,24 @@ export class PublicacionComentariosCard {
     if (this.usuarioString !== null){
       const usuario = JSON.parse(this.usuarioString);            
       this.usuarioId = usuario._id;
-      this.usuarioNombre = usuario.nombre;
+      this.usuario = usuario.usuario;
     }
+
+    this.comentSub = this.comentariosService.comentarioCreado$.subscribe(()=>{
+      this.offset = 0;
+      this.cargarComentarios();
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.comentSub.unsubscribe();
   }
   // Al presionar la "X" o "Cerrar" en este componente, ejecutás esto:
   notificarCierre() {
     this.onClose.emit();
   }
 
-  enviarComent(){
+  enviarComentario(){
     if (this.comentForm.invalid) {
       this.comentForm.markAllAsTouched();
       return;
@@ -57,7 +72,7 @@ export class PublicacionComentariosCard {
 
     const { comentario } = this.comentForm.value;
 
-    this.comentariosService.comentarPublicacion(this.publicacion._id, this.usuarioId, this.usuarioNombre, comentario)
+    this.comentariosService.comentarPublicacion(this.publicacion._id, this.usuarioId, this.usuario, comentario)
       .subscribe({
         next: () => {
           this.comentForm.reset(); //reseto el formgroup para limpiar los campos de texto
@@ -69,18 +84,23 @@ export class PublicacionComentariosCard {
       });
   }
 
-  cargarComent(){
+  cargarComentarios(){
+    if (this.cargandoMas || this.finDeContenido) return;
+
+    this.cargandoMas = true;
+
     this.comentariosService.obtenerComentarios(this.publicacion._id, this.limite, this.offset).subscribe({
       next: (res) => {
 
-        this.comentarios.set(res);
-
-        if (res.length === this.limite){//traigo de a 5 pubs, si me devuelve 5, puede haber mas, sino llegue al límite
-          this.totalComentarios = this.offset + res.length + 1;
-        } else{
-          this.totalComentarios = this.offset + res.length;
+        if (res.length < this.limite){
+          this.finDeContenido = true;
         }
 
+        this.comentarios.update(c =>  [...c, ...res])//concateno al array con el limite de comentarios los nuevos comentarios
+
+        this.offset += this.limite;
+
+        this.cargandoMas = false;
         this.errorMessage.set(null);
       },
       error: (err) => {
@@ -89,4 +109,17 @@ export class PublicacionComentariosCard {
       }
     });
   }
+
+  onWindowScroll() {
+  // Calculo la posición actual del scroll
+  const posicionActual = window.innerHeight + window.scrollY;
+
+  // Calculo la altura total de la página web
+  const alturaTotal = document.documentElement.scrollHeight;
+
+  // Si el usuario está a menos de 200px del fondo, disparo la carga
+  if (posicionActual >= alturaTotal - 200) {
+    this.cargarComentarios();
+  }
+}
 }

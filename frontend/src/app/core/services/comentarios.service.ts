@@ -16,11 +16,11 @@ export class ComentariosService {
 
   constructor(private http: HttpClient) {}
   
-  comentarPublicacion (publicacionId: string, usuarioId: string, usuarioNombre: string, descripcion: string): Observable<any> {
+  comentarPublicacion (publicacionId: string, usuarioId: string, usuario: string, descripcion: string): Observable<any> {
     const comentarioBody = {
       publicacionId: publicacionId, 
       usuarioId: usuarioId, 
-      usuarioNombre: usuarioNombre, 
+      usuario: usuario, 
       descripcion: descripcion 
     }
 

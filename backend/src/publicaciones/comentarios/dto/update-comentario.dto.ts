@@ -10,7 +10,7 @@ export class UpdateComentarioDto extends PartialType(CreateComentarioDto) {
     @IsString()
     @MinLength(3)
     @IsNotEmpty()
-    usuarioNombre!:string
+    usuario!:string
 
     @IsString()
     @MinLength(3)
