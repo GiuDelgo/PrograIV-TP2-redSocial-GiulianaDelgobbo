@@ -1,6 +1,7 @@
 .publicaciones-container {
   min-height: 100vh;
 }
+
 .container{
   border-radius: 16px !important;
   background: rgba(245, 248, 246, 0.5);

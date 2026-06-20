@@ -22,9 +22,12 @@ export class ComentariosController {
   @Get('publicacion/:publicacionId')
   getComentarios(
     @Param('publicacionId') publicacionId: string,
-    @Query('limit') limit: string = '10',  // NestJS recibe los query params como string
-    @Query('offset') offset: string = '0'
+    @Query('limit') limit?: string,  // NestJS recibe los query params como string
+    @Query('offset') offset?: string
   ){
+    const limiteNum = limit ? parseInt(limit, 10) : undefined;
+    const offsetNum = offset ? parseInt(offset, 10) : undefined;
+
     return this.comentariosService.getComentarios(
       publicacionId, 
       Number(limit), 

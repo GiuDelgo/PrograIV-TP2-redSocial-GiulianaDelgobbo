@@ -1,7 +1,10 @@
 export interface Comentario {    
     _id: string;
-    mensaje: string;
-    usuario: { usuario: string; foto: string };
-    fecha: Date;
-    modificado?: boolean;
+    publicacionId: string;
+    usuarioId: string;
+    usuarioNombre: string; 
+    descripcion: string; 
+    editado: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 }

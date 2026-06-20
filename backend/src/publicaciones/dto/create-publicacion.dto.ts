@@ -1,5 +1,5 @@
 import { Comentario } from "../comentarios/entities/comentario.entity";
-import { IsArray, IsString, IsNotEmpty, IsOptional} from "class-validator";
+import { IsString, IsNotEmpty} from "class-validator";
 
 export class CreatePublicacionDto {  
     @IsString()

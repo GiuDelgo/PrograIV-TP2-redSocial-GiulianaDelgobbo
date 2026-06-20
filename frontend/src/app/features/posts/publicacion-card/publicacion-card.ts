@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Publicacion } from '../../../shared/interfaces/publicacion.interface';
 import { AuthService } from '../../../core/services/auth.service';
+import { Comentario } from '../../../shared/interfaces/comentario.interface';
 
 @Component({
   selector: 'app-publicacion-card',
@@ -18,6 +19,8 @@ export class PublicacionCard {
   @Output() onLike = new EventEmitter<string>();
   @Output() onDelete = new EventEmitter<string>();
   @Output() onComment = new EventEmitter<Publicacion>();
+
+  comentarios = signal<Comentario[]>([]);
 
   message = signal<string | null>(null);
   isConfirmed = signal <boolean>(false);

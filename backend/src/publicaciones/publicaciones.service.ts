@@ -83,7 +83,7 @@ export class PublicacionesService {
         pipeline.push({ $limit: limiteNum });
       }
 
-      return await this.PublicacionModel.aggregate(pipeline).exec();
+      return await this.PublicacionModel.aggregate(pipeline).exec();//aggregate permite aplicar el pipeline sobre un schema, exec la ejecuta y devuelve el obsevable/promise como resultado
     }
 
     let consulta = this.PublicacionModel.find(filtro).sort({ createdAt: -1 });

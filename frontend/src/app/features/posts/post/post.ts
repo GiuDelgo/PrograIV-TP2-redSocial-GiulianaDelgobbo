@@ -43,8 +43,9 @@ export class Post implements OnInit {
   }  
 
   onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
+    const input = event.target as HTMLInputElement;//capturo el elemento HTML que disparo el evento en el navegador cuando un usuario selecciona un archivo en el input
+    // convierto a HTMLInputElemen pq TS solo save que es un eventTarget, pero no de que tipo, sino no puedo acceder a files
+    if (input.files && input.files.length > 0) {//files = lista de archivos seleccionados
       const file = input.files[0];
     
       if (!file.type.match(/image\/(jpg|jpeg|png)$/)) {

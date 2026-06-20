@@ -51,16 +51,19 @@ export class ComentariosService {
   }
 
   async getComentarios(publicacionId: string, limit: number, offset: number){
-    const comentarios = await this.ComentarioModel.find({ publicacionId})
-    .sort({ createdAt: -1})
-    .skip(offset)
-    .limit(limit)
-    .exec();
+    let query = this.ComentarioModel.find({ publicacionId })
+    .sort({ createdAt: -1});
 
-    return {
-      comentarios,
-      limit,
-      offset
-    };
+    if (offset !== undefined) {
+      query = query.skip(offset);
+    }
+
+    if (limit !== undefined) {
+      query = query.limit(limit);
+    }
+
+    return query.exec();
   }
 }
+
+  

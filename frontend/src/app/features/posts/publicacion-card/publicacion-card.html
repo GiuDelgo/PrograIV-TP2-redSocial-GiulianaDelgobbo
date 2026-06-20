@@ -43,11 +43,11 @@
         <div class="pt-2 d-flex align-items-center">
             <button (click)="toggleLike()" class="btn btn-like btn-sm d-flex align-items-center gap-2 transition-all" [ngClass]="{'liked': isLiked}">
                 <span class="heart-icon">{{ isLiked ? '❤️' : '🤍' }}</span>
-                <span class="fw-bold">{{ publicacion.likes.length }} Me gusta</span>
+                <span class="fw-bold">{{ publicacion.likes.length }} Me gusta </span>
             </button>
             <button (click)="showPostComments()" class="btn btn-comment btn-sm d-flex align-items-center gap-2 transition-all" [ngClass]="{'liked': isLiked}">
                 <span class="comment-icon">💬</span>
-                <span class="fw-bold">{{ publicacion.comentarios.length }} Comentarios</span>
+                <span class="fw-bold">{{ publicacion.comentarios.length }} Comentarios </span>
             </button>
         </div>
 

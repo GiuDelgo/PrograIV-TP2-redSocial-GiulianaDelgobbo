@@ -25,7 +25,7 @@ export class Publicaciones implements OnInit, OnDestroy {
   limite: number = 5; 
   offset: number = 0; 
   totalPublicaciones: number = 0; // para deshabilitar botones de paginado
-  usuarioId = ''; // SPRINT 3: Reemplazar con lógica real de autenticación
+  usuarioId = ''; 
 
   usuarioFilter = '';
   filtroActivo = false;
@@ -69,7 +69,7 @@ export class Publicaciones implements OnInit, OnDestroy {
 
         this.publicaciones.set(res);
 
-        if (res.length === this.limite){
+        if (res.length === this.limite){//traigo de a 5 pubs, si me devuelve 5, puede haber mas, sino llegue al límite
           this.totalPublicaciones = this.offset + res.length + 1;
         } else{
           this.totalPublicaciones = this.offset + res.length;

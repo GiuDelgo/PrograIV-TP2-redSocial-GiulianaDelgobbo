@@ -1,0 +1,90 @@
+.avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #62aaac; /* Color institucional principal */
+    font-size: 0.9rem;
+}
+
+.usuario-text {
+    color: #4a5553;
+}
+
+.form-control,
+.form-control:focus {
+    border: none;
+    box-shadow: none;
+    background-color: #fff;
+}
+
+.coment-box{
+    margin-top: 50px;
+}
+
+.form-control,
+.form-control::placeholder,
+.text-muted {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+}
+
+.invalid-feedback{
+    margin-left: 12px;
+}
+
+.btn-submit-post {
+    background: #62aaac;
+    color: #fff;
+    border: 1px solid #62aaac;
+    margin-left: 10px;
+    border-radius: 12px;
+    font-weight: 550;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-submit-post:hover:not(:disabled) {
+    background-color: #4f8b8d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(98, 170, 172, 0.3);
+}
+
+.btn-submit-post:disabled {
+    background-color: #ffff;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* Nuevo contenedor para limitar el alto y activar el scroll */
+.comments-list-container {
+    max-height: 300px;         /* Tamaño máximo antes de activar el scroll */
+    overflow-y: auto;          /* Activa el scroll vertical solo si es necesario */
+    overflow-x: hidden;        /* Evita desplazamientos horizontales no deseados */
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Opcional: Personalización estética de la barra de scroll (Moderno/Sutil) */
+.comments-list-container::-webkit-scrollbar {
+    width: 6px;                /* Ancho de la barra lateral */
+}
+
+.comments-list-container::-webkit-scrollbar-track {
+    background: #f1f5f9;       /* Color de fondo del carril del scroll */
+    border-radius: 10px;
+}
+
+.comments-list-container::-webkit-scrollbar-thumb {
+    background: #c1b788;       /* Color secundario de tu paleta para el indicador */
+    border-radius: 10px;
+}
+
+.comments-list-container::-webkit-scrollbar-thumb:hover {
+    background: #62aaac;       /* Tu color institucional principal al pasar el mouse */
+}
+
+/* Ajuste para que la caja de nuevo comentario no quede tan pegada arriba */
+.coment-box {
+    margin-top: 15px;
+    padding-top: 15px;
+}

@@ -1,14 +1,14 @@
 .publicacion-card {
     border: none;
     border-radius: 16px !important;
-    background: #f5f8f6; /* Fondo idéntico al login-card */
+    background: #f5f8f6; 
 }
 
 .avatar-placeholder {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #62aaac; /* Color institucional principal */
+    background-color: #62aaac; 
     font-size: 0.9rem;
 }
 
