@@ -12,7 +12,7 @@ export class CreateComentarioDto {
     @IsString()
     @MinLength(3)
     @IsNotEmpty()
-    usuario!:string
+    usuarioNombre!:string
 
     @IsString()
     @MinLength(3)

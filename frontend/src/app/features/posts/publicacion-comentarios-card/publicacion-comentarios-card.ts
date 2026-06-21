@@ -21,7 +21,7 @@ export class PublicacionComentariosCard implements OnInit, OnDestroy{
 
   usuarioString = localStorage.getItem('usuario_sesion');
   usuarioId = '';
-  usuario = '';
+  usuarioNombre = '';
 
   comentarios = signal<Comentario[]>([]);
   limite: number = 5; 
@@ -47,7 +47,7 @@ export class PublicacionComentariosCard implements OnInit, OnDestroy{
     if (this.usuarioString !== null){
       const usuario = JSON.parse(this.usuarioString);            
       this.usuarioId = usuario._id;
-      this.usuario = usuario.usuario;
+      this.usuarioNombre = usuario.usuario;
     }
 
     this.comentSub = this.comentariosService.comentarioCreado$.subscribe(()=>{
@@ -72,7 +72,7 @@ export class PublicacionComentariosCard implements OnInit, OnDestroy{
 
     const { comentario } = this.comentForm.value;
 
-    this.comentariosService.comentarPublicacion(this.publicacion._id, this.usuarioId, this.usuario, comentario)
+    this.comentariosService.comentarPublicacion(this.publicacion._id, this.usuarioId, this.usuarioNombre, comentario)
       .subscribe({
         next: () => {
           this.comentForm.reset(); //reseto el formgroup para limpiar los campos de texto

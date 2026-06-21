@@ -61,6 +61,15 @@
 }
 
 /* Estructuras de comentarios */
+.avatar-placeholder {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #62aaac;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
 .comment-item {
     background-color: #ffffff;
     border: 1px solid #e9ecef;
