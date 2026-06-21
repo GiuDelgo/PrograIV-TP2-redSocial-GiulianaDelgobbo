@@ -78,7 +78,7 @@
     <div class="coment-box border-top pt-3">
         @if (modoEdicion) {
             <div class="d-flex justify-content-between align-items-center mb-2 px-2">
-                <small class="text-primary fw-medium">✏️ Editando tu comentario...</small>
+                <small class="text-secondary fw-medium">Editando...</small>
                 <button type="button" class="btn btn-link btn-sm text-danger p-0 text-decoration-none" (click)="cancelarEdicion()">Cancelar</button>
             </div>
         }
@@ -96,7 +96,7 @@
             </div>
 
             @if (modoEdicion) {
-                <button type="submit" class="btn btn-warning px-4 fw-bold text-dark" [disabled]="comentForm.invalid">                    
+                <button type="submit" class="btn btn-submit-post px-4" [disabled]="comentForm.invalid">                    
                     Guardar Cambios                    
                 </button>
             } @else {

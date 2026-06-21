@@ -92,12 +92,10 @@
 /* Feedback visual al pasar el cursor sobre un comentario propio */
 .mi-comentario-editable:hover {
     background-color: rgba(98, 170, 172, 0.08) !important;
-    border-left: 4px solid #62aaac;
     transition: all 0.2s ease-in-out;
 }
 
 /* Resalta el comentario que actualmente está en proceso de edición */
 .comentario-seleccionado {
-    background-color: rgba(255, 193, 7, 0.1) !important;
-    border-left: 4px solid #ffc107 !important;
+    background-color: rgba(65, 156, 192, 0.1) !important;
 }
