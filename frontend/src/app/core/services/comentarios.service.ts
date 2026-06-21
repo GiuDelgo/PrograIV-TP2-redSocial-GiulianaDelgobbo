@@ -42,4 +42,18 @@ export class ComentariosService {
 
     return this.http.get<Comentario[]>(url, { params });
   }
+
+  editarComentario(comentarioId: string, comentaroBody: string):Observable<any>{
+    const url = `${this.baseUrl}/${comentarioId}`;
+
+    const comentarioBody = {
+      descripcion: comentaroBody 
+    }
+
+    return this.http.put(url, comentarioBody).pipe(
+      tap(() => {
+        this.comentarioCreadoSubject.next();
+      })
+    );
+  }
 }

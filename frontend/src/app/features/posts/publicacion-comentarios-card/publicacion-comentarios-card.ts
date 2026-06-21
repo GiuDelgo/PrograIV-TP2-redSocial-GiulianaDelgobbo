@@ -31,6 +31,9 @@ export class PublicacionComentariosCard implements OnInit, OnDestroy{
   cargandoMas = false; 
   finDeContenido = false;
 
+  modoEdicion = false;
+  comentarioIdSeleccionado: string | null = null;
+
   private comentSub!: Subscription;
 
   errorMessage = signal<string | null>(null);
@@ -52,6 +55,9 @@ export class PublicacionComentariosCard implements OnInit, OnDestroy{
 
     this.comentSub = this.comentariosService.comentarioCreado$.subscribe(()=>{
       this.offset = 0;
+      this.finDeContenido = false;
+      this.comentarios.set([]);
+
       this.cargarComentarios();
     })
   }
@@ -72,16 +78,33 @@ export class PublicacionComentariosCard implements OnInit, OnDestroy{
 
     const { comentario } = this.comentForm.value;
 
-    this.comentariosService.comentarPublicacion(this.publicacion._id, this.usuarioId, this.usuarioNombre, comentario)
-      .subscribe({
-        next: () => {
-          this.comentForm.reset(); //reseto el formgroup para limpiar los campos de texto
-        },
-        error: (err) => {
-          const mensajeError = 'Hubo un error al subir el comentario. Intentalo de nuevo.';
-          console.log(err.error?.message);
-        }
-      });
+    //PUT
+    if (this.modoEdicion && this.comentarioIdSeleccionado) {
+      this.comentariosService.editarComentario(this.comentarioIdSeleccionado, comentario)
+        .subscribe({
+          next: () => {
+            this.cancelarEdicion();
+            // El subject comentarioCreado$ se encargará de refrescar la lista automáticamente
+            // this.comentariosService.notificarCambioComentario(); 
+          },
+          error: (err) => {
+            this.errorMessage.set('Hubo un error al editar el comentario.');
+            console.log(err.error?.message);
+          }
+        });
+    } else {
+      //POST
+      this.comentariosService.comentarPublicacion(this.publicacion._id, this.usuarioId, this.usuarioNombre, comentario)
+        .subscribe({
+          next: () => {
+            this.comentForm.reset(); //reseto el formgroup para limpiar los campos de texto
+          },
+          error: (err) => {
+            const mensajeError = 'Hubo un error al subir el comentario. Intentalo de nuevo.';
+            console.log(err.error?.message);
+          }
+        });
+      }
   }
 
   cargarComentarios(){
@@ -92,11 +115,17 @@ export class PublicacionComentariosCard implements OnInit, OnDestroy{
     this.comentariosService.obtenerComentarios(this.publicacion._id, this.limite, this.offset).subscribe({
       next: (res) => {
 
+        // si el back devuelve menos que el límite, alcanzo el final definitivo
         if (res.length < this.limite){
           this.finDeContenido = true;
         }
 
-        this.comentarios.update(c =>  [...c, ...res])//concateno al array con el limite de comentarios los nuevos comentarios
+        // si el offset es 0, pisa con los datos nuevos; si es mayor, concatena
+        if (this.offset === 0) {
+        this.comentarios.set(res);
+      } else {
+        this.comentarios.update(c => [...c, ...res]);//concateno al array con el limite de comentarios los nuevos comentarios
+      }
 
         this.offset += this.limite;
 
@@ -104,22 +133,42 @@ export class PublicacionComentariosCard implements OnInit, OnDestroy{
         this.errorMessage.set(null);
       },
       error: (err) => {
+        this.cargandoMas = false; // apagar el spinner en caso de error
         const mensajeError = err.error?.message || 'Error al cargar comentarios';
         this.errorMessage.set(mensajeError)
       }
     });
   }
 
-  onWindowScroll() {
-  // Calculo la posición actual del scroll
-  const posicionActual = window.innerHeight + window.scrollY;
+  onCommentsScroll(event: Event) {
+    const element = event.target as HTMLElement;
 
-  // Calculo la altura total de la página web
-  const alturaTotal = document.documentElement.scrollHeight;
+    const posicionActual =
+      element.scrollTop + element.clientHeight;
 
-  // Si el usuario está a menos de 200px del fondo, disparo la carga
-  if (posicionActual >= alturaTotal - 200) {
-    this.cargarComentarios();
+    const alturaTotal = element.scrollHeight;
+
+    if (posicionActual >= alturaTotal - 100) {
+      this.cargarComentarios();
+    }
   }
-}
+
+  editarComentario(comment: Comentario) {
+    // Opcional: Solo permitir editar si el comentario pertenece al usuario logueado
+    if (comment.usuarioId !== this.usuarioId) return;
+
+    this.modoEdicion = true;
+    this.comentarioIdSeleccionado = comment._id;
+
+    // Captura la descripción actual y la setea en el input del formulario
+    this.comentForm.setValue({
+      comentario: comment.descripcion
+    });
+  }
+
+  cancelarEdicion() {
+    this.modoEdicion = false;
+    this.comentarioIdSeleccionado = null;
+    this.comentForm.reset();
+  }
 }

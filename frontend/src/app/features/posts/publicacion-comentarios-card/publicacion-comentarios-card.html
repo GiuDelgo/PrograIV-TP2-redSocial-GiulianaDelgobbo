@@ -32,63 +32,80 @@
         </div>        
 
         <div class="comments-section border-top mt-4">      
-            
-            <div class="comments-list-container pe-1" (window:scroll)="onWindowScroll()">
-                @for (comment of comentarios(); track comment._id) {
-                    <div class="comment-item d-flex p-3 rounded mb-2 align-items-start">
-                        <div class="avatar-placeholder me-2 d-flex align-items-center justify-content-center text-white fw-bold">
-                        {{ publicacion.usuarioNombre.substring(0, 2) | uppercase }}
-                        </div>
-                        <div class="flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="fw-bold text-dark">&#64;{{ comment.usuarioNombre}}</span>
-                                <small class="text-muted text-end" style="font-size: 0.75rem;">
-                                    {{ comment.createdAt | date:'dd/MM HH:mm' }}
-                                    @if (comment.editado) { 
-                                        <span class="badge bg-light text-dark ms-1 border">Editado</span>
-                                    }                                      
-                                </small>
-                            </div>
-                            <p class="mb-0 text-secondary small">{{ comment.descripcion}}</p>
-                        </div>
+    <div class="comments-list-container pe-1" (scroll)="onCommentsScroll($event)">
+        @for (comment of comentarios(); track comment._id) {
+            <div class="comment-item d-flex p-3 rounded mb-2 align-items-start position-relative transition-all" 
+                [ngClass]="{'mi-comentario-editable': comment.usuarioId === usuarioId, 'comentario-seleccionado': comentarioIdSeleccionado === comment._id}"
+                [style.cursor]="comment.usuarioId === usuarioId ? 'pointer' : 'default'"
+                (click)="editarComentario(comment)">
+                
+                <div class="avatar-placeholder me-2 d-flex align-items-center justify-content-center text-white fw-bold">
+                    {{ comment.usuarioNombre.substring(0, 2) | uppercase }}
+                </div>
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="fw-bold text-dark">&#64;{{ comment.usuarioNombre}}</span>
+                        <small class="text-muted text-end" style="font-size: 0.75rem;">
+                            {{ comment.createdAt | date:'dd/MM HH:mm' }}
+                            @if (comment.editado) { 
+                                <span class="badge bg-light text-dark ms-1 border">Editado</span>
+                            }                                      
+                        </small>
                     </div>
-                } @empty {
-                    @if (!cargandoMas) {
-                        <div class="text-muted small ps-2 mt-3 mb-2">
-                            Nadie ha comentado esta publicación aún.
-                        </div>
-                    }
-                }
+                    <p class="mb-0 text-secondary small">{{ comment.descripcion}}</p>
+                </div>
             </div>
-            <div class="scroll-footer text-center my-3">
-            @if (cargandoMas) {
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Cargando más publicaciones...</span>
-            </div>
+        } @empty {
+            @if (!cargandoMas) {
+                <div class="text-muted small ps-2 mt-3 mb-2">
+                    Nadie ha comentado esta publicación aún.
+                </div>
             }
-            
-            @if (finDeContenido && comentarios.length > 0) {
-                <p class="text-muted small">No hay mas comentarios</p>
-            }
-        </div>
-            <div class="coment-box border-top">
-                <form [formGroup]="comentForm" (ngSubmit)="enviarComentario()" novalidate>
-                    <div class="mb-3">
-                        <input 
-                        type="text" 
-                        formControlName="comentario" 
-                        class="form-control" 
-                        placeholder="Comenta esta publicación."
-                        [ngClass]="{'is-invalid': comentForm.get('comentario')?.touched && comentForm.get('comentario')?.invalid}"
-                        />
-                        <div class="invalid-feedback">El comentario debe tener entre 10 y 300 caracteres.</div>
-                    </div>
+        }
+    </div>
 
-                    <button type="submit" class="btn btn-submit-post px-4" [disabled]="comentForm.invalid">                    
-                        Comenta                    
-                    </button>
-                </form>
+    <div class="scroll-footer text-center my-3">
+        @if (cargandoMas) {
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
             </div>
-        </div> 
+        }
+        @if (finDeContenido && comentarios().length > 0) {
+            <p class="text-muted small">No hay más comentarios</p>
+        }
+    </div>
+
+    <div class="coment-box border-top pt-3">
+        @if (modoEdicion) {
+            <div class="d-flex justify-content-between align-items-center mb-2 px-2">
+                <small class="text-primary fw-medium">✏️ Editando tu comentario...</small>
+                <button type="button" class="btn btn-link btn-sm text-danger p-0 text-decoration-none" (click)="cancelarEdicion()">Cancelar</button>
+            </div>
+        }
+
+        <form [formGroup]="comentForm" (ngSubmit)="enviarComentario()" novalidate>
+            <div class="mb-3">
+                <input 
+                    type="text" 
+                    formControlName="comentario" 
+                    class="form-control" 
+                    [placeholder]="modoEdicion ? 'Modifica tu comentario...' : 'Comenta esta publicación.'"
+                    [ngClass]="{'is-invalid': comentForm.get('comentario')?.touched && comentForm.get('comentario')?.invalid}"
+                />
+                <div class="invalid-feedback">El comentario debe tener entre 3 and 300 caracteres.</div>
+            </div>
+
+            @if (modoEdicion) {
+                <button type="submit" class="btn btn-warning px-4 fw-bold text-dark" [disabled]="comentForm.invalid">                    
+                    Guardar Cambios                    
+                </button>
+            } @else {
+                <button type="submit" class="btn btn-submit-post px-4" [disabled]="comentForm.invalid">                    
+                    Comenta                    
+                </button>
+            }
+        </form>
+    </div>
+</div>
     </div>
 </div>

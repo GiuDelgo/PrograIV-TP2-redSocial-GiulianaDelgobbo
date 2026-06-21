@@ -64,27 +64,40 @@
     margin-bottom: 10px;
 }
 
-/* Opcional: Personalización estética de la barra de scroll (Moderno/Sutil) */
+
 .comments-list-container::-webkit-scrollbar {
-    width: 6px;                /* Ancho de la barra lateral */
+    width: 6px;                
 }
 
 .comments-list-container::-webkit-scrollbar-track {
-    background: #f1f5f9;       /* Color de fondo del carril del scroll */
+    background: #f1f5f9;     
     border-radius: 10px;
 }
 
 .comments-list-container::-webkit-scrollbar-thumb {
-    background: #c1b788;       /* Color secundario de tu paleta para el indicador */
+    background: #c1b788;       
     border-radius: 10px;
 }
 
 .comments-list-container::-webkit-scrollbar-thumb:hover {
-    background: #62aaac;       /* Tu color institucional principal al pasar el mouse */
+    background: #62aaac;     
 }
 
 /* Ajuste para que la caja de nuevo comentario no quede tan pegada arriba */
 .coment-box {
     margin-top: 15px;
     padding-top: 15px;
+}
+
+/* Feedback visual al pasar el cursor sobre un comentario propio */
+.mi-comentario-editable:hover {
+    background-color: rgba(98, 170, 172, 0.08) !important;
+    border-left: 4px solid #62aaac;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Resalta el comentario que actualmente está en proceso de edición */
+.comentario-seleccionado {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+    border-left: 4px solid #ffc107 !important;
 }
