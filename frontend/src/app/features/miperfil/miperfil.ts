@@ -53,23 +53,23 @@ export class MiPerfil implements OnInit {
 
   cargarUltimasPublicaciones(usuario: string): void {
     this.publicacionesService
-      .obtenerPublicaciones('createdAt', this.limitePublicaciones, undefined, usuario)
+      .obtenerPublicaciones('createdAt', this.limitePublicaciones, undefined, usuario)//traigo las últimas 3 pubs
       .pipe(
-        switchMap((posts) => {
+        switchMap((posts) => {//switchMap para ejecutar nuevas peticiones en base a las publicaciones traídas
           if (posts.length === 0) {
             return of([] as PublicacionPerfil[]);
           }
 
-          return forkJoin(
+          return forkJoin(//ejecuto todas las peticiones a la vez, y me trae todas las respuesta a la vez
             posts.map((post) => {
               const totalComentarios = Array.isArray(post.comentarios) ? post.comentarios.length : 0;
 
               return this.comentariosService
-                .obtenerComentarios(post._id, this.limiteComentarios, 0)
+                .obtenerComentarios(post._id, this.limiteComentarios, 0)//por cada publicación traída voy a buscar sus comentarios
                 .pipe(
-                  map((comentarios) => ({
-                    ...post,
-                    ultimosComentarios: comentarios,
+                  map((comentarios) => ({//creo un nuevo objeto una vez que me trae los comentarios de cada publicación
+                    ...post, //objeto post
+                    ultimosComentarios: comentarios, //array con los último 5 objetos comentario
                     totalComentarios,
                   }))
                 );

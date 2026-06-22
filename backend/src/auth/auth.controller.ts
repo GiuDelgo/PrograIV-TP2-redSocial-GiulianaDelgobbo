@@ -53,7 +53,6 @@ export class AuthController {
     return usuario;
   }
 
-
   @Post('autorizar')
   @UseGuards(AuthGuard)
   async validateJwt(@Req() req: Request){

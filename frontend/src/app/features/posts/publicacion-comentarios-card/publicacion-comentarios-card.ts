@@ -65,7 +65,8 @@ export class PublicacionComentariosCard implements OnInit, OnDestroy{
   ngOnDestroy(): void {
     this.comentSub.unsubscribe();
   }
-  // Al presionar la "X" o "Cerrar" en este componente, ejecutás esto:
+
+  // Al presionar la "X" o "Cerrar" en este componente, ejecuto esto:
   notificarCierre() {
     this.onClose.emit();
   }
