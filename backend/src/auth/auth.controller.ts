@@ -6,6 +6,7 @@ import { memoryStorage } from 'multer';
 import { LoginDto } from './dto/login.dto';
 import type { Response, Request } from 'express';
 import { AuthGuard } from '../guards/auth/auth.guard';
+import { RoleGuard } from 'src/guards/role/role.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -94,5 +95,33 @@ export class AuthController {
       secure: true, 
       maxAge: 1000 * 60 * 15 , // Sincronizacion de 15m con la exp del JWT token
     });
+  }
+
+  //Mismos controllers pero para rol de administrador
+  @Post('registrar/administrador')
+  @UseGuards(AuthGuard)
+  @UseGuards(RoleGuard)
+  @UseInterceptors( 
+    FileInterceptor('foto', { 
+      storage: memoryStorage(),
+      fileFilter: (req, file, callback) => {
+        if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
+          return callback(new BadRequestException('Solo se permiten imágenes (jpg, jpeg, png)'), false);
+        }
+        callback(null, true);
+      },
+    }),
+  )
+  async registroAdmin(
+    @Body() createUsuarioDto: CreateUsuarioDto,
+    @UploadedFile() file: Express.Multer.File
+  ){
+    if (!file) {
+      throw new BadRequestException('La foto de perfil es obligatoria para el registro');
+    }
+
+    const { usuario } = await this.authService.registroUserAdmin(createUsuarioDto, file);
+
+    return usuario ;
   }
 }

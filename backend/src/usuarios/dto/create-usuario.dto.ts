@@ -1,4 +1,9 @@
-import { IsDateString, IsEmail, IsString, MinLength, Matches, IsOptional } from "class-validator";
+import { IsDateString, IsEmail, IsString, MinLength, Matches, IsOptional, IsEnum } from "class-validator";
+
+enum Perfil {
+    USUARIO = 'usuario',
+    ADMINISTRADOR = 'administrador'
+}
 
 export class CreateUsuarioDto {
     @IsString()
@@ -33,7 +38,7 @@ export class CreateUsuarioDto {
     @IsOptional()
     foto!: string;
     
-    @IsString()
     @IsOptional()
+    @IsEnum(Perfil) 
     perfil!: string;
 }

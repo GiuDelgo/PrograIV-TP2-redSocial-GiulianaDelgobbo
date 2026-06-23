@@ -56,9 +56,7 @@ export class UsuariosService {
     // devuelve los datos del usuario en el login público
     const { contrasena, ...respuestaUsuario } = usuarioEncontrado.toObject();
 
-    return respuestaUsuario    
-      // ***REMINDER*** en el Sprint #3 aca  es donde firmo el Token JWT con vigencia de 15 min
-    
+    return respuestaUsuario;    
   }
 
   async findUsername(username: string) {

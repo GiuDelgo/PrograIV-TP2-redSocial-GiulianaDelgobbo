@@ -142,10 +142,11 @@ export class PublicacionComentariosCard implements OnInit, OnDestroy{
   }
 
   onCommentsScroll(event: Event) {
-    const element = event.target as HTMLElement;
+    const element = event.target as HTMLElement; //obtengo el contenedor donde ocurre el scroll (el div)
 
-    const posicionActual =
-      element.scrollTop + element.clientHeight;
+    const posicionActual = element.scrollTop + element.clientHeight; //scrollTop indice cuántos pixeles se desplazó el contenido hacia arriba
+                                                                      //clientHeight es la altura visible del contenedor
+                                                                      //la suma representa la posición (copordenada) del borde inferior visible para el usuario
 
     const alturaTotal = element.scrollHeight;
 

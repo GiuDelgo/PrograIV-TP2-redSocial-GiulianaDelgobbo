@@ -81,4 +81,35 @@ export class AuthService {
   }
 
 
+  async registroUserAdmin(createUsuarioDto: CreateUsuarioDto, file: Express.Multer.File) {
+    const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = extname(file.originalname);
+    const nombreArchivo = `${sufijoUnico}${ext}`;
+
+    const { data, error } = await this.supabase.storage
+      .from('perfiles')
+      .upload(`fotos/${nombreArchivo}`, file.buffer, {
+        contentType: file.mimetype, 
+        upsert: true 
+      });
+
+    if (error) {
+      throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
+    }
+
+    const { data: { publicUrl } } = this.supabase.storage
+      .from('perfiles')
+      .getPublicUrl(`fotos/${nombreArchivo}`);
+
+    const nuevoUsuario = await this.usuariosService.create({
+      ...createUsuarioDto,
+      foto: publicUrl 
+    });
+
+    if (!nuevoUsuario) {
+      throw new Error('Error al crear el usuario');
+    }
+
+    return {usuario: nuevoUsuario};
+  }
 }
