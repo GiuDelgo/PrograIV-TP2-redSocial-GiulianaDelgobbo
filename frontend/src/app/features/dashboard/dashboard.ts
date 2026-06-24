@@ -105,6 +105,7 @@ export class Dashboard implements OnInit {
 
     this.adminService.registrarUsuarioAdmin(this.registroForm.value, this.imagenPerfil).subscribe({
       next: ()=>{
+        console.log(this.registroForm.value)
         this.successMessage.set('Usuario creado correctamente por administración.');
         this.registroForm.reset({ perfil: 'usuario' });
         this.imagenPerfil = null;
@@ -120,7 +121,7 @@ export class Dashboard implements OnInit {
   toggleEstadoUsuario(usuario:any):void{
     this.errorMessage.set(null);
     this.successMessage.set(null);
-
+    
     if (!usuario.eliminado) {
       this.adminService.bajaUsuario(usuario._id).subscribe({
         next: ()=>{

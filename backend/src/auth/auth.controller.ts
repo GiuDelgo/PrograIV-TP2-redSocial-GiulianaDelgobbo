@@ -119,6 +119,8 @@ export class AuthController {
     if (!file) {
       throw new BadRequestException('La foto de perfil es obligatoria para el registro');
     }
+    console.log('body:', createUsuarioDto)
+    console.log('file ok:', !!file);
 
     const { usuario } = await this.authService.registroUserAdmin(createUsuarioDto, file);
 
