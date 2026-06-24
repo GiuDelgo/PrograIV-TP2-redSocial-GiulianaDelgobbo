@@ -95,15 +95,10 @@ export class Dashboard implements OnInit {
   }
 
   onSubmit(){
-    if (this.registroForm.invalid){
-      this.registroForm.markAllAsTouched();
+    if (this.registroForm.invalid || !this.imagenPerfil){
+      if (!this.imagenPerfil) this.errorMessage.set('La foto de perfil es obligatoria');
       return;
     }
-
-    if (!this.imagenPerfil){
-      this.errorMessage.set('La foto de perfil es obligatoria');
-      return
-    } 
 
     this.cargando.set(true);
     this.errorMessage.set(null);

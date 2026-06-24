@@ -27,10 +27,13 @@ export class AdminService {
         formData.append('contrasena', usuarioData.contrasena);
         formData.append('fechaNacimiento', usuarioData.fechaNacimiento);
         formData.append('descripcion', usuarioData.descripcion);
-        formData.append('foto', usuarioData.foto);
         formData.append('perfil', usuarioData.perfil);
 
-        return this.http.post<Usuario[]>(`${this.baseUrl}/registrar`, formData);
+        if (foto) {
+            formData.append('foto', foto, foto.name); // 'foto' es el nombre que espera Multer
+        }
+
+        return this.http.post<Usuario[]>(`${this.baseUrl}/registrar`, formData, {withCredentials: true});
     }
 
     bajaUsuario(id: string):Observable<any>{

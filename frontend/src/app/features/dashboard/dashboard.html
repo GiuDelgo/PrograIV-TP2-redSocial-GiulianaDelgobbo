@@ -72,13 +72,13 @@
 
             <div class="mb-4">
                 <label class="form-label text-muted mb-1">Foto de Perfil</label>
-                <input type="file" #fileInput (change)="onFileChange($event)" accept="image/*" class="d-none">
-                <button type="button" class="btn btn-outline-secondary w-100 btn-upload" (click)="fileInput.click()">
-                Seleccionar Foto
-                </button>
-                <div *ngIf="nombreFoto()" class="alert alert-success py-1 px-2 mt-2 mb-0 rounded small text-truncate">
-                📎 {{ nombreFoto() }}
-                </div>
+                <input 
+                    type="file" 
+                    class="form-control"
+                    accept="image/*"
+                    (change)="onFileChange($event)"
+                    [ngClass]="{'is-invalid': registroForm.get('foto')?.touched && registroForm.get('foto')?.invalid}"
+                />
                 <div class="invalid-feedback small">Debes subir una foto de perfil obligatoria.</div>
             </div>
 
