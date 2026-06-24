@@ -24,11 +24,16 @@ export class UsuariosService {
     const hashedPassword = await bcrypt.hash(contrasena, saltRounds);
 
     // creo el registro con la contraseña hasheada y el perfil usuario
+
     const nuevoUsuario = new this.usuarioModel({
-      ...createUsuarioDto,
-      contrasena: hashedPassword,
-      perfil: 'usuario', // asigno por defecto 
-    });
+    ...createUsuarioDto,
+    contrasena: hashedPassword,
+    perfil:
+    createUsuarioDto.perfil === 'administrador'
+      ? 'administrador'
+      : 'usuario',
+  });
+
 
     const guardado = await nuevoUsuario.save();
     
