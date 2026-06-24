@@ -70,19 +70,35 @@ export class UsuariosService {
     return userResponse;
   }
 
-  findOne(id: string){
-    return `This action returns all usuarios`;
+  
+  async findAll() {
+    const usuarios = await this.usuarioModel.find({}).select('-contrasena');
+
+    if (!usuarios || usuarios.length === 0) {
+    return []; 
+    }
+
+    return usuarios;
   }
 
-  findAll() {
-    return `This action returns all usuarios`;
+  async remove(id: string) {
+    const usuarioEliminado = await this.usuarioModel.findByIdAndUpdate(
+      id, 
+      { eliminado: true }, 
+      { new: true } //devuelve el documento modificado
+    ); 
+
+    return usuarioEliminado;
   }
 
-  update(id: string, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
+  async altaUsuario (id: string){
+    const usuarioAlta = await this.usuarioModel.findByIdAndUpdate(
+      id, 
+      { eliminado: false }, 
+      { new: true } //devuelve el documento modificado
+    ); 
+
+    return usuarioAlta;
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} usuario`;
-  }
 }

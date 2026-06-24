@@ -15,6 +15,7 @@ import { Comentario } from '../../../shared/interfaces/comentario.interface';
 export class PublicacionCard {
   @Input() publicacion!: Publicacion;
   @Input() idUsuarioLogueado: string = '';
+  @Input() perfilUsuarioLogueado: string = '';
 
   @Output() onLike = new EventEmitter<string>();
   @Output() onDelete = new EventEmitter<string>();
@@ -33,6 +34,10 @@ export class PublicacionCard {
 
   get isMine(): boolean {
     return this.publicacion.usuarioId === this.idUsuarioLogueado;
+  }
+
+  get isAdmin():boolean{
+    return this.perfilUsuarioLogueado === 'administrador';
   }
 
   toggleLike() {

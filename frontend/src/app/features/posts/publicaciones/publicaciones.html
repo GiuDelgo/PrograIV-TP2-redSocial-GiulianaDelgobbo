@@ -56,6 +56,7 @@
                     <app-publicacion-card
                         [publicacion]="pub"
                         [idUsuarioLogueado]="usuarioId"
+                        [perfilUsuarioLogueado]="usuarioPerfil"
                         (onLike)="handleLike($event)"
                         (onDelete)="handleDelete($event)"
                         (onComment)="handleCommentSection($event)">

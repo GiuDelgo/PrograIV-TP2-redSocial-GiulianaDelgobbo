@@ -26,6 +26,7 @@ export class Publicaciones implements OnInit, OnDestroy {
   offset: number = 0; 
   totalPublicaciones: number = 0; // para deshabilitar botones de paginado
   usuarioId = ''; 
+  usuarioPerfil = '';
 
   usuarioFilter = '';
   filtroActivo = false;
@@ -44,6 +45,7 @@ export class Publicaciones implements OnInit, OnDestroy {
 
     if (usuarioSesion){
       this.usuarioId = usuarioSesion._id;
+      this.usuarioPerfil = usuarioSesion.perfil;
     }else{
       this.errorMessage.set('No se encontró una sesión activa. Por favor inice sesión')
     }

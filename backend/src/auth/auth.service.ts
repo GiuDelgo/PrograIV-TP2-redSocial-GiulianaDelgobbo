@@ -61,7 +61,7 @@ export class AuthService {
     const loginUsuario = await this.usuariosService.login(user, contrasena);
 
     if (!loginUsuario) {
-      throw new Error('Error al crear el usuario');
+      throw new Error('Credenciales inválidas');
     }
 
     const token = await this.generateJWT(loginUsuario);
@@ -71,7 +71,7 @@ export class AuthService {
 
   async generateJWT(usuario:any){
     const payload = {
-      sub: usuario._id,      
+      sub: usuario._id.toString(),      
       usuario: usuario.usuario,
       correo: usuario.correo,
       perfil: usuario.perfil
@@ -111,5 +111,32 @@ export class AuthService {
     }
 
     return {usuario: nuevoUsuario};
+  }
+
+  async getUsuariosAdmin(){
+    const usuarios = await this.usuariosService.findAll();
+
+    return usuarios;
+  }
+
+  async deleteUsuarioAdmin(userId: string){
+    const usuarioEliminado = await this.usuariosService.remove(userId);
+
+    if (!usuarioEliminado) {
+      throw new BadRequestException(`No se encontró el usuario`);
+    }
+
+    return { message: 'Usuario dado de baja correctamente', data: usuarioEliminado };  
+  }
+
+  async addUsuarioAdmin(userId: string){
+    const usuarioAlta = await this.usuariosService.altaUsuario(userId);
+
+    if (!usuarioAlta) {
+      throw new BadRequestException(`No se encontró el usuario`);
+    }
+
+    return { message: 'Usuario dado de alta correctamente', data: usuarioAlta }; 
+
   }
 }

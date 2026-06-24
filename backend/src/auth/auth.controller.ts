@@ -1,9 +1,10 @@
-import { Controller, Post, Body, UseInterceptors, UploadedFile, BadRequestException, Res, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, UploadedFile, BadRequestException, Res, UseGuards, Req, Get, Delete, Param } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService } from './auth.service';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
 import { memoryStorage } from 'multer';
 import { LoginDto } from './dto/login.dto';
+import { AltaDto } from './dto/alta.dto';
 import type { Response, Request } from 'express';
 import { AuthGuard } from '../guards/auth/auth.guard';
 import { RoleGuard } from '../guards/role/role.guard';
@@ -98,9 +99,8 @@ export class AuthController {
   }
 
   //Mismos controllers pero para rol de administrador
-  @Post('registrar/administrador')
-  @UseGuards(AuthGuard)
-  @UseGuards(RoleGuard)
+  @Post('admin/registrar')
+  @UseGuards(AuthGuard, RoleGuard)
   @UseInterceptors( 
     FileInterceptor('foto', { 
       storage: memoryStorage(),
@@ -123,5 +123,29 @@ export class AuthController {
     const { usuario } = await this.authService.registroUserAdmin(createUsuarioDto, file);
 
     return usuario ;
+  }
+
+  @Get('admin/usuarios')
+  @UseGuards(AuthGuard, RoleGuard)
+  async getUsuariosAdmin (){
+    const usuarios  = await this.authService.getUsuariosAdmin();
+
+    return usuarios;
+  }
+
+  @Delete('admin/baja/:id')
+  @UseGuards(AuthGuard, RoleGuard)  
+  async deleteUsuarioAdmin (@Param('id') userId: string,){
+    const usuario  = await this.authService.deleteUsuarioAdmin(userId);
+
+    return usuario;
+  }
+
+  @Post('admin/alta')
+  @UseGuards(AuthGuard, RoleGuard)
+  async addUsuarioAdmin (@Body() altaDto: AltaDto){
+    const usuarios  = await this.authService.addUsuarioAdmin(altaDto._id);
+
+    return usuarios;
   }
 }

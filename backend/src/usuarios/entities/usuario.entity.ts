@@ -8,7 +8,7 @@ export class Usuario {
     @Prop({required:true})
     apellido!: string;
 
-    @Prop({ required: true, unique: true, index: true })//no necesariamente tiene que ser unique si ingresa con user
+    @Prop({ required: true })//no necesariamente tiene que ser unique si ingresa con user
     correo!: string;
 
     @Prop({ required: true, unique: true, index: true })
@@ -28,6 +28,9 @@ export class Usuario {
 
     @Prop({required:true, default:'usuario'})
     perfil!: string;
+
+    @Prop({required:true, default:false})
+    eliminado!: boolean;
 }
 
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);//siempre voy a usar el schema para manejar la colección de usuarios, nunca el usuario en sí

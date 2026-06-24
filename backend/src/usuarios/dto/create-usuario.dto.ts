@@ -35,7 +35,6 @@ export class CreateUsuarioDto {
     descripcion!: string; 
     
     @IsString()
-    @IsOptional()
     foto!: string;
     
     @IsOptional()
