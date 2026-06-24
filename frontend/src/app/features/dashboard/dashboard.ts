@@ -110,6 +110,9 @@ export class Dashboard implements OnInit {
         this.registroForm.reset({ perfil: 'usuario' });
         this.imagenPerfil = null;
         this.cargarUsuarios();
+        setTimeout(()=>{
+          this.successMessage.set(null);
+        }, 5000 )
       },
       error:(err)=>{
         this.errorMessage.set(err.error?.message || 'Hubo un error al crear el usuario.');
@@ -127,6 +130,9 @@ export class Dashboard implements OnInit {
         next: ()=>{
           this.successMessage.set(`Usuario ${usuario.usuario} deshabilitado con éxito.`);
           this.cargarUsuarios();
+          setTimeout(()=>{
+            this.successMessage.set(null);
+          }, 5000 )
         },
         error: (err) => this.errorMessage.set(err.error?.message || 'No se pudo deshabilitar el usuario.')
       });
@@ -135,6 +141,9 @@ export class Dashboard implements OnInit {
         next: ()=>{
           this.successMessage.set('Usuario ${usuario.usuario} habilitado con éxito.');
           this.cargarUsuarios();
+          setTimeout(()=>{
+            this.successMessage.set(null);
+          }, 5000 )
         },
         error:(err) => this.errorMessage.set(err.error?.message || 'No se pudo habilitar al usuario.')
       });

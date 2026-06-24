@@ -41,9 +41,13 @@ export class Login implements OnInit {
   
     this.authService.login(username, password).subscribe({
     next: (res) => {
-      console.log('Login exitoso', res);
       this.cargando.set(false);
-      this.router.navigate(['/publicaciones']);
+      
+      if (res.eliminado === true){
+        this.errorMessage.set("Usuario no autorizado");
+      }else{
+        this.router.navigate(['/publicaciones']);
+      }      
     },
     error: (err) => {
       this.cargando.set(false);

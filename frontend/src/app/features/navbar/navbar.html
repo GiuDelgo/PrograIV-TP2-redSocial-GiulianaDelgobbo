@@ -11,7 +11,7 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">    
-                @if (!sesion()){
+                @if (!sesion() || !isActive()){
                     <li class="nav-item me-2">
                     <a class="btn" style="--i:2" routerLink="/login" routerLinkActive="active">Ingresar</a>
                     </li>

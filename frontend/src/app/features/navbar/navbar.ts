@@ -14,6 +14,7 @@ export class Navbar{
 
   sesion = computed(() => !!this.authService.usuarioActual());
   admin = computed(()=>this.authService.usuarioActual().perfil === 'administrador')
+  isActive = computed(()=>this.authService.usuarioActual().eliminado === false);
 
   logoutUsuario (){
     this.authService.logout();

@@ -2,16 +2,14 @@ import { CanActivateFn, Router } from '@angular/router';
 import { computed, inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 
-export const adminGuard: CanActivateFn = (route, state) => {
+export const activeuserGuard: CanActivateFn = (route, state) => {
     const authService = inject (AuthService);
-    const router = inject(Router);
 
-    const admin = computed(()=>authService.usuarioActual().perfil === 'administrador')
+    const isActive = computed(()=>authService.usuarioActual().eliminado === false);
 
-    if (admin()){
+    if (isActive()){
         return true;
     }else {
-        router.navigate(['./publicaciones']);
         return false;
     }
 }
