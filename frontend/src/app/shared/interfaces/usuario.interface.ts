@@ -7,4 +7,5 @@ export interface Usuario {
     foto: string;
     perfil: string;
     fechaNacimiento: Date;
+    eliminado: boolean
 }

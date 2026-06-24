@@ -35,7 +35,7 @@ export class CreateUsuarioDto {
     descripcion!: string; 
     
     @IsString()
-    foto!: string;
+    foto?: string;
     
     @IsOptional()
     @IsEnum(Perfil) 

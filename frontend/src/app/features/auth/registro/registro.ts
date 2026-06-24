@@ -42,6 +42,7 @@ export class Registro implements OnInit {
       confirmPassword.setErrors({ passwordMismatch: true });
       return { passwordMismatch: true };
     }
+    
     return null;//REMINDER: Si no hay error, la función debe devolver null. Esto es importante para que Angular sepa que el control es válido. Si devuelve un objeto, Angular lo interpreta como un error y marca el control como inválido.
   }
 

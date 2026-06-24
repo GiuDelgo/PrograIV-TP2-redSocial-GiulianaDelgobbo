@@ -1,0 +1,72 @@
+.dashboard-container {
+    background-color: #fcfdfc;
+    min-height: 90vh;
+}
+
+.dashboard-title {
+    color: #62aaac;
+    font-weight: 750;
+    text-shadow: 1px 1px 2px rgba(98, 170, 172, 0.2);
+}
+
+.h3-style {
+    color: #4a5553;
+    font-weight: 600;
+}
+
+.form-card, .table-card {
+    background: #f5f8f6;
+    border-radius: 14px;
+}
+
+.btn-submit {
+    background-color: #62aaac;
+    color: white;
+    font-weight: 550;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-submit:hover {
+    background-color: #4f8b8d;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.btn-upload {
+    border-color: #c1b788;
+    color: #8c8356;
+}
+
+.btn-upload:hover {
+    background-color: #c1b788;
+    color: white;
+}
+
+.avatar-table {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border: 1px solid #62aaac;
+}
+
+.avatar-placeholder-table {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #62aaac;
+    font-size: 0.8rem;
+}
+
+.bg-purple {
+    background-color: #7f62ac;
+}
+
+.text-teal {
+    color: #62aaac;
+}
+
+/* Resaltado suave para filas de usuarios bloqueados/dados de baja */
+.table-danger-light {
+    background-color: rgba(244, 189, 173, 0.15) !important;
+}
