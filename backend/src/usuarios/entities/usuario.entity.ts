@@ -20,8 +20,8 @@ export class Usuario {
     @Prop({required:true})
     fechaNacimiento!: string;
 
-    @Prop({required:true})
-    descripcion!: string;
+    @Prop({required:false})
+    descripcion?: string;
 
     @Prop({ required: false, default:''})
     foto!: string;
