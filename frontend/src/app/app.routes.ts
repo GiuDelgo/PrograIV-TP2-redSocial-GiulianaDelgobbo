@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
     {
@@ -29,6 +30,11 @@ export const routes: Routes = [
         path: 'miperfil',
         loadComponent: () => import('./features/miperfil/miperfil').then(m => m.MiPerfil),
         canActivate: [authGuard]
+    },
+    {
+        path: 'dashboard',
+        loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard),
+        canActivate: [authGuard, adminGuard]
     },
 
     { path: '', redirectTo: 'publicaciones', pathMatch: 'full' },

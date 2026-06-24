@@ -31,6 +31,11 @@
                     <li class="nav-item me-2">
                         <a class="btn" style="--i:6" (click)="logoutUsuario()" routerLink="/login" routerLinkActive="active">Logout</a>
                     </li>
+                    @if(admin()){
+                        <li class="nav-item me-2">
+                            <a class="btn" style="--i:7" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+                        </li>
+                    }
                 }        
             </ul>
         </div>
