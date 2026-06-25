@@ -12,7 +12,7 @@
     </div>
 }
 
-<div class="publicaciones-container container-fluid py-5">
+<div class="publicaciones-container py-5">
     <div class="container">
 
         @if (errorMessage()) {
@@ -21,7 +21,10 @@
             </div>
         }
 
-        <div class="row mb-5 header-box p-4 rounded gap-3">
+        <div class="row justify-content-center">
+            
+            <div class="col-12 col-lg-11">       
+                <div class="row mb-5 header-box p-4 rounded gap-3">
             <div class="col-12 mb-2">
                 <h1 class="fw-bold title-branding">Publicaciones</h1>
             </div>
@@ -46,11 +49,7 @@
                 </div>
 
             </div>
-        </div>
-
-        <div class="row justify-content-center">
-            
-            <div class="col-12 col-lg-8">                
+        </div>         
 
                 @for (pub of publicaciones(); track pub._id) {
                     <app-publicacion-card

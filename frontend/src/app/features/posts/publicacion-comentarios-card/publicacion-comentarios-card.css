@@ -1,6 +1,9 @@
 .avatar-placeholder {
     width: 40px;
     height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    flex-shrink: 0;
     border-radius: 50%;
     background-color: #62aaac; /* Color institucional principal */
     font-size: 0.9rem;
@@ -87,6 +90,16 @@
 .coment-box {
     margin-top: 15px;
     padding-top: 15px;
+}
+
+.comment-content {
+    min-width: 0;
+}
+
+.comment-text {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 /* Feedback visual al pasar el cursor sobre un comentario propio */

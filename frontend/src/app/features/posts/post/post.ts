@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core'
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PublicacionesService } from '../../../core/services/publicaciones.service';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -23,7 +24,7 @@ export class Post implements OnInit {
   usuarioId = '';
   usuarioNombre = '';
 
-  constructor( private fb: FormBuilder, private publicacionesService: PublicacionesService, private authService : AuthService) {}
+  constructor( private fb: FormBuilder, private publicacionesService: PublicacionesService, private authService : AuthService, private router: Router) {}
 
   ngOnInit() {
     this.postForm = this.fb.group({
@@ -82,6 +83,7 @@ export class Post implements OnInit {
           this.postForm.reset(); //reseto el formgroup para limpiar los campos de texto
           this.quitarFoto();//borro foto seleccionada para limpiar el input file
           this.cargando.set(false);
+          this.router.navigate(['/publicaciones']);
         },
         error: (err) => {
           const mensajeError = 'Hubo un error al subir la publicación. Intentalo de nuevo.';
