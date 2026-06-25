@@ -1,5 +1,7 @@
 .dashboard-container {
-    background-color: #fcfdfc;
+    background: rgba(245, 248, 246, 0.5);
+    border-radius: 16px;
+    padding-top: 2rem;
     min-height: 90vh;
 }
 
@@ -17,6 +19,10 @@
 .form-card, .table-card {
     background: #f5f8f6;
     border-radius: 14px;
+}
+
+.card-title{
+    color: #4a5553;
 }
 
 .btn-submit {
@@ -41,6 +47,19 @@
 .btn-upload:hover {
     background-color: #c1b788;
     color: white;
+}
+
+.table-scroll-container {
+    max-height: 720px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.table-scroll-container thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #f8f9fa;
 }
 
 .avatar-table {
