@@ -8,6 +8,7 @@ import { UsuariosModule } from './usuarios/usuarios.module';
 import { PublicacionesModule } from './publicaciones/publicaciones.module';
 import { ServeStaticModule } from '@nestjs/serve-static'; //Importación obligatoria
 import { join } from 'path'; //Herramienta nativa de Node
+import { EstadisticasModule } from './publicaciones/estadisticas/estadisticas.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { join } from 'path'; //Herramienta nativa de Node
     AuthModule, 
     UsuariosModule, 
     PublicacionesModule,
+    EstadisticasModule,
   ],
   controllers: [AppController],
   providers: [AppService],
