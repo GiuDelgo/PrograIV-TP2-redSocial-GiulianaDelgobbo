@@ -23,7 +23,7 @@ export class Registro implements OnInit {
       nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       apellido: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       correo: ['', [Validators.required, Validators.email]],
-      username: ['', [Validators.required, Validators.minLength(3)]],
+      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15)]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern('^(?=.*[A-Z])(?=.*\\d).+$')]],//obliga a tener al menos una mayúscula y un número
       confirmPassword: ['', [Validators.required]],
       nacimiento: ['', [Validators.required, this.dateValidator]],
