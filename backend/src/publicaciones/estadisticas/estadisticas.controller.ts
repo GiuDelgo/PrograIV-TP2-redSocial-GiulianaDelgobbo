@@ -1,34 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { EstadisticasService } from './estadisticas.service';
-import { CreateEstadisticaDto } from './dto/create-estadistica.dto';
-import { UpdateEstadisticaDto } from './dto/update-estadistica.dto';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { PublicacionesService } from '../publicaciones.service';
+import { ComentariosService } from '../comentarios/comentarios.service';
+import { AuthGuard } from '../../guards/auth/auth.guard';
+import { RoleGuard } from '../../guards/role/role.guard';
 
-@Controller('estadisticas')
+@Controller('admin/estadisticas')
+@UseGuards(AuthGuard, RoleGuard) //protejo de forma global porque todas son rutas protegidas para admin
+
 export class EstadisticasController {
-  constructor(private readonly estadisticasService: EstadisticasService) {}
+  constructor(private readonly publicacionesService: PublicacionesService, private readonly comentariosService: ComentariosService) {}
 
-  @Post()
-  create(@Body() createEstadisticaDto: CreateEstadisticaDto) {
-    return this.estadisticasService.create(createEstadisticaDto);
+  @Get('publicaciones-por-usuario')
+  async getPostsUsuario(@Query('desde') desde: string, @Query('hasta') hasta: string) {
+    return this.publicacionesService.countByUsuarioInTime(new Date(desde), new Date(hasta));
   }
 
-  @Get()
-  findAll() {
-    return this.estadisticasService.findAll();
+  @Get('comentarios-totales')
+  async getComentariosTotales(@Query('desde') desde: string, @Query('hasta') hasta: string) {
+    return this.comentariosService.countTotalesInTime(new Date(desde), new Date(hasta));
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.estadisticasService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEstadisticaDto: UpdateEstadisticaDto) {
-    return this.estadisticasService.update(+id, updateEstadisticaDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.estadisticasService.remove(+id);
+  @Get('comentarios-por-publicacion')
+  async getComentariosPost(@Query('desde') desde: string, @Query('hasta') hasta: string) {
+    return this.comentariosService.countPorPublicacionInTime(new Date(desde), new Date(hasta));
   }
 }

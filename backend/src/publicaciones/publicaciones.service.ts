@@ -165,5 +165,24 @@ export class PublicacionesService {
     return `This action updates a #${id} publicacion`;
   }
 
+  //Estadística usuarios en el tiempo
+  async countByUsuarioInTime(desde: Date, hasta: Date) {
+    return this.PublicacionModel.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: desde, $lte: hasta },
+          eliminado: false
+        }
+      },
+      {
+        $group: {
+          _id: '$usuarioNombre',
+          cantidad: { $sum: 1 }
+        }
+      },
+      { $sort: { cantidad: -1 } }
+    ]);
+  }
+
   
 }

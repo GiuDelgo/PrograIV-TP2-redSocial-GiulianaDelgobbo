@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, Form, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AdminService } from '../../core/services/admin.service';
 import { Usuario } from '../../shared/interfaces/usuario.interface';
+import { Estadisticas } from '../estadisticas/estadisticas';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, Estadisticas],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

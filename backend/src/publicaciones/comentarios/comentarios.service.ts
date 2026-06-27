@@ -64,6 +64,40 @@ export class ComentariosService {
 
     return query.exec();
   }
+
+  async countTotalesInTime(desde: Date, hasta: Date) {
+    return this.ComentarioModel.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: desde, $lte: hasta }
+        }
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+          cantidad: { $sum: 1 }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+  }
+
+  async countPorPublicacionInTime(desde: Date, hasta: Date) {
+    return this.ComentarioModel.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: desde, $lte: hasta }
+        }
+      },
+      {
+        $group: {
+          _id: '$publicacionId', // O agrupar por título si hacés un $lookup, pero ID es más seguro
+          cantidad: { $sum: 1 }
+        }
+      },
+      { $limit: 10 } // Top 10 publicaciones más comentadas
+    ]);
+  }
 }
 
   

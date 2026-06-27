@@ -1,0 +1,40 @@
+<div class="container my-5">
+    <h2 class="mb-4" style="color: #62aaac; font-weight: 700;">Dashboard de Estadísticas</h2>
+
+    <div class="row g-3 p-4 mb-5 rounded shadow-sm bg-light align-items-end">
+            <div class="col-md-4">
+                <label class="form-label font-weight-bold text-muted">Fecha Desde</label>
+                <input type="date" class="form-control" [(ngModel)]="fechaDesde">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label font-weight-bold text-muted">Fecha Hasta</label>
+                <input type="date" class="form-control" [(ngModel)]="fechaHasta">
+            </div>
+            <div class="col-md-4">
+                <button class="btn w-100 py-2 shadow-sm" style="background-color: #62aaac; color: white;" (click)="cargarEstadisticas()">
+                    Actualizar Gráficos
+                </button>
+            </div>
+    </div>
+
+    <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card p-3 shadow-sm border-0 h-100">
+                    <h5 class="text-center mb-3">Publicaciones por Usuario (Barras)</h5>
+                    <canvas #chartUsuarios></canvas>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card p-3 shadow-sm border-0 h-100">
+                    <h5 class="text-center mb-3">Flujo de Comentarios en el Tiempo (Líneas)</h5>
+                    <canvas #chartComentarios></canvas>
+                </div>
+            </div>
+            <div class="col-md-6 mx-auto mb-4">
+                <div class="card p-3 shadow-sm border-0 h-100">
+                    <h5 class="text-center mb-3">Top Publicaciones Comentadas (Torta)</h5>
+                    <canvas #chartPubComentarios></canvas>
+                </div>
+            </div>
+    </div>
+</div>
