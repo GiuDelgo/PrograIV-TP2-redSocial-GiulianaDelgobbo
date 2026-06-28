@@ -1,18 +1,5 @@
-<div class="card publicacion-card mb-4 shadow-sm transition-all">
+<div class="card publicacion-card mb-4 shadow-sm transition-all" appHoverCard>
     <div class="card-body">
-        @if (message()){
-            <div class="alert alert-danger alert-dismissible fade show text-center py-2 mb-3" role="alert">
-                <small class="fw-medium">{{ message() }}</small>
-
-                <button (click)="confirmDelete()" class="btn btn-outline-danger btn-sm border-0">
-                    <i class="bi bi-trash3-fill">Si</i>
-                </button>
-                <button (click)="cancelDelete()" class="btn btn-outline-danger btn-sm border-0">
-                    <i class="bi bi-trash3-fill">No</i>
-                </button>
-            </div>
-            
-        }
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex align-items-center">
                 <div class="avatar-placeholder me-2 d-flex align-items-center justify-content-center text-white fw-bold">
@@ -26,8 +13,11 @@
             </div>
         
             @if (isMine || isAdmin) {
-                <button (click)="deleteMessage()" class="btn btn-outline-danger btn-sm border-0" title="Eliminar publicación">
-                    <i class="bi bi-trash3-fill">Eliminar</i>
+                <button 
+                    appConfirmarBorrado 
+                    (confirmado)="eliminarPost()" 
+                    class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-trash3-fill"></i> Eliminar
                 </button>
             }
         </div>
@@ -51,31 +41,6 @@
                 <span class="fw-bold">{{ publicacion.comentarios.length }} Comentarios </span>
             </button>
         </div>
-
-        <!-- <div class="comments-section border-top mt-4">
-            <h6 class="fw-bold mb-3 text-secondary mt-3">Comentarios:</h6>            
-            @for (comment of publicacion.comentarios; track comment._id) {
-                <div class="comment-item d-flex p-3 rounded mb-2 align-items-start">
-                    <img [src]="comment.usuario.foto" alt="Avatar" class="rounded-circle comment-avatar me-3">
-                    <div class="flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="fw-bold text-dark">&#64;{{ comment.usuario.usuario }}</span>
-                            <small class="text-muted text-end" style="font-size: 0.75rem;">
-                                {{ comment.fecha | date:'dd/MM HH:mm' }}
-                                @if (comment.modificado) { 
-                                    <span class="badge bg-light text-dark ms-1 border">Editado</span>
-                                }                      
-                            </small>
-                        </div>
-                        <p class="mb-0 text-secondary small">{{ comment.mensaje }}</p>
-                    </div>
-                </div>
-            } @empty {
-                <div class="text-muted small ps-2">
-                    Nadie ha comentado esta publicación aún.
-                </div>
-            }
-        </div>  -->
     </div>
 </div>
 

@@ -1,5 +1,5 @@
 import { Comentario } from "../comentarios/entities/comentario.entity";
-import { IsString, IsNotEmpty} from "class-validator";
+import { IsString, IsNotEmpty, MaxLength} from "class-validator";
 
 export class CreatePublicacionDto {  
     @IsString()
@@ -8,6 +8,7 @@ export class CreatePublicacionDto {
 
     @IsString()
     @IsNotEmpty()
+    @MaxLength(700)
     descripcion!: string; 
 
     @IsString()

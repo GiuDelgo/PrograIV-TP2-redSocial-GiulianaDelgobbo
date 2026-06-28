@@ -87,6 +87,8 @@
                         <input 
                             type="text" 
                             formControlName="comentario" 
+                            appContadorCaracteres
+                            [maxCaracteres]="300"
                             class="form-control" 
                             [placeholder]="modoEdicion ? 'Modifica tu comentario...' : 'Comenta esta publicación.'"
                             [ngClass]="{'is-invalid': comentForm.get('comentario')?.touched && comentForm.get('comentario')?.invalid}"

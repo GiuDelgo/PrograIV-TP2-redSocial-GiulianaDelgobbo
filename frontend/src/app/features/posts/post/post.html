@@ -24,6 +24,8 @@
             <div class="container-textarea mb-3">
                 <textarea 
                 formControlName="descripcion" 
+                appContadorCaracteres
+                [maxCaracteres]="700"
                 class="form-control row-textarea" 
                 rows="3" 
                 placeholder="¿En qué estás pensando? (mín. 10 caracteres - máx. 700 caracteres)"

@@ -4,10 +4,11 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { PublicacionesService } from '../../../core/services/publicaciones.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { ContadorCaracteres } from '../../../shared/directives/contador-caracteres';
 
 @Component({
   selector: 'app-post',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ContadorCaracteres],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })

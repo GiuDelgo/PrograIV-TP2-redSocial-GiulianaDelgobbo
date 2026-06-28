@@ -5,10 +5,11 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ComentariosService } from '../../../core/services/comentarios.service';
 import { Comentario } from '../../../shared/interfaces/comentario.interface'
 import { Subscription } from 'rxjs';
+import { ContadorCaracteres } from '../../../shared/directives/contador-caracteres';
 
 @Component({
   selector: 'app-publicacion-comentarios-card',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ContadorCaracteres],
   templateUrl: './publicacion-comentarios-card.html',
   styleUrl: './publicacion-comentarios-card.css',
 })

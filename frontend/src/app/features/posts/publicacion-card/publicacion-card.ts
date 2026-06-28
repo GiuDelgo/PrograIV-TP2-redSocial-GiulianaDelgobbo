@@ -6,11 +6,13 @@ import { Comentario } from '../../../shared/interfaces/comentario.interface';
 import { TiempoAtrasPipe } from '../../../shared/pipes/tiempo-atras-pipe'; 
 import { RecortarTextoPipe } from '../../../shared/pipes/recortar-texto-pipe';
 import { InicialesPipe } from '../../../shared/pipes/iniciales-pipe';
+import { HoverCard } from '../../../shared/directives/hover-card';
+import { ConfirmarBorrado } from '../../../shared/directives/confirmar-borrado';
 
 @Component({
   selector: 'app-publicacion-card',
   standalone: true,
-  imports: [CommonModule, TiempoAtrasPipe, RecortarTextoPipe, InicialesPipe],
+  imports: [CommonModule, TiempoAtrasPipe, RecortarTextoPipe, InicialesPipe, HoverCard, ConfirmarBorrado],
   templateUrl: './publicacion-card.html',
   styleUrl: './publicacion-card.css'
 })
@@ -25,9 +27,6 @@ export class PublicacionCard {
   @Output() onComment = new EventEmitter<Publicacion>();
 
   comentarios = signal<Comentario[]>([]);
-
-  message = signal<string | null>(null);
-  isConfirmed = signal <boolean>(false);
 
   constructor (private authService : AuthService){}
 
@@ -47,31 +46,10 @@ export class PublicacionCard {
     this.onLike.emit(this.publicacion._id);
   }
 
-  confirmDelete(){
-    this.isConfirmed.set(true);
-    this.eliminarPost();
-  }
-
-  cancelDelete(){
-    this.isConfirmed.set(false);
-    this.message.set(null);
-  }
-
-  deleteMessage (){
-    this.message.set('Seguro que desea eliminar la publicación?');
-  }
-
   eliminarPost() {
-    if (this.isConfirmed()) {
-      this.onDelete.emit(this.publicacion._id);
-
-      setTimeout( ()=>{
-        this.isConfirmed.set(false);
-        this.message.set(null);
-      },
-      2000);
-    }
+    this.onDelete.emit(this.publicacion._id);
   }
+  
 
   showPostComments(){
     //cambia un outPut booleano a true o false para que en publicaciones se muestre la publicacion grande
