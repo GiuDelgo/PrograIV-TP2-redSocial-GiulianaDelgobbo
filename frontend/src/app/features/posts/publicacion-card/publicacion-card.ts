@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { Publicacion } from '../../../shared/interfaces/publicacion.interface';
 import { AuthService } from '../../../core/services/auth.service';
 import { Comentario } from '../../../shared/interfaces/comentario.interface';
+import { TiempoAtrasPipe } from '../../../shared/pipes/tiempo-atras-pipe'; 
+import { RecortarTextoPipe } from '../../../shared/pipes/recortar-texto-pipe';
+import { InicialesPipe } from '../../../shared/pipes/iniciales-pipe';
 
 @Component({
   selector: 'app-publicacion-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TiempoAtrasPipe, RecortarTextoPipe, InicialesPipe],
   templateUrl: './publicacion-card.html',
   styleUrl: './publicacion-card.css'
 })

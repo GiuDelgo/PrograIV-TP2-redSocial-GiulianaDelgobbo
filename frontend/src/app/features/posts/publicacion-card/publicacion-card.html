@@ -16,11 +16,12 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex align-items-center">
                 <div class="avatar-placeholder me-2 d-flex align-items-center justify-content-center text-white fw-bold">
-                    {{ publicacion.usuarioNombre.substring(0, 2) | uppercase }}
+                    {{ publicacion.usuarioNombre | iniciales }}
                 </div>
                 <div>
                     <h6 class="mb-0 usuario-text">&#64;{{ publicacion.usuarioNombre }}</h6>
                     <small class="text-muted">{{ publicacion.createdAt | date:'dd/MM/yyyy HH:mm' }}</small>
+                    <small class="text-muted"> - {{ publicacion.createdAt | tiempoAtras }}</small>
                 </div>
             </div>
         
@@ -32,7 +33,7 @@
         </div>
 
         <h5 class="card-title fw-bold post-titulo">{{ publicacion.titulo }}</h5>
-        <p class="card-text text-secondary">{{ publicacion.descripcion }}</p>
+        <p class="card-text text-secondary">{{ publicacion.descripcion | recortarTexto}}</p>
 
         @if (publicacion.urlImagen) {
             <div class="image-container mb-3 rounded overflow-hidden bg-light text-center">

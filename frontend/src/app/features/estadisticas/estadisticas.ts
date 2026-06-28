@@ -58,7 +58,7 @@ export class Estadisticas implements OnInit {
 
     this.estadisticasService.getGraficoTorta(desde, hasta).subscribe({
       next: (res)=>{
-        const labels = res.map(item => `Post ID: ...${item._id.substring(item._id.length - 4)}`);
+        const labels = res.map(item => `Post ID: ...${item._id}`);
         const data = res.map(item => item.cantidad);
         this.crearGrafico(this.chartPubComentariosRef.nativeElement, 'pie', 'Distribución de Comentarios', labels, data, ['#62aaac', '#c1b788', '#f4bdad', '#4a5553']);
       }
