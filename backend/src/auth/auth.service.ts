@@ -5,7 +5,7 @@ import { extname } from 'path'; // Funciona en Windows local y Vercel Linux)
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { access } from 'fs';
 import { JwtService } from '@nestjs/jwt';
-import { PublicacionesService } from 'src/publicaciones/publicaciones.service';
+import { PublicacionesService } from '../publicaciones/publicaciones.service';
 
 
 @Injectable()
