@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 import { EstadisticasService } from '../../core/services/estadisticas.service';
 
-Chart.register(...registerables);
+Chart.register(...registerables);//registerable es un componente modular, hay que cargarlo a mano antes de usarlo dentro de la librería. Es como si fuese el cartucho de una consola
 
 @Component({
   selector: 'app-estadisticas',
@@ -17,11 +17,12 @@ export class Estadisticas implements OnInit {
   fechaDesde = signal<string>('2026-01-01');
   fechaHasta = signal<string>('2026-12-31');
 
+  //obtengo las referencias a los elementos canvas del DOM para renderizar los gráficos adentro
   @ViewChild('chartUsuarios') chartUsuariosRef!: ElementRef;
   @ViewChild('chartComentarios') chartComentariosRef!: ElementRef;
   @ViewChild('chartPubComentarios') chartPubComentariosRef!: ElementRef;
 
-  private charts: Chart[] = [];
+  private charts: Chart[] = []; //me guardo las intancias de los gráficos en el array
 
   constructor (private estadisticasService: EstadisticasService){}
 
@@ -56,6 +57,7 @@ export class Estadisticas implements OnInit {
       }
     })
 
+    // 3. Gráfico de Torta: Comentarios por Publicación
     this.estadisticasService.getGraficoTorta(desde, hasta).subscribe({
       next: (res)=>{
         const labels = res.map(item => `Post ID: ...${item._id}`);
@@ -66,11 +68,11 @@ export class Estadisticas implements OnInit {
     
   }
 
-  private crearGrafico(ctx: any, type: any, label: string, labels: string[], data: number[], bgColors: any) {
-    const nuevoChart = new Chart(ctx, {
-      type: type,
-      data: {
-        labels: labels,
+  private crearGrafico(canvas: any, type: any, label: string, labels: string[], data: number[], bgColors: any) {
+    const nuevoChart = new Chart(canvas, {
+      type: type, //tipo de gráfico
+      data: { //info que se va a mostrar en el gráfico
+        labels: labels, //nombres de la variables a mostrar
         datasets: [{
           label: label,
           data: data,
@@ -78,7 +80,7 @@ export class Estadisticas implements OnInit {
           borderWidth: 1
         }]
       },
-      options: { responsive: true }
+      options: { responsive: true } //cambia de tamaño automáticamente
     });
     this.charts.push(nuevoChart);
   }

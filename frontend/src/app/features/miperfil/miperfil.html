@@ -1,17 +1,15 @@
 <div class="profile-container py-5">
     <div class="container">
         
-        <!-- @if (isLoading()) {
-            <div class="text-center my-5">
-                <div class="spinner-border text-info" role="status">
-                    <span class="visually-hidden">Cargando...</span>
-                </div>
-            </div>
-        } -->
-
         @if (errorMessage()) {
-            <div class="alert alert-danger text-center " role="alert">
+            <div class="alert alert-danger text-center" role="alert">
                 {{ errorMessage() }}
+            </div>
+        }
+
+        @if (successMessage()) {
+            <div class="alert alert-success text-center" role="alert">
+                {{ successMessage() }}
             </div>
         }
         
@@ -23,18 +21,83 @@
                         <div class="card-body p-4 p-md-5 text-center text-md-start">
                             <div class="row align-items-start">
                                 <div class="col-md-3 text-center mb-4 mb-md-0">
-                                    <img [src]="usuario()?.foto" 
+                                    <img [src]="fotoMostrada()" 
                                         alt="Foto de Perfil" 
                                         class="img-fluid rounded-circle profile-img shadow-sm">
                                 </div>
                                 <div class="col-md-9 ps-md-4">
-                                    <h2 class="mb-0 user-fullname">{{ usuario()?.nombre }} {{ usuario()?.apellido }}</h2>
-                                    <h5 class="text-muted mb-4">&#64;{{ usuario()?.usuario }}</h5>
-                                    <div>
-                                        <p class="text mb-1">Correo: {{ usuario()?.correo }}</p>
-                                        <p class="text mb-1">Fecha de Nacimiento: {{ usuario()?.fechaNacimiento | date:'dd/MM/yyyy' }}</p>
-                                        <p class="text mb-3">Sobre mí: {{ usuario()?.descripcion || 'Sin descripción disponible.' }}</p>
-                                    </div>                                   
+                                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-3">
+                                        <div>
+                                            <h2 class="mb-0 user-fullname">{{ usuario()?.nombre }} {{ usuario()?.apellido }}</h2>
+                                            <h5 class="text-muted mb-0">&#64;{{ usuario()?.usuario }}</h5>
+                                        </div>
+                                        @if (!isEditing()) {
+                                            <button type="button" class="btn btn-edit-profile" (click)="iniciarEdicion()">
+                                                Editar perfil
+                                            </button>
+                                        }
+                                    </div>
+
+                                    @if (!isEditing()) {
+                                        <div>
+                                            <p class="text mb-1">Correo: {{ usuario()?.correo }}</p>
+                                            <p class="text mb-1">Fecha de Nacimiento: {{ usuario()?.fechaNacimiento | date:'dd/MM/yyyy' }}</p>
+                                            <p class="text mb-3">Sobre mí: {{ usuario()?.descripcion || 'Sin descripción disponible.' }}</p>
+                                        </div>
+                                    } @else {
+                                        <form [formGroup]="perfilForm" (ngSubmit)="guardarPerfil()" novalidate>
+                                            <div class="mb-3">
+                                                <label for="fotoPerfil" class="form-label text-secondary fw-semibold">Foto de perfil</label>
+                                                <input
+                                                    type="file"
+                                                    id="fotoPerfil"
+                                                    class="form-control"
+                                                    accept="image/jpeg,image/png,image/jpg"
+                                                    (change)="onFileChange($event)"
+                                                />
+                                                <small class="text-muted">Opcional. Formatos permitidos: JPG y PNG.</small>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="fechaNacimiento" class="form-label text-secondary fw-semibold">Fecha de nacimiento</label>
+                                                <input
+                                                    type="date"
+                                                    id="fechaNacimiento"
+                                                    formControlName="fechaNacimiento"
+                                                    class="form-control"
+                                                    [ngClass]="{'is-invalid': perfilForm.get('fechaNacimiento')?.touched && perfilForm.get('fechaNacimiento')?.invalid}"
+                                                />
+                                                <div class="invalid-feedback">Ingresá una fecha válida.</div>
+                                            </div>
+
+                                            <div class="mb-4">
+                                                <label for="descripcion" class="form-label text-secondary fw-semibold">Sobre mí</label>
+                                                <textarea
+                                                    id="descripcion"
+                                                    formControlName="descripcion"
+                                                    class="form-control"
+                                                    rows="4"
+                                                    maxlength="500"
+                                                    placeholder="Contanos un poco sobre vos..."
+                                                    [ngClass]="{'is-invalid': perfilForm.get('descripcion')?.touched && perfilForm.get('descripcion')?.invalid}"
+                                                ></textarea>
+                                                <div class="invalid-feedback">La descripción no puede superar los 500 caracteres.</div>
+                                            </div>
+
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <button type="submit" class="btn btn-save-profile" [disabled]="isSaving()">
+                                                    @if (isSaving()) {
+                                                        Guardando...
+                                                    } @else {
+                                                        Guardar cambios
+                                                    }
+                                                </button>
+                                                <button type="button" class="btn btn-cancel-profile" (click)="cancelarEdicion()" [disabled]="isSaving()">
+                                                    Cancelar
+                                                </button>
+                                            </div>
+                                        </form>
+                                    }
                                 </div>
                             </div>
                         </div>

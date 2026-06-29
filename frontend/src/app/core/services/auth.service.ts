@@ -62,6 +62,28 @@ export class AuthService {
         return this.http.post(`${this.baseUrl}/autorizar`, {});
     }
 
+    actualizarPerfil(
+        datos: { descripcion: string; fechaNacimiento: string },
+        archivoFoto?: File | null,
+    ): Observable<any> {
+        const formData = new FormData();
+        formData.append('descripcion', datos.descripcion);
+        formData.append('fechaNacimiento', datos.fechaNacimiento);
+
+        if (archivoFoto) {
+            formData.append('foto', archivoFoto, archivoFoto.name);
+        }
+
+        return this.http.patch(`${this.baseUrl}/perfil`, formData).pipe(
+            tap((res) => {
+                if (res) {
+                    localStorage.setItem('usuario_sesion', JSON.stringify(res));
+                    this.usuarioActual.set(res);
+                }
+            }),
+        );
+    }
+
     iniciarContador (){
         this.limpiarContador();
 

@@ -87,3 +87,40 @@
     transform: translateX(3px);
     border-color: #62aaac;
 }
+
+.btn-edit-profile,
+.btn-save-profile {
+    background-color: #62aaac;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-edit-profile:hover,
+.btn-save-profile:hover {
+    background-color: #4f9496;
+    color: #fff;
+}
+
+.btn-cancel-profile {
+    background-color: transparent;
+    color: #4a5553;
+    border: 1px solid #4a5553;
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-cancel-profile:hover {
+    background-color: #4a5553;
+    color: #fff;
+}
+
+.alert.alert-success {
+    margin-top: 20px;
+    max-width: 83%;
+    margin-left: auto;
+    margin-right: auto;
+}

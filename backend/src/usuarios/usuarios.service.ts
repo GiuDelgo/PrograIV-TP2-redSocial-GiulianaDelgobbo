@@ -106,4 +106,20 @@ export class UsuariosService {
     return usuarioAlta;
   }
 
+  async updatePerfil(
+    id: string,
+    data: { descripcion?: string; fechaNacimiento?: string; foto?: string },
+  ) {
+    const usuarioActualizado = await this.usuarioModel
+      .findByIdAndUpdate(id, { $set: data }, { new: true })
+      .select('-contrasena');
+
+    if (!usuarioActualizado) {
+      throw new BadRequestException('Usuario no encontrado');
+    }
+
+    const { contrasena: _ctrs, ...userObject } = usuarioActualizado.toObject();
+    return userObject;
+  }
+
 }

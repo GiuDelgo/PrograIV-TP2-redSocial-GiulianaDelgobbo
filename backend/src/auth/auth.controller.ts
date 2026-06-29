@@ -1,10 +1,11 @@
-import { Controller, Post, Body, UseInterceptors, UploadedFile, BadRequestException, Res, UseGuards, Req, Get, Delete, Param } from '@nestjs/common';
+import { Controller, Post, Patch, Body, UseInterceptors, UploadedFile, BadRequestException, Res, UseGuards, Req, Get, Delete, Param } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService } from './auth.service';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
 import { memoryStorage } from 'multer';
 import { LoginDto } from './dto/login.dto';
 import { AltaDto } from './dto/alta.dto';
+import { UpdatePerfilDto } from './dto/update-perfil.dto';
 import type { Response, Request } from 'express';
 import { AuthGuard } from '../guards/auth/auth.guard';
 import { RoleGuard } from '../guards/role/role.guard';
@@ -61,6 +62,31 @@ export class AuthController {
     // si el guard permite el paso, significa que el token es 100% válido.
     // retorna directamente los datos del usuario que el Guard extrajo del payload.
     return req['user'];
+  }
+
+  @Patch('perfil')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(
+    FileInterceptor('foto', {
+      storage: memoryStorage(),
+      fileFilter: (req, file, callback) => {
+        if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
+          return callback(
+            new BadRequestException('Solo se permiten imágenes (jpg, jpeg, png)'),
+            false,
+          );
+        }
+        callback(null, true);
+      },
+    }),
+  )
+  async actualizarPerfil(
+    @Req() req: Request,
+    @Body() updatePerfilDto: UpdatePerfilDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    const userId = req['user'].sub;
+    return this.authService.actualizarPerfil(userId, updatePerfilDto, file);
   }
 
   @Post('refrescar')

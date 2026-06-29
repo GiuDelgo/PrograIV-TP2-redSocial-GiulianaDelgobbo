@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable} from '@nestjs/common';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
+import { UpdatePerfilDto } from './dto/update-perfil.dto';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { extname } from 'path'; // Funciona en Windows local y Vercel Linux)
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
@@ -142,5 +143,60 @@ export class AuthService {
 
     return { message: 'Usuario dado de alta correctamente', data: usuarioAlta }; 
 
+  }
+
+  async actualizarPerfil(
+    userId: string,
+    updatePerfilDto: UpdatePerfilDto,
+    file?: Express.Multer.File,
+  ) {
+    const updateData: {
+      descripcion?: string;
+      fechaNacimiento?: string;
+      foto?: string;
+    } = {};
+
+    if (updatePerfilDto.descripcion !== undefined) {
+      updateData.descripcion = updatePerfilDto.descripcion;
+    }
+
+    if (updatePerfilDto.fechaNacimiento !== undefined) {
+      updateData.fechaNacimiento = updatePerfilDto.fechaNacimiento;
+    }
+
+    if (file) {
+      updateData.foto = await this.subirFotoPerfil(file);
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      throw new BadRequestException('No hay datos para actualizar');
+    }
+
+    return this.usuariosService.updatePerfil(userId, updateData);
+  }
+
+  private async subirFotoPerfil(file: Express.Multer.File): Promise<string> {
+    const sufijoUnico = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = extname(file.originalname);
+    const nombreArchivo = `${sufijoUnico}${ext}`;
+
+    const { error } = await this.supabase.storage
+      .from('perfiles')
+      .upload(`fotos/${nombreArchivo}`, file.buffer, {
+        contentType: file.mimetype,
+        upsert: true,
+      });
+
+    if (error) {
+      throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
+    }
+
+    const {
+      data: { publicUrl },
+    } = this.supabase.storage
+      .from('perfiles')
+      .getPublicUrl(`fotos/${nombreArchivo}`);
+
+    return publicUrl;
   }
 }
