@@ -140,7 +140,7 @@ export class Dashboard implements OnInit {
     }else{
       this.adminService.altaUsuario(usuario._id).subscribe({
         next: ()=>{
-          this.successMessage.set('Usuario ${usuario.usuario} habilitado con éxito.');
+          this.successMessage.set(`Usuario ${usuario.usuario} habilitado con éxito.`);
           this.cargarUsuarios();
           setTimeout(()=>{
             this.successMessage.set(null);
