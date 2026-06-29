@@ -134,6 +134,7 @@ export class AuthService {
 
   async addUsuarioAdmin(userId: string){
     const usuarioAlta = await this.usuariosService.altaUsuario(userId);
+    this.publicacionesService.altaUserPosts(userId);
 
     if (!usuarioAlta) {
       throw new BadRequestException(`No se encontró el usuario`);

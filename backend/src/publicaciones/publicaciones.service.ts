@@ -190,5 +190,12 @@ export class PublicacionesService {
       { $set: { eliminado: true } } 
     );
   }
+
+  async altaUserPosts (id: string){
+    await this.PublicacionModel.updateMany(
+      { usuarioId: id },         
+      { $set: { eliminado: false } } 
+    );
+  }
 }
 
