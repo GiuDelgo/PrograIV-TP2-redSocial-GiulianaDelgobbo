@@ -184,5 +184,11 @@ export class PublicacionesService {
     ]);
   }
 
-  
+  async removeUserPosts (id: string) : Promise<void> {
+    await this.PublicacionModel.updateMany(
+      { usuarioId: id },         
+      { $set: { eliminado: true } } 
+    );
+  }
 }
+

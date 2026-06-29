@@ -5,6 +5,7 @@ import { extname } from 'path'; // Funciona en Windows local y Vercel Linux)
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { access } from 'fs';
 import { JwtService } from '@nestjs/jwt';
+import { PublicacionesService } from 'src/publicaciones/publicaciones.service';
 
 
 @Injectable()
@@ -13,6 +14,7 @@ export class AuthService {
 
   constructor(
     private readonly usuariosService: UsuariosService,
+    private readonly publicacionesService: PublicacionesService,
     private readonly jwtService: JwtService
   ) {
     // inicializa el cliente con las variables de entorno
@@ -121,6 +123,7 @@ export class AuthService {
 
   async deleteUsuarioAdmin(userId: string){
     const usuarioEliminado = await this.usuariosService.remove(userId);
+    this.publicacionesService.removeUserPosts(userId);
 
     if (!usuarioEliminado) {
       throw new BadRequestException(`No se encontró el usuario`);
